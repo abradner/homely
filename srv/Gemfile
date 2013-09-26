@@ -50,5 +50,5 @@ gem 'haml'
 group :development, :test do
   gem 'rspec-rails'
   gem 'cucumber'
-  gem 'capybarra'
+  gem 'capybara'
 end
