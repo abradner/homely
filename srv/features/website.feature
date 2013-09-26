@@ -4,5 +4,5 @@ Feature: We have a website
   I want a website to show my system
 
 Scenario: Go to web page
-  Given I go to the home page
-  Then I should see an "Welcome to Homely"
+  Given I go to home
+  Then I should see "Welcome to Homely"
