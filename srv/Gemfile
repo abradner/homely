@@ -3,9 +3,9 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
 
-# Use mysql as the database for Active Record
-gem 'mysql2'
+# Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
+gem 'mysql2'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -45,18 +45,16 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-
-gem 'haml'
-
 group :development, :test do
   gem 'rspec-rails'
-  gem 'cucumber'
-  gem 'capybara'
+  gem 'cucumber-rails', require: false, git: 'https://github.com/cucumber/cucumber-rails.git'
+  gem 'database_cleaner'
 end
-
 
 group :test do
-  gem "cucumber-rails", require: false
-  gem 'database_cleaner'
-
+  gem 'simplecov', require: false
+  gem 'simplecov-rcov', require: false
+  gem 'ci_reporter'
 end
+
+gem 'haml'
