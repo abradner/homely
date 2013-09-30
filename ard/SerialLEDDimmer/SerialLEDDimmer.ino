@@ -48,7 +48,7 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0) {
+  if (Serial.available() > 4) {    
     if (Serial.read() == '(') {
     int ledNo = Serial.read();
     // look for the next valid digit in the incoming serial stream:
@@ -59,18 +59,10 @@ void loop() {
     int blue = Serial.read(); 
   
     Serial.read(); // ')'
-  
-  
-  
-      Serial.println((char)ledNo);
-      Serial.println((char)red);
-      Serial.println((char)green);
-      Serial.println((char)blue);
-  
-    //dodgy approximation is dodgy
-    red = ( (red - ASCIIOFFSET) *85 ) / 3;
-    green = ( (green - ASCIIOFFSET ) *85 ) /3;
-    blue = ( (blue - ASCIIOFFSET ) *85 ) /3;
+    
+    red   = interpolate_colour(red);
+    green = interpolate_colour(green);
+    blue  = interpolate_colour(blue);
    
     ledNo = ledNo - ASCIIOFFSET;
       
@@ -86,10 +78,23 @@ void loop() {
   }
 }
 
+int interpolate_colour(int input) {
+  // An approximation to convert 0..9 to 0..255 without decimals
+  return ( (input - ASCIIOFFSET) *85 ) / 3;
+}
+
 void welcome() {  
   for (int i = 0; i < NUM_LEDS; i++) {
     leds.setColorRGB(i, DARK, DARK, DARK);
   }
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds.setColorRGB(i, DARK, 255, DARK);
+    delay(20);
+  }
+    for (int i = 0; i < NUM_LEDS; i++) {
+    leds.setColorRGB(i, DARK, DARK, DARK);
+  }
+
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
