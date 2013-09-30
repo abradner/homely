@@ -16,67 +16,78 @@ Attribution-NonCommercial-ShareAlike 3.0 Unported License
 http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US
 */
 
+#include <ChainableLED.h>
+
+
 #define OFF LOW
 #define ON HIGH
 #define DARK 5
-
-// #define INPUT_LENGTH 4
-// #define NUM_COLOURS 3
+#define NUM_LEDS 10
+#define ASCIIOFFSET 48
 
 const int redPin   = 3; // the pin that the LED is attached to
 const int greenPin = 5; // the pin that the LED is attached to
 const int bluePin  = 6; // the pin that the LED is attached to
 
 int iteration = 0;
-
-//byte incomingBytes[INPUT_LENGTH];
-//byte rgbBrightness[NUM_COLOURS];
+ChainableLED leds(7, 8, NUM_LEDS);//defines the pin used on arduino.
 
 void setup() {
   // initialize serial communication:
-  Serial.begin(115200);
+  Serial.begin(9600);
   // initialize the LED pin as an output:
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
+  
+  
+  //Defines the num of LEDs used, The undefined 
+  //will be lost control.
+
   welcome();
 }
 
 void loop() {
-  // look for the next valid integer in the incoming serial stream:
-  byte red = Serial.parseInt(); 
+  if (Serial.read() == '(') {
+  int ledNo = Serial.read();
+  // look for the next valid digit in the incoming serial stream:
+  int red = Serial.read(); 
   // do it again:
-  byte green = Serial.parseInt(); 
+  int green = Serial.read(); 
   // do it again:
-  byte blue = Serial.parseInt(); 
+  int blue = Serial.read(); 
 
-  // look for the newline. That's the end of your
-  // sentence:
-  if (Serial.read() == '\n') {
-    // constrain the values to 0 - 255
-    red = constrain(red, 0, 255);
-    green = constrain(green, 0, 255);
-    blue = constrain(blue, 0, 255);
+  Serial.read(); // ')'
 
+
+
+    Serial.println((char)ledNo);
+    Serial.println((char)red);
+    Serial.println((char)green);
+    Serial.println((char)blue);
+
+  //dodgy approximation is dodgy
+  red = ( (red - ASCIIOFFSET) *85 ) / 3;
+  green = ( (green - ASCIIOFFSET ) *85 ) /3;
+  blue = ( (blue - ASCIIOFFSET ) *85 ) /3;
+ 
+  ledNo = ledNo - ASCIIOFFSET;
+    
     // fade the red, green, and blue legs of the LED: 
     Serial.print("Setting Colours - ");
-    Serial.println(iteration);
+    Serial.println(ledNo);
     Serial.println(red);
     Serial.println(green);
     Serial.println(blue);
-
-    analogWrite(redPin, red);
-    analogWrite(greenPin, green);
-    analogWrite(bluePin, blue);
-
-    iteration++;
+  
+  leds.setColorRGB(ledNo, red, green, blue);
   }
 }
 
 void welcome() {  
-  analogWrite(greenPin, DARK);
-  analogWrite(bluePin, DARK);
-  analogWrite(redPin, DARK);
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds.setColorRGB(i, DARK, DARK, DARK);
+  }
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
@@ -84,7 +95,6 @@ void welcome() {
 
 }
 
-//
 //void thing(byte* red, byte* green, byte* blue) {
 //    int inChar;
 //
