@@ -48,39 +48,41 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.read() == '(') {
-  int ledNo = Serial.read();
-  // look for the next valid digit in the incoming serial stream:
-  int red = Serial.read(); 
-  // do it again:
-  int green = Serial.read(); 
-  // do it again:
-  int blue = Serial.read(); 
-
-  Serial.read(); // ')'
-
-
-
-    Serial.println((char)ledNo);
-    Serial.println((char)red);
-    Serial.println((char)green);
-    Serial.println((char)blue);
-
-  //dodgy approximation is dodgy
-  red = ( (red - ASCIIOFFSET) *85 ) / 3;
-  green = ( (green - ASCIIOFFSET ) *85 ) /3;
-  blue = ( (blue - ASCIIOFFSET ) *85 ) /3;
- 
-  ledNo = ledNo - ASCIIOFFSET;
-    
-    // fade the red, green, and blue legs of the LED: 
-    Serial.print("Setting Colours - ");
-    Serial.println(ledNo);
-    Serial.println(red);
-    Serial.println(green);
-    Serial.println(blue);
+  if (Serial.available() > 0) {
+    if (Serial.read() == '(') {
+    int ledNo = Serial.read();
+    // look for the next valid digit in the incoming serial stream:
+    int red = Serial.read(); 
+    // do it again:
+    int green = Serial.read(); 
+    // do it again:
+    int blue = Serial.read(); 
   
-  leds.setColorRGB(ledNo, red, green, blue);
+    Serial.read(); // ')'
+  
+  
+  
+      Serial.println((char)ledNo);
+      Serial.println((char)red);
+      Serial.println((char)green);
+      Serial.println((char)blue);
+  
+    //dodgy approximation is dodgy
+    red = ( (red - ASCIIOFFSET) *85 ) / 3;
+    green = ( (green - ASCIIOFFSET ) *85 ) /3;
+    blue = ( (blue - ASCIIOFFSET ) *85 ) /3;
+   
+    ledNo = ledNo - ASCIIOFFSET;
+      
+      // fade the red, green, and blue legs of the LED: 
+      Serial.print("Setting Colours - ");
+      Serial.println(ledNo);
+      Serial.println(red);
+      Serial.println(green);
+      Serial.println(blue);
+    
+    leds.setColorRGB(ledNo, red, green, blue);
+    }
   }
 }
 
