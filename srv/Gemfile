@@ -58,3 +58,4 @@ group :test do
 end
 
 gem 'haml'
+gem 'hybridgroup-serialport'#, git: 'https://github.com/hybridgroup/ruby-serialport.git'

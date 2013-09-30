@@ -68,6 +68,7 @@ GEM
     haml (4.0.3)
       tilt
     hike (1.2.3)
+    hybridgroup-serialport (1.2.1)
     i18n (0.6.5)
     jbuilder (1.5.1)
       activesupport (>= 3.0.0)
@@ -166,6 +167,7 @@ DEPENDENCIES
   cucumber-rails!
   database_cleaner
   haml
+  hybridgroup-serialport
   jbuilder (~> 1.2)
   jquery-rails
   mysql2
