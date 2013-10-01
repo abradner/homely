@@ -13,9 +13,12 @@
         <div class="row-fluid">
           <div class="span2 offset5">
             <center>
-                <button type="button" class="btn btn-inverse homely-btn changeableSetting light power" id="kitchenLightPower" data-toggle="button"><img src="img/lightbulb.png"></button>
+                <button type="button" class="btn btn-inverse homely-btn changeableSetting light power" id="kitchenLight_Power" data-device_type="Light" data-device_id="kitchenLight" data-setting_type="Power" data-toggle="button"><img src="img/lightbulb.png"></button>
+                <br/>
+                <input type="range" class="changeableSetting" name="slider" id="kitchenLight_Brightness" data-device_type="Light" data-device_id="kitchenLight" data-setting_type="Brightness" value="20" min="0" max="9" data-theme="c" >
+                <input type="range" class="changeableSetting" name="slider" id="kitchenLight_Colour" data-device_type="Light" data-device_id="kitchenLight" data-setting_type="Colour" value="20" min="0" max="9" data-theme="c" >
                 <br/><br/><br/>
-                <button type="button" class="btn btn-inverse homely-btn changeableSetting light power" id="livingRoomLightPower" data-toggle="button"><img src="img/lightbulb.png"></button>
+                <button type="button" class="btn btn-inverse homely-btn changeableSetting light power" id="livingRoomLight_Power" data-device_type="Light" data-device_id="livingRoomLight" data-setting_type="Power" data-toggle="button"><img src="img/lightbulb.png"></button>
             </center>
           </div>
         </div>

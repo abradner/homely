@@ -1,20 +1,73 @@
-var kitchenLightPowerStatus = 0;
-var livingRoomLightPowerStatus = 0;
+var Light = function(id) {
+    this.id = id;
+    this.power = 0;
+    this.brightness = 0;
+    this.color = 0;
+}
 
-$(document).ready(
-   function() {
+$.extend(Light.prototype, {
+    togglePower: function() {
+        this.power ^= 1;
+        this.updatePowerDisplay();
+    },
+    setPower: function(v) {
+        // Sanitise power to be 0 or 1
+        v = Math.max(0,v);
+        v = Math.min(1,v);
+        this.power = v;
+        this.updatePowerDisplay();
+    },
+    updatePowerDisplay: function () {
+        if (this.power == 0) {
+            //alert('#'+this.id+'_Power');
+            $('#'+this.id+'_Power').removeClass('btn-success').addClass('btn-inverse');
+        } else {
+            $('#'+this.id+'_Power').removeClass('btn-inverse').addClass('btn-success');
+        }
+    },
+    setBrightness: function (v) {
+        // Sanitise brightness to be 0-9
+        v = Math.max(0, v);
+        v = Math.min(v, 9);
+        this.brightness = v;
+        // update brightness thing
+    }, setColour: function (v) {
+        // Sanitise color to be 0-255
+        v = Math.max(0, v);
+        v = Math.min(v, 255);
+        this.color = v;
+    }
+});
 
-    $('.changeableSetting').on('click touchend', function () {
-      var id = $(this).attr("id");
-      //alert(id);
-      var status = id + "Status";
-      //alert(status);
-      window[status] ^= 1;
-      if (window[status] == 0) {
-        $("#"+id).removeClass("btn-success").addClass("btn-inverse");
-      } else {
-        $("#"+id).removeClass("btn-inverse").addClass("btn-success");
-      }
+var kitchenLight = new Light('kitchenLight');
+var livingRoomLight = new Light('livingRoomLight');
+
+
+$(document).ready( function() {
+
+    $(document).on('touchstart',function(event) {
+        event.preventDefault();
+    },false);
+
+    $(document).on('touchmove', function(event) {
+        event.preventDefault();
+    },false);
+
+
+    // If on a mobile remove the click - e.g. have a var that represents the string 'click touchend'
+    $('.changeableSetting').on('touchend', function (event) {
+        //alert (event.screenX);
+        var id = $(this).attr('id');
+        deviceType = $(this).data('device_type');
+        deviceID = $(this).data('device_id');
+        settingType = $(this).data('setting_type');
+
+        if (settingType == 'Power') {
+            window[deviceID].togglePower();
+        } else {
+            var value = $('#'+id).val();
+            eval('window[deviceID].set'+settingType+'('+value+');');
+        }
     });
 
    }
