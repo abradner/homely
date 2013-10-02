@@ -2,7 +2,7 @@ var Light = function(id) {
     this.id = id;
     this.power = 0;
     this.brightness = 0;
-    this.color = 0;
+    this.colour = 0;
 }
 
 $.extend(Light.prototype, {
@@ -19,7 +19,6 @@ $.extend(Light.prototype, {
     },
     updatePowerDisplay: function () {
         if (this.power == 0) {
-            //alert('#'+this.id+'_Power');
             $('#'+this.id+'_Power').removeClass('btn-success').addClass('btn-inverse');
         } else {
             $('#'+this.id+'_Power').removeClass('btn-inverse').addClass('btn-success');
@@ -35,15 +34,29 @@ $.extend(Light.prototype, {
         // Sanitise color to be 0-255
         v = Math.max(0, v);
         v = Math.min(v, 255);
-        this.color = v;
+        this.colour = v;
     }
 });
 
 var kitchenLight = new Light('kitchenLight');
 var livingRoomLight = new Light('livingRoomLight');
 
+var handleSettingUpdate = function (event) {
+    //alert (event.screenX);
+    var id = $(this).attr('id');
+    deviceType = $(this).data('device_type');
+    deviceID = $(this).data('device_id');
+    settingType = $(this).data('setting_type');
 
-$(document).ready( function() {
+    if (settingType == 'Power') {
+        window[deviceID].togglePower();
+    } else {
+        var value = $('#'+id).val();
+        eval('window[deviceID].set'+settingType+'('+value+');');
+    }
+}
+
+$(document).ready(function() {
 
     $(document).on('touchstart',function(event) {
         event.preventDefault();
@@ -53,25 +66,11 @@ $(document).ready( function() {
         event.preventDefault();
     },false);
 
-
     // If on a mobile remove the click - e.g. have a var that represents the string 'click touchend'
-    $('.changeableSetting').on('touchend', function (event) {
-        //alert (event.screenX);
-        var id = $(this).attr('id');
-        deviceType = $(this).data('device_type');
-        deviceID = $(this).data('device_id');
-        settingType = $(this).data('setting_type');
+    $('.changeableSetting').on('click', handleSettingUpdate);
+    $('.changeableSetting').on('touchend', handleSettingUpdate);
 
-        if (settingType == 'Power') {
-            window[deviceID].togglePower();
-        } else {
-            var value = $('#'+id).val();
-            eval('window[deviceID].set'+settingType+'('+value+');');
-        }
-    });
-
-   }
-);
+});
 
 
 /*
