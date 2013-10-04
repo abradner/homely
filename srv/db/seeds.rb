@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+SEED_FILENAME = './config/seed.yml'
+require 'yaml'
+
+seed_file = File.join(Rails.root, 'db', 'seed.yml')
+config = YAML::load_file(seed_file)
+
+Device.create(config["devices"])

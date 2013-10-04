@@ -1,0 +1,9 @@
+devices:
+ -  name: Serial Leonardo
+    device_type: Arduino
+    interface: Serial
+
+ -  name: TCP Diecimila
+    device_type: Arduino
+    interface: TCP
+    address: 192.168.16.50:5100

@@ -1,0 +1,19 @@
+%h1 Listing Devices
+
+%table
+   %tr
+      %th Name
+      %th Type
+      %th Interface
+      %th Address
+      -#%th Created At
+      -#%th Updated At
+
+   - @devices.each do |dev|
+      %tr
+         %td= dev.name
+         %td= dev.device_type
+         %td= dev.interface
+         %td= dev.address
+         -#%td= dev.created_at
+         -#%td= dev.updated_at

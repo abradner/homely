@@ -49,6 +49,9 @@ class PagesController < ApplicationController
 
   def set_colour(colour)
 
+    require './lib/arduino_communicator/arduino_communicator'
+    require './lib/arduino_communicator/serial_arduino_communicator'
+    require './lib/arduino_communicator/tcp_arduino_communicator'
     ard1 = TCPArduinoCommunicator.new
     ard2 = SerialArduinoCommunicator.new
 
@@ -61,7 +64,7 @@ class PagesController < ApplicationController
 
     ard1.close
     ard2.close
-    redirect_to(:root)
+    render(:'pages/basic_commands')
 
   end
 end
