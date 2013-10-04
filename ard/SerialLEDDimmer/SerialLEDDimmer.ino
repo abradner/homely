@@ -17,13 +17,8 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US
 */
 
 #include <ChainableLED.h>
+#include "setup.h"
 
-
-#define OFF LOW
-#define ON HIGH
-#define DARK 5
-#define NUM_LEDS 10
-#define ASCIIOFFSET 48
 
 const int redPin   = 3; // the pin that the LED is attached to
 const int greenPin = 5; // the pin that the LED is attached to
@@ -76,11 +71,6 @@ void loop() {
     leds.setColorRGB(ledNo, red, green, blue);
     }
   }
-}
-
-int interpolate_colour(int input) {
-  // An approximation to convert 0..9 to 0..255 without decimals
-  return ( (input - ASCIIOFFSET) *85 ) / 3;
 }
 
 void welcome() {  
