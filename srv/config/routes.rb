@@ -1,5 +1,16 @@
 HomelySrv::Application.routes.draw do
 root :to => "pages#home"
+
+  resource :pages do
+    get 'red'
+    get 'green'
+    get 'blue'
+    get 'on'
+    get 'off'
+    get 'white'
+    get 'darker'
+    get 'lighter'
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
