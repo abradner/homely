@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131004145543) do
+ActiveRecord::Schema.define(version: 20131005034443) do
+
+  create_table "capabilities", force: true do |t|
+    t.string   "name"
+    t.integer  "device_id"
+    t.string   "capability_type"
+    t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "devices", force: true do |t|
     t.string   "name"
