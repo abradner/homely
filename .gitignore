@@ -1,23 +1,10 @@
+# Ignore editor temp files
 *~
 *.swp
-*.rbc
-*.sassc
-.sass-cache
-capybara-*.html
-.rspec
-.bundle
-
-srv/vendor/bundle
-srv/log/*
-srv/tmp/*
-srv/db/*.sqlite3
-srv/public/system/*
-srv/coverage/
-srv/features/reports/
-srv/spec/tmp/*
-srv/.idea/*
-
 **.orig
-rerun.txt
-pickle-email-*.html
+
+# Ignore OS-generated files
 .DS_Store
+
+# Ignore random shite
+pickle-email-*.html
