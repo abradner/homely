@@ -12,4 +12,6 @@ require 'yaml'
 seed_file = File.join(Rails.root, 'db', 'seed.yml')
 config = YAML::load_file(seed_file)
 
+Device.delete_all
+
 Device.create(config["devices"])
