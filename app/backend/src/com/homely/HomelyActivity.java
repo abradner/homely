@@ -17,7 +17,7 @@ public class HomelyActivity extends Activity {
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.setWebChromeClient(new WebChromeClient());
-
+		webView.addJavascriptInterface(new Object(), "Android");
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {

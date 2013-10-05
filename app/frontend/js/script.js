@@ -1,3 +1,5 @@
+var onMobile = false;
+
 var Light = function(id) {
     this.id = id;
     this.power = 0;
@@ -43,6 +45,7 @@ var livingRoomLight = new Light('livingRoomLight');
 
 var handleSettingUpdate = function (event) {
     //alert (event.screenX);
+    //alert(event);
     var id = $(this).attr('id');
     deviceType = $(this).data('device_type');
     deviceID = $(this).data('device_id');
@@ -58,17 +61,29 @@ var handleSettingUpdate = function (event) {
 
 $(document).ready(function() {
 
-    $(document).on('touchstart',function(event) {
-        event.preventDefault();
-    },false);
+    if (typeof Android  != 'undefined') {
+        onMobile = true;
+    }
 
-    $(document).on('touchmove', function(event) {
-        event.preventDefault();
-    },false);
+    $('.changeableSetting').css('-webkit-touch-callout', "none");
+    $('.changeableSetting').css('-webkit-user-select', "none !important");
+    $('.changeableSetting').css('-webkit-box-shadow', "none !important");
+    $('.changeableSetting').css('box-shadow', "none !important" );
 
-    // If on a mobile remove the click - e.g. have a var that represents the string 'click touchend'
-    $('.changeableSetting').on('click', handleSettingUpdate);
-    $('.changeableSetting').on('touchend', handleSettingUpdate);
+    if (onMobile) {
+
+        $(document).on('touchstart',function(event) {
+            event.preventDefault();
+        },false);
+
+        $(document).on('touchmove', function(event) {
+            event.preventDefault();
+        },false);
+
+        $('.changeableSetting').on('touchend', handleSettingUpdate);
+    } else {
+        $('.changeableSetting').on('click', handleSettingUpdate);
+    }
 
 });
 
