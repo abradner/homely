@@ -22,8 +22,10 @@ $.extend(Light.prototype, {
     updatePowerDisplay: function () {
         if (this.power == 0) {
             $('#'+this.id+'_Power').removeClass('btn-success homely-on').addClass('btn-inverse homely-off');
+            $.get("192.168.0.3:3000/pages/off");
         } else {
             $('#'+this.id+'_Power').removeClass('btn-inverse homely-off').addClass('btn-success homely-on');
+            $.get("192.168.0.3:3000/pages/white");
         }
     },
     setBrightness: function (v) {
@@ -33,10 +35,13 @@ $.extend(Light.prototype, {
         this.brightness = v;
         // update brightness thing
     }, setColour: function (v) {
+        var colourMax = 999
         // Sanitise color to be 0-255
         v = Math.max(0, v);
-        v = Math.min(v, 255);
+        v = Math.min(v, colourMax);
         this.colour = v;
+        // TODO(beth): Insert an actual slider wheel
+        $.post( "192.168.0.3:3000/pages/colour", {colour: this.colour} );
     }
 });
 
@@ -77,7 +82,7 @@ $(document).ready(function() {
 
         $('.changeableSetting').on('touchend', handleSettingUpdate);
     } else {
-        $('.changeableSetting').on('click', handleSettingUpdate);
+        $('.changeableSetting').on('click change', handleSettingUpdate);
     }
 
 });
