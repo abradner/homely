@@ -65,11 +65,6 @@ $(document).ready(function() {
         onMobile = true;
     }
 
-    $('.changeableSetting').css('-webkit-touch-callout', "none");
-    $('.changeableSetting').css('-webkit-user-select', "none !important");
-    $('.changeableSetting').css('-webkit-box-shadow', "none !important");
-    $('.changeableSetting').css('box-shadow', "none !important" );
-
     if (onMobile) {
 
         $(document).on('touchstart',function(event) {
