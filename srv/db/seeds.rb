@@ -6,12 +6,12 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-SEED_FILENAME = './config/seed.yml'
+SEED_FILENAME = 'seed.yml'
 require 'yaml'
+require 'seed_methods.rb'
 
-seed_file = File.join(Rails.root, 'db', 'seed.yml')
-config = YAML::load_file(seed_file)
+seed_file = File.join(Rails.root, 'db', SEED_FILENAME)
+@config = YAML::load_file(seed_file)
 
-Device.delete_all
-
-Device.create(config["devices"])
+seed_devices!()
+seed_capabilities!()

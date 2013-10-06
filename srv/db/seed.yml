@@ -7,3 +7,14 @@ devices:
     device_type: Arduino
     interface: TCP
     address: 192.168.16.50:5100
+
+
+capabilities:
+  - name: ChainableLED
+    device_name: Serial Leonardo
+    capability_type: P9813
+
+  - name: ChainableLED
+    device_name: TCP Diecimila
+    capability_type: P9813
+
