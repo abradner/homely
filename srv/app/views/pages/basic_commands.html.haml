@@ -7,6 +7,11 @@
 =link_to "Blue", :blue_pages
 =link_to "White", :white_pages
 
+%form{ :action => "/pages/colour", :method => "post"}
+    %label{:for => "colour"} Enter a colour [0-9][0-9][0-9]:
+    %input{:type => "text", :name => "colour", :class => "text"}
+    %input{:type => "submit", :value => "Change LED", :class => "button"}
+
 %h2 Settings
 =link_to "Off", :off_pages
 

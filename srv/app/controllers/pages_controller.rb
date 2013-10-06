@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  skip_before_filter :verify_authenticity_token, :only => :colour
   @colour
   def home
   end
@@ -45,6 +46,13 @@ class PagesController < ApplicationController
     set_colour(colours.join)
   end
 
+
+  def colour
+    colour = params[:colour]
+    set_colour(colour)
+  end
+
+private
 
 
   def set_colour(colour)

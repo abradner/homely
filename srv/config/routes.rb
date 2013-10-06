@@ -11,6 +11,7 @@ root :to => "pages#home"
     get 'white'
     get 'darker'
     get 'lighter'
+    post 'colour'
   end
 
   resources :devices
@@ -55,7 +56,7 @@ root :to => "pages#home"
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'
