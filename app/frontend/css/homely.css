@@ -18,6 +18,10 @@
     background-position:center;
 }
 
+.homely-on:focus {
+    background-position:center;
+}
+
 .homely-off {
     background-image:url('../img/lightbulb_off.png');
     background-size: 35px 53px;
@@ -26,6 +30,10 @@
 }
 
 .homely-off:hover {
+    background-position:center;
+}
+
+.homely-off:focus {
     background-position:center;
 }
 
