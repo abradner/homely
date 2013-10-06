@@ -33,11 +33,15 @@ sp = SerialPort.new(port_str, baud_rate, data_bits, stop_bits, parity)
 
 open("/dev/tty", "r+") { |tty|
   tty.sync = true
+
+  # user tty -> serial
   Thread.new {
     while true do
       tty.printf("%c", sp.getc)
     end
   }
+
+  # serial -> user tty
   while (l = tty.gets) do
     sp.write(l.sub("\n", "\r"))
   end
