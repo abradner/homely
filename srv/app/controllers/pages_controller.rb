@@ -52,17 +52,17 @@ class PagesController < ApplicationController
     require './lib/arduino_communicator/arduino_communicator'
     require './lib/arduino_communicator/serial_arduino_communicator'
     require './lib/arduino_communicator/tcp_arduino_communicator'
-    ard1 = TCPArduinoCommunicator.new
+    #ard1 = TCPArduinoCommunicator.new
     ard2 = SerialArduinoCommunicator.new
 
     message = "(0" + colour + ")"
 
-    ard1.send! message
+    #ard1.send! message
     ard2.send! message
 
     @colour = colour
 
-    ard1.close
+    #ard1.close
     ard2.close
     render(:'pages/basic_commands')
 
