@@ -57,9 +57,9 @@ private
 
   def set_colour(colour)
 
-    require './lib/arduino_communicator/arduino_communicator'
-    require './lib/arduino_communicator/serial_arduino_communicator'
-    require './lib/arduino_communicator/tcp_arduino_communicator'
+    require 'arduino_communicator/arduino_communicator'
+    require 'arduino_communicator/serial_arduino_communicator'
+    require 'arduino_communicator/tcp_arduino_communicator'
     #ard1 = TCPArduinoCommunicator.new
     ard2 = SerialArduinoCommunicator.new
 

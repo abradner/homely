@@ -15,7 +15,6 @@ class SerialArduinoCommunicator < ArduinoCommunicator
     ]
 
 
-
     #Don't touch below!
 
     arduino_list.map! do |ard|
@@ -23,6 +22,7 @@ class SerialArduinoCommunicator < ArduinoCommunicator
     end
 
     arduino0 = arduino_list.flatten!.first.to_s
+    raise "Error - No Arduinos Connected via Serial" if arduino0.empty?
 
     baud_rate = 9600
     data_bits = 8
@@ -30,7 +30,6 @@ class SerialArduinoCommunicator < ArduinoCommunicator
     parity = SerialPort::NONE
 
     @device = SerialPort.new(arduino0, baud_rate, data_bits, stop_bits, parity)
-
 
   end
 
