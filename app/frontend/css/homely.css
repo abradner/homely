@@ -4,6 +4,7 @@
     -moz-border-radius: 35px; 
     border-radius: 35px; 
     -webkit-border-radius:35px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .homely-on {
