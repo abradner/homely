@@ -4,16 +4,32 @@ class SerialArduinoCommunicator < ArduinoCommunicator
   def initialize
     super
 
-    leonardo0 = Dir.glob("/dev/tty.usbmodem*").first.to_s
-    #port_str = "/dev/tty.usbserial-A5002rO5"
-    port_str = "/dev/tty.usbserial-A5002rO5"
-    #port_str = ARGV[0].to_s
+    # If your aduino isn't being recognised, add it to the list below
+    # - as generic as possible to find all arduinos of that model
+    # - as specific as necessary to not accidentally collect other devices
+    arduino_list = [
+        "/dev/tty.usbserial-A*", # Mac Pre-Uno
+        "/dev/tty.usbmodem*", # Mac Post-Uno
+        "/dev/ttyUSB*", # Ubuntu Pre-Uno
+        "/dev/ttyACM*" # Ubuntu Post-Uno
+    ]
+
+
+
+    #Don't touch below!
+
+    arduino_list.map! do |ard|
+      ard = Dir.glob(ard)
+    end
+
+    arduino0 = arduino_list.flatten!.first.to_s
+
     baud_rate = 9600
     data_bits = 8
     stop_bits = 1
     parity = SerialPort::NONE
 
-    @device = SerialPort.new(leonardo0, baud_rate, data_bits, stop_bits, parity)
+    @device = SerialPort.new(arduino0, baud_rate, data_bits, stop_bits, parity)
 
 
   end
