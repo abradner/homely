@@ -5,3 +5,26 @@
     border-radius: 35px; 
     -webkit-border-radius:35px;
 }
+
+.homely-on {
+    background-image:url('../img/lightbulb.png');
+    background-size: 35px 53px;
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+.homely-on:hover {
+    background-position:center;
+}
+
+.homely-off {
+    background-image:url('../img/lightbulb_off.png');
+    background-size: 35px 53px;
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+.homely-off:hover {
+    background-position:center;
+}
+

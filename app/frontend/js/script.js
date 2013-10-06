@@ -21,9 +21,9 @@ $.extend(Light.prototype, {
     },
     updatePowerDisplay: function () {
         if (this.power == 0) {
-            $('#'+this.id+'_Power').removeClass('btn-success').addClass('btn-inverse');
+            $('#'+this.id+'_Power').removeClass('btn-success homely-on').addClass('btn-inverse homely-off');
         } else {
-            $('#'+this.id+'_Power').removeClass('btn-inverse').addClass('btn-success');
+            $('#'+this.id+'_Power').removeClass('btn-inverse homely-off').addClass('btn-success homely-on');
         }
     },
     setBrightness: function (v) {
