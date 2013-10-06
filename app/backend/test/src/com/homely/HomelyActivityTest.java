@@ -14,8 +14,20 @@ import android.test.ActivityInstrumentationTestCase2;
  */
 public class HomelyActivityTest extends ActivityInstrumentationTestCase2<HomelyActivity> {
 
+	private HomelyActivity activity;
+
 	public HomelyActivityTest() {
 		super("com.homely", HomelyActivity.class);
 	}
 
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+
+		activity = getActivity();
+	}
+
+	public void testTestingWorks() throws Exception {
+		assertNull(null);
+	}
 }
