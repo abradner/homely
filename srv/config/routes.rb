@@ -13,6 +13,8 @@ root :to => "pages#home"
     get 'white'
     get 'darker'
     get 'lighter'
+    get 'query'
+    resources :query, :only => [:show], to: 'pages#query'
     post 'colour'
   end
 

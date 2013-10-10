@@ -37,6 +37,13 @@ class ArduinoCommunicator
 
   end
 
+  def receive!()
+    #message = 0xFF0101FFFFAABBCC
+
+    @device.gets
+
+  end
+
 
   def close
     @device.close
