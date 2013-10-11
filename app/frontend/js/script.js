@@ -1,5 +1,4 @@
-var onMobile = false;
-
+/* CLASSES */
 var Light = function(id) {
     this.id = id;
     this.power = 0;
@@ -22,10 +21,10 @@ $.extend(Light.prototype, {
     updatePowerDisplay: function () {
         if (this.power == 0) {
             $('#'+this.id+'_Power').removeClass('btn-success homely-on').addClass('btn-inverse homely-off');
-            $.get("192.168.0.3:3000/pages/off");
+            $.get("localhost:3000/pages/off");
         } else {
             $('#'+this.id+'_Power').removeClass('btn-inverse homely-off').addClass('btn-success homely-on');
-            $.get("192.168.0.3:3000/pages/white");
+            $.get("localhost:3000/pages/white");
         }
     },
     setBrightness: function (v) {
@@ -33,24 +32,18 @@ $.extend(Light.prototype, {
         v = Math.max(0, v);
         v = Math.min(v, 9);
         this.brightness = v;
-        // update brightness thing
     }, setColour: function (v) {
-        var colourMax = 999
-        // Sanitise color to be 0-255
         v = Math.max(0, v);
-        v = Math.min(v, colourMax);
+        v = Math.min(v, 999);
         this.colour = v;
         // TODO(beth): Insert an actual slider wheel
-        $.post( "192.168.0.3:3000/pages/colour", {colour: this.colour} );
+        $.post( "localhost:3000/pages/colour", {colour: this.colour} );
     }
 });
 
-var kitchenLight = new Light('kitchenLight');
-var livingRoomLight = new Light('livingRoomLight');
 
+/* FUNCTIONS */
 var handleSettingUpdate = function (event) {
-    //alert (event.screenX);
-    //alert(event);
     var id = $(this).attr('id');
     deviceType = $(this).data('device_type');
     deviceID = $(this).data('device_id');
@@ -64,6 +57,12 @@ var handleSettingUpdate = function (event) {
     }
 }
 
+/* VARIABLES */
+var onMobile = false;
+var kitchenLight = new Light('kitchenLight');
+var livingRoomLight = new Light('livingRoomLight');
+
+
 $(document).ready(function() {
 
     if (typeof Android  != 'undefined') {
@@ -71,15 +70,12 @@ $(document).ready(function() {
     }
 
     if (onMobile) {
-
         $(document).on('touchstart',function(event) {
             event.preventDefault();
         },false);
-
         $(document).on('touchmove', function(event) {
             event.preventDefault();
         },false);
-
         $('.changeableSetting').on('touchend', handleSettingUpdate);
     } else {
         $('.changeableSetting').on('click change', handleSettingUpdate);

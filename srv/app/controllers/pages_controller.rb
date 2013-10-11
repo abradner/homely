@@ -73,6 +73,7 @@ private
     #ard1.close
     ard2.close
     render(:'pages/basic_commands')
+    SendDataWorker.perform_async(colour)
 
   end
 end

@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 HomelySrv::Application.routes.draw do
 root :to => "pages#home"
 
@@ -17,6 +19,8 @@ root :to => "pages#home"
   resources :devices do
     resources :capabilities
   end
+
+  mount Sidekiq::Web, at: '/sidekiq'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
