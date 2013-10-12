@@ -211,6 +211,7 @@ DEPENDENCIES
   hybridgroup-serialport
   jbuilder (~> 1.2)
   jquery-rails
+  json
   less-rails
   mysql2
   quiet_assets
