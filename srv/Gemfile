@@ -73,3 +73,6 @@ gem 'sinatra', require: false
 gem 'slim'
 
 gem 'redis'
+gem 'faye'
+gem 'foreman'
+
