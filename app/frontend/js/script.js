@@ -3,17 +3,18 @@ var onMobile = false;
 /* FUNCTIONS */
 var handleSettingUpdate = function (event) {
     var id = $(this).attr('id');
-    deviceType = $(this).data('device_type');
-    deviceID = $(this).data('device_id');
-    settingType = $(this).data('setting_type');
+    capabilityType = $(this).data('capability-type');
+    capabilityName = $(this).data('capability-name');
+    deviceID = $(this).data('device-id');
+    settingType = $(this).data('setting-type');
 
     if (settingType == 'Power') {
-        window[deviceID].togglePower();
+        var value = eval(capabilityName).power ^= 1;
     } else {
         var value = $('#'+id).val();
-        eval('window[deviceID].set'+settingType+'('+value+');');
-        eval('window[deviceID].updateServer()');
     }
+    // Pass in a callback function to updateServer - if it's successful, we'll update our values
+    eval(capabilityName).updateToServer(eval(capabilityName).updateFromServer, settingType, value);
 }
 
 $(document).ready(function() {
@@ -22,14 +23,14 @@ $(document).ready(function() {
         onMobile = true;
     }
 
-    var client = new Faye.Client('http://localhost:3001');
-    var subscription = client.subscribe('/connect', function(message) {
-        alert(message);
+    //var client = new Faye.Client('http://localhost:3001');
+    //var subscription = client.subscribe('/connect', function(message) {
+    //    alert(message);
         /*var deviceID = message["device_id"];
         var capabilityID = message["name"];
         var state = message["state"];
         devices[deviceID][capabilityID].updateFromServer(state);*/
-    });
+    //});
 
     if (onMobile) {
         $(document).on('touchstart',function(event) {

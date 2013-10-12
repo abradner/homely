@@ -1,16 +1,16 @@
-var Light = function(id) {
-    this.device_id = "";
-    this.capability_id = "";
-    this.id = id;
+var Light = function(device_id, capability_type, capability_name, url) {
+    this.device_id = device_id;
+    this.capability_type = capability_type;
+    this.capability_name = capability_name;
     this.power = 0;
     this.brightness = 0;
     this.colour = 0;
+    this.server = url
 }
 
 $.extend(Light.prototype, {
     togglePower: function() {
         this.power ^= 1;
-        this.updatePowerDisplay();
     },
 
     /* Set the class variables upon updates from input or server */
@@ -19,7 +19,6 @@ $.extend(Light.prototype, {
         v = Math.max(0,v);
         v = Math.min(1,v);
         this.power = v;
-        this.updatePowerDisplay();
     },
     setBrightness: function (v) {
         // Sanitise brightness to be 0-9
@@ -31,47 +30,44 @@ $.extend(Light.prototype, {
         v = Math.max(0, v);
         v = Math.min(v, 999);
         this.colour = v;
-        // TODO: Remove this - UpdateServer is called in the handleSettingUpdate
-        $.post("localhost:3000/pages/colour", {colour: this.colour});
     },
 
     /* Update the visual display upon updates from input or server */
     updatePowerDisplay: function () {
         if (this.power == 0) {
-            $('#'+this.id+'_Power').removeClass('btn-success homely-on').addClass('btn-inverse homely-off');
-            // TODO: remove the get requests from here and UpdateServer() in the setPower function
-            $.get("localhost:3000/pages/off");
+            $('#'+this.capability_name+'_Power').removeClass('btn-success homely-on').addClass('btn-inverse homely-off');
         } else {
-            $('#'+this.id+'_Power').removeClass('btn-inverse homely-off').addClass('btn-success homely-on');
-            $.get("localhost:3000/pages/white");
+            $('#'+this.capability_name+'_Power').removeClass('btn-inverse homely-off').addClass('btn-success homely-on');
         }
     },
     updateBrightnessDisplay: function () {
-        $('#'+this.id+'_Brightness').val(this.brightness);
+        $('#'+this.capability_name+'_Brightness').val(this.brightness);
     },
     updateColourDisplay: function () {
-        $('#'+this.id+'_Colour').val(this.colour);
+        $('#'+this.capability_name+'_Colour').val(this.colour);
     },
 
     /* Send the new state to the server */
-    updateToServer: function () {
-        var state = "" + this.power + "," + this.brightness + "," + this.colour;
-        $.post("localhost:3000/pages/"+this.device_id+"/"+this.capability_id+"/update", {state : state});
+    updateToServer: function (f, settingChanged, newValue) {
+        var self = this; //'this' gets changed with the .done and .fail, so create a copy
+        var success = true;
+        var url = this.server+'/pages/colour';
+        //var url = 'localhost:3000/pages/'+this.device_id+'/'+this.capability_id+'/'+settingChanged+'/update';
+        //var serverResponse = $.post(url, {value : value});
+        var serverResponse = $.post(url, {colour : newValue});
+        serverResponse.done(function () {
+            Android.serverSuccess(self.device_id, self.capability_name);
+            f(self, settingChanged, newValue);
+        });
+        serverResponse.fail(function (jqXHR, textStatus, errorThrown) {
+            Android.serverError(self.device_id, self.capability_name);
+            alert(textStatus +","+ errorThrown);
+        });
     },
 
-    /* Update each setting after we receive an update from the server */
-    updateFromServer: function (state) {
-        var states = state.split(",");
-        if (this.power != states[0]) {
-            setPower(states[0]);
-        }
-        if (this.brightness != states[1]) {
-            setBrightness(states[1]);
-            updateBrightnessDisplay();
-        }
-        if (this.colour != states[2]) {
-            setColour(states[2]);
-            updateColourDisplay();
-        }
+    /* Update the setting & display after we receive an update from the server */
+    updateFromServer: function (self, setting, value) {
+        eval('self.set'+setting+'('+value+');');
+        eval('self.update'+setting+'Display();');
     }
 });
