@@ -1,0 +1,16 @@
+%h1 Listing Device:
+=@device.name
+
+%p= @device.device_type
+%p= @device.interface
+%p= @device.address
+
+%table
+   %tr
+      %th Name
+      %th Type
+
+   - @device.capabilities.each do |cap|
+      %tr
+         %td= cap.name
+         %td= cap.capability_type

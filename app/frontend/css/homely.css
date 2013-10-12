@@ -1,10 +1,13 @@
-.homely-btn {
-    width: 60px; 
-    height:60px; 
-    -moz-border-radius: 35px; 
-    border-radius: 35px; 
-    -webkit-border-radius:35px;
+.changeableSetting {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.homely-btn {
+    width: 60px;
+    height:60px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    -webkit-border-radius:35px;
 }
 
 .homely-on {
