@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :colour
+  @state
   @colour
   def home
   end
@@ -52,6 +53,11 @@ class PagesController < ApplicationController
     set_colour(colour)
   end
 
+  def query
+    id = params[:id]
+    display_state(id)
+  end
+
 private
 
 
@@ -69,6 +75,7 @@ private
     ard2.send! message
 
     @colour = colour
+    @state = []
 
     #ard1.close
     ard2.close
@@ -76,4 +83,45 @@ private
     SendDataWorker.perform_async(colour)
 
   end
+
+  def display_state(id)
+
+    require './lib/arduino_communicator/arduino_communicator'
+    require './lib/arduino_communicator/serial_arduino_communicator'
+    require './lib/arduino_communicator/tcp_arduino_communicator'
+    #ard1 = TCPArduinoCommunicator.new
+    ard2 = SerialArduinoCommunicator.new
+
+    @colour = ""
+
+    @state = []
+
+    # TODO figure out how to get a list of all LEDs
+    ledIDs = ["0", "1"]
+    if not id.nil?
+      ledIDs = [id]
+    end
+
+    ledIDs.each { |ledID|
+      message = "?" + ledID
+      #ard1.send! message
+      ard2.send! message
+
+
+      # TODO make sure this doesn't inf loop with some kind of timeout
+
+      to_receive = nil
+      while to_receive.nil?
+        to_receive = ard2.receive!
+      end
+
+      @state << to_receive.chomp
+    }
+
+    #ard1.close
+    ard2.close
+    render(:'pages/basic_commands')
+
+  end
+
 end

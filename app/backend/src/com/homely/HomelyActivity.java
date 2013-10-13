@@ -6,7 +6,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebChromeClient;
 
-
 public class HomelyActivity extends Activity {
 	private WebView webView;
 	/** Called when the activity is first created. */
@@ -16,8 +15,9 @@ public class HomelyActivity extends Activity {
 		setContentView(R.layout.main);
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
-		webView.setWebChromeClient(new WebChromeClient());
-		webView.addJavascriptInterface(new Object(), "Android");
+		webView.addJavascriptInterface(new HomelyJSI(this), "Android");
+        // Chrome is required for alerts
+		//webView.setWebChromeClient(new WebChromeClient());
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {

@@ -37,4 +37,9 @@ class SerialArduinoCommunicator < ArduinoCommunicator
     super
   end
 
+  def receive!()
+    super
+  end
+
+
 end

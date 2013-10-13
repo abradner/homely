@@ -74,3 +74,6 @@ gem 'slim'
 
 gem 'redis'
 gem 'jasmine'
+gem 'json'
+gem 'faye'
+gem 'foreman'

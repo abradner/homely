@@ -13,11 +13,16 @@ root :to => "pages#home"
     get 'white'
     get 'darker'
     get 'lighter'
+    get 'query'
+    resources :query, :only => [:show], to: 'pages#query'
     post 'colour'
   end
 
   resources :devices do
-    resources :capabilities
+    resources :capabilities do
+      resources :states
+    end
+
   end
 
   mount Sidekiq::Web, at: '/sidekiq'

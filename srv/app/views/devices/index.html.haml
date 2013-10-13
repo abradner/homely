@@ -11,7 +11,7 @@
 
    - @devices.each do |dev|
       %tr
-         %td= dev.name
+         %td= link_to dev.name, device_path(dev)
          %td= dev.device_type
          %td= dev.interface
          %td= dev.address

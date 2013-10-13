@@ -153,6 +153,17 @@ void ChainableLED::setColorHSB(byte led, float hue, float saturation, float brig
     setColorRGB(led, (byte)(255.0*r), (byte)(255.0*g), (byte)(255.0*b));
 }
 
+void ChainableLED::getLEDState(byte led, byte *red, byte *green, byte *blue)
+{
+    if (led >= 0 && led < _num_leds)
+    {
+        *red   = _led_state[led*3 + _CL_RED];
+        *green = _led_state[led*3 + _CL_GREEN];
+        *blue  = _led_state[led*3 + _CL_BLUE];
+    }
+}
+
+
 // --------------------------------------------------------------------------------------
 
 float hue2rgb(float p, float q, float t)
