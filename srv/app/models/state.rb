@@ -2,6 +2,6 @@ class State < ActiveRecord::Base
 
   belongs_to :capability
 
-  validates_presence_of :power
+  validates_inclusion_of :power, in: [true,false]
 
 end

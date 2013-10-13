@@ -8,7 +8,14 @@ describe State do
     it { should belong_to(:capability) }
 
     #Presence
-    it { should validate_presence_of(:power) }
+    #it { should ensure_inclusion_of(:power).in_array([true,false]) } #- currently broken. need to update gem when fixed
+
+    #Workaround
+    it {
+      should allow_value(true).for :power
+      should allow_value(false).for :power
+      should_not allow_value(nil).for :power
+    }
 
 
   end
