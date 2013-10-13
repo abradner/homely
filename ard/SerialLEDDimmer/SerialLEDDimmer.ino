@@ -43,23 +43,27 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 4) {    
-    if (Serial.read() == '(') {
-    int ledNo = Serial.read();
-    // look for the next valid digit in the incoming serial stream:
-    int red = Serial.read(); 
-    // do it again:
-    int green = Serial.read(); 
-    // do it again:
-    int blue = Serial.read(); 
+  if (Serial.available() > 1) {    
+    if (Serial.peek() == '(') {
+      if (Serial.available() <= 4) {
+        return;
+      }
+      Serial.read();
+      int ledNo = Serial.read();
+      // look for the next valid digit in the incoming serial stream:
+      int red = Serial.read(); 
+      // do it again:
+      int green = Serial.read(); 
+      // do it again:
+      int blue = Serial.read(); 
   
-    Serial.read(); // ')'
+      Serial.read(); // ')'
     
-    red   = interpolate_colour(red);
-    green = interpolate_colour(green);
-    blue  = interpolate_colour(blue);
+      red   = interpolate_colour(red);
+      green = interpolate_colour(green);
+      blue  = interpolate_colour(blue);
    
-    ledNo = ledNo - ASCIIOFFSET;
+      ledNo = ledNo - ASCIIOFFSET;
       
       // fade the red, green, and blue legs of the LED: 
       Serial.print("Setting Colours - ");
@@ -68,7 +72,30 @@ void loop() {
       Serial.println(green);
       Serial.println(blue);
     
-    leds.setColorRGB(ledNo, red, green, blue);
+      leds.setColorRGB(ledNo, red, green, blue);
+    } else if (Serial.peek() == '?') {
+      if (Serial.available() <= 1) {
+        return;
+      }
+      Serial.read();
+      byte ledNo = Serial.read();
+
+      ledNo = ledNo - ASCIIOFFSET;
+
+      byte red, green, blue;
+
+      // TODO handle error
+      leds.getLEDState(ledNo, &red, &green, &blue);
+      // TODO send the state
+      Serial.print("(");
+      Serial.print(ledNo);
+      Serial.print(interpolate_byte(red));
+      Serial.print(interpolate_byte(green));
+      Serial.print(interpolate_byte(blue));
+      Serial.println(")");
+    } else {
+      // Invalid data, gobble hoping that it was a typo
+      Serial.read();
     }
   }
 }
