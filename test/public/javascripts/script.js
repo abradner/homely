@@ -1,1 +1,0 @@
-/home/charissa/homely/app/frontend/js/script.js
