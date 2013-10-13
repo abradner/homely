@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :state do
-    capability_id 1
-    power false
-    mode "MyString"
+    association :capability
+    power { [true,false].sample }
+    #mode "MyString"
   end
 end

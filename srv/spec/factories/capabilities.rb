@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :capability do
-    name "MyString"
-    capability_type "MyString"
+    sequence(:name) { |n| Faker::Product.brand + ' ' + n }
+    capability_type { Capability.valid_types.sample }
     association :device
   end
 end
