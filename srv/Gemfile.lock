@@ -98,6 +98,7 @@ GEM
     faye-websocket (0.7.0)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.3.0)
+    ffaker (1.19.0)
     ffi (1.9.0)
     foreman (0.63.0)
       dotenv (>= 0.7)
@@ -265,6 +266,7 @@ DEPENDENCIES
   database_cleaner
   factory_girl_rails
   faye
+  ffaker
   foreman
   haml
   hybridgroup-serialport

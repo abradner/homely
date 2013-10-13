@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :capability do
     name "MyString"
-    device_id 1
     capability_type "MyString"
+    association :device
   end
 end
