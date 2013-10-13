@@ -4,6 +4,7 @@ class PagesController < ApplicationController
   @state =[]
   @brightness_state = ""
   @colour_state =""
+  @ping_state ="Device not there :("
   @@colour = "000000"
   def home
   end
@@ -103,6 +104,32 @@ class PagesController < ApplicationController
     display_state(id)
   end
 
+  def ping()
+    require './lib/arduino_communicator/arduino_communicator'
+    require './lib/arduino_communicator/serial_arduino_communicator'
+    require './lib/arduino_communicator/tcp_arduino_communicator'
+    #ard1 = TCPArduinoCommunicator.new
+    ard2 = SerialArduinoCommunicator.new
+    message = "p"
+    ard2.send! message
+    to_receive = nil
+    t1 = Time.now
+    while to_receive.nil? and (Time.now - t1) < 2
+      to_receive = ard2.receive!
+    end
+    if to_receive.nil?
+      @ping_state = "Device not there :("
+    elsif to_receive.chomp == "p"
+      @ping_state = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
+    else
+      @ping_state = "Bad response"
+    end
+    #ard1.close
+    ard2.close
+
+    display_page
+  end
+
   def get_state(id)
 
     require './lib/arduino_communicator/arduino_communicator'
@@ -157,8 +184,7 @@ class PagesController < ApplicationController
 
     #ard1.close
     ard2.close
-    display_state("0")
-    render(:'pages/basic_commands')
+    display_page
     SendDataWorker.perform_async(colour)
 
   end
@@ -168,6 +194,9 @@ class PagesController < ApplicationController
     if @state.size > 0
       te = @state[0]
       te = te.slice(2, 6)
+      if te.nil?
+        return
+      end
       rgb = to_rgb(te)
       size = 0
       rgb.each { |a| size+=(a**2) }
@@ -179,6 +208,11 @@ class PagesController < ApplicationController
         @colour_state = "Colour = " + te
       end
     end
+  end
+
+  def display_page()
+    display_state("0")
+    render(:'pages/basic_commands')
   end
 
 end
