@@ -2,7 +2,7 @@ class PagesController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :colour
 
   @state
-  @colour
+  @@colour = "000000"
   def home
   end
 
@@ -54,7 +54,7 @@ class PagesController < ApplicationController
     rgb = to_rgb(@@colour)
     new_rgb = []
     rgb.each do |v|
-      v -= 10
+      v -= 20
       if v < 0
         v = 0
       end
@@ -69,7 +69,7 @@ class PagesController < ApplicationController
     rgb = to_rgb(@@colour)
     new_rgb = []
     rgb.each do |v|
-      v += 10
+      v += 20
       if v > 255
         v = 255
       end
@@ -113,8 +113,9 @@ class PagesController < ApplicationController
     printf("Message = %s\n", message)
     #ard1.send! message
     ard2.send! message
-
-    @colour = colour
+    if store
+      @@colour = colour
+    end
     @state = []
 
     #ard1.close
@@ -132,7 +133,7 @@ class PagesController < ApplicationController
     #ard1 = TCPArduinoCommunicator.new
     ard2 = SerialArduinoCommunicator.new
 
-    @colour = ""
+    #@@colour = ""
 
     @state = []
 
@@ -156,9 +157,11 @@ class PagesController < ApplicationController
       end
 
       @state << to_receive.chomp
+      print @state
     }
     #ard1.close
     ard2.close
+    print "Done!"
     render(:'pages/basic_commands')
 
   end

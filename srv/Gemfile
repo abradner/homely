@@ -73,6 +73,7 @@ gem 'sinatra', require: false
 gem 'slim'
 
 gem 'redis'
+gem 'redis-server'
 gem 'jasmine'
 gem 'json'
 gem 'faye'
