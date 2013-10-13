@@ -1,7 +1,9 @@
 class PagesController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :colour
 
-  @state
+  @state =[]
+  @brightness_state = ""
+  @colour_state =""
   @@colour = "000000"
   def home
   end
@@ -101,41 +103,14 @@ class PagesController < ApplicationController
     display_state(id)
   end
 
-  def set_colour(colour, store)
-
-    require 'arduino_communicator/arduino_communicator'
-    require 'arduino_communicator/serial_arduino_communicator'
-    require 'arduino_communicator/tcp_arduino_communicator'
-    #ard1 = TCPArduinoCommunicator.new
-    ard2 = SerialArduinoCommunicator.new
-
-    message = "(0" + colour + ")"
-    printf("Message = %s\n", message)
-    #ard1.send! message
-    ard2.send! message
-    if store
-      @@colour = colour
-    end
-    @state = []
-
-    #ard1.close
-    ard2.close
-    render(:'pages/basic_commands')
-    SendDataWorker.perform_async(colour)
-
-  end
-
-  def display_state(id)
+  def get_state(id)
 
     require './lib/arduino_communicator/arduino_communicator'
     require './lib/arduino_communicator/serial_arduino_communicator'
     require './lib/arduino_communicator/tcp_arduino_communicator'
     #ard1 = TCPArduinoCommunicator.new
     ard2 = SerialArduinoCommunicator.new
-
-    #@@colour = ""
-
-    @state = []
+    state = []
 
     # TODO figure out how to get a list of all LEDs
     ledIDs = ["0", "1"]
@@ -156,14 +131,54 @@ class PagesController < ApplicationController
         to_receive = ard2.receive!
       end
 
-      @state << to_receive.chomp
-      print @state
+      state << to_receive.chomp
     }
     #ard1.close
     ard2.close
-    print "Done!"
-    render(:'pages/basic_commands')
+    return state
+  end
 
+  def set_colour(colour, store)
+
+    require 'arduino_communicator/arduino_communicator'
+    require 'arduino_communicator/serial_arduino_communicator'
+    require 'arduino_communicator/tcp_arduino_communicator'
+    #ard1 = TCPArduinoCommunicator.new
+    ard2 = SerialArduinoCommunicator.new
+
+    message = "(0" + colour + ")"
+    printf("Message = %s\n", message)
+    #ard1.send! message
+    ard2.send! message
+    if store
+      @@colour = colour
+    end
+    @state = []
+
+    #ard1.close
+    ard2.close
+    display_state("0")
+    render(:'pages/basic_commands')
+    SendDataWorker.perform_async(colour)
+
+  end
+
+  def display_state(id)
+    @state = get_state(id)
+    if @state.size > 0
+      te = @state[0]
+      te = te.slice(2, 6)
+      rgb = to_rgb(te)
+      size = 0
+      rgb.each { |a| size+=(a**2) }
+      if size == 0
+        @brightness_state = "The light is off\n"
+        @colour_state = ""
+      else
+        @brightness_state = "Brightness = " + (Math.sqrt(size / ((255.0 ** 2) * 3)) * 10).to_s
+        @colour_state = "Colour = " + te
+      end
+    end
   end
 
 end
