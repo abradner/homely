@@ -9,8 +9,8 @@ class Capability < ActiveRecord::Base
   validates_inclusion_of :capability_type, in: VALID_TYPES
 
 
-  def valid_types
-    TYPES
+  def self.valid_types
+    VALID_TYPES
   end
 
 end

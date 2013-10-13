@@ -10,11 +10,11 @@ class Device < ActiveRecord::Base
   validates_inclusion_of :device_type, in: VALID_TYPES
   validates_inclusion_of :interface, in: VALID_INTERFACES
 
-  def vald_types
+  def self.valid_types
     VALID_TYPES
   end
 
-  def valid_interfaces
+  def self.valid_interfaces
     VALID_INTERFACES
   end
 end
