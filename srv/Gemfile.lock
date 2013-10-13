@@ -67,6 +67,7 @@ GEM
       gherkin (~> 2.12.1)
       multi_json (>= 1.7.5, < 2.0)
       multi_test (>= 0.0.2)
+    daemons (1.1.9)
     database_cleaner (1.1.1)
     diff-lcs (1.2.4)
     dotenv (0.9.0)
@@ -92,10 +93,10 @@ GEM
     faye-websocket (0.7.0)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.3.0)
+    ffi (1.9.0)
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
-    ffi (1.9.0)
     gherkin (2.12.1)
       multi_json (~> 1.3)
     haml (4.0.3)
@@ -223,6 +224,10 @@ GEM
     therubyracer (0.12.0)
       libv8 (~> 3.16.14.0)
       ref
+    thin (1.6.0)
+      daemons (>= 1.0.9)
+      eventmachine (>= 1.0.0)
+      rack (>= 1.5.0)
     thor (0.18.1)
     thread_safe (0.1.3)
       atomic
@@ -242,8 +247,8 @@ GEM
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    websocket-driver (0.3.0)
     websocket (1.0.7)
+    websocket-driver (0.3.0)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -277,6 +282,7 @@ DEPENDENCIES
   sinatra
   slim
   therubyracer
+  thin
   turbolinks
   twitter-bootstrap-rails
   uglifier (>= 1.3.0)
