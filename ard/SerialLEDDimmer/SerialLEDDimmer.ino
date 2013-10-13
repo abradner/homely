@@ -62,14 +62,14 @@ void print_hex(int v) {
   int a = v / 16;
   int b = v % 16;
   if (a < 10) {
-    Serial.print(a + '0');
+    Serial.write(a + '0');
   } else {
-    Serial.print(a - 10 + 'a');
+    Serial.write(a - 10 + 'a');
   }
   if (b < 10) {
-    Serial.print(b + '0');
+    Serial.write(b + '0');
   } else {
-    Serial.print(b - 10 + 'a');
+    Serial.write(b - 10 + 'a');
   }
 }
 
