@@ -74,9 +74,9 @@ void print_hex(int v) {
 }
 
 void loop() {
-  if (Serial.available() > 1) {    
+  if (Serial.available() >= 1) {    
     if (Serial.peek() == '(') {
-      if (Serial.available() <= 4) {
+      if (Serial.available() <= 7) {
         return;
       }
       Serial.read();
@@ -120,6 +120,9 @@ void loop() {
       print_hex(green);
       print_hex(blue);
       Serial.println(")");
+    } else if (Serial.peek() == 'p') {
+      Serial.read();
+      Serial.println("p");
     } else {
       // Invalid data, gobble hoping that it was a typo
       Serial.read();
