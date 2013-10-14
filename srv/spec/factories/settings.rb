@@ -1,9 +1,11 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :state do
+  factory :setting do
     association :capability
-    power { [true,false].sample }
+    type "Power"
+    value 1
+    #power { [true,false].sample }
     #mode "MyString"
   end
 end

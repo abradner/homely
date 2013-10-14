@@ -20,9 +20,8 @@ root :to => "pages#home"
 
   resources :devices do
     resources :capabilities do
-      resources :states
+      resources :settings
     end
-
   end
 
   mount Sidekiq::Web, at: '/sidekiq'
