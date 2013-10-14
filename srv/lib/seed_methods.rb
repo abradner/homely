@@ -32,3 +32,33 @@ def seed_capabilities!
   Capability.create capabilities
 
 end
+
+def seed_classes(parent_klass, child_klass)!
+#Capabilities
+  child_klass.delete_all
+  has_many_collection = @config.delete child_klass.name.downcase.pluralize
+
+
+  parent_klass_name = parent_klass.name.downcase
+
+  begin
+
+    has_many_collection.map! do |item|
+      parent_name = item.delete (parent_klass_name + "_name")
+      parent = parent_klass.find_by_name parent_name
+
+      #raise item["name"] if dev.nil?
+      parent.inspect
+      item[parent_klass_name + "_id"] = parent.id
+
+      item
+    end
+
+  #rescue Exception => e
+  #  puts "Error - #{klass_has_many} '#{e.message}' has an invalid '#{klass_belongs_to}' (does NOT match any devices)"
+  #  exit 1
+  end
+
+  child_klass.create has_many_collection
+
+end

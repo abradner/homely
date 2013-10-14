@@ -13,5 +13,12 @@ require 'seed_methods.rb'
 seed_file = File.join(Rails.root, 'db', SEED_FILENAME)
 @config = YAML::load_file(seed_file)
 
+puts "Seeding Devices"
 seed_devices!()
-seed_capabilities!()
+#seed_capabilities!()
+
+puts "Seeding Capabilities"
+seed_classes Device, Capability
+
+puts "Seeding States"
+seed_classes Capability, Setting

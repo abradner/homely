@@ -16,11 +16,10 @@
 %h2 Settings
 =link_to "Off", :off_pages
 
-%h2 Current state
-
--@state.each do |state|
-    =state
-    <br/>
+-#%h2 Current state
+-#-@state.each do |state| unless nil?
+-#    =state
+-#    <br/>
 
 %h2 Broken
 -#=link_to "Query individual LED", :pages_query

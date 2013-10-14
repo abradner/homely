@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131012120644) do
+ActiveRecord::Schema.define(version: 20131014094603) do
 
   create_table "capabilities", force: true do |t|
     t.string   "name"
@@ -30,12 +30,14 @@ ActiveRecord::Schema.define(version: 20131012120644) do
     t.datetime "updated_at"
   end
 
-  create_table "states", force: true do |t|
+  create_table "settings", force: true do |t|
     t.integer  "capability_id"
-    t.boolean  "power"
-    t.string   "mode"
+    t.integer  "value"
+    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "min"
+    t.integer  "max"
   end
 
 end

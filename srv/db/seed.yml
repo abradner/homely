@@ -14,7 +14,25 @@ capabilities:
     device_name: Serial Leonardo
     capability_type: P9813
 
-  - name: ChainableLED
+  - name: ChainableLED2
     device_name: TCP Diecimila
     capability_type: P9813
 
+settings:
+  - capability_name: ChainableLED
+    type: "Power"
+    value: 0
+    min: 0
+    max: 1
+
+  - capability_name: ChainableLED
+    type: "Colour"
+    value: 55
+    min: 0
+    max: 999
+
+  - capability_name: ChainableLED2
+    type: "Power"
+    value: 1
+    min: 0
+    max: 1
