@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe State do
+describe Setting do
 
-  describe "Valdations" do
+  describe "Validations" do
 
     #Relations
     it { should belong_to(:capability) }
@@ -12,9 +12,8 @@ describe State do
 
     #Workaround
     it {
-      should allow_value(true).for :power
-      should allow_value(false).for :power
-      should_not allow_value(nil).for :power
+      should_not allow_value(nil).for :type
+      should_not allow_value(nil).for :value
     }
 
 
@@ -22,13 +21,13 @@ describe State do
 
   describe "Factories" do
     it "should have functional factories for testing" do
-      state = FactoryGirl.build(:state)
-      state.should be_valid
-      state.save!
+      setting = FactoryGirl.build(:setting)
+      setting.should be_valid
+      setting.save!
 
-      state2 = State.find(state.id)
+      setting2 = Setting.find(setting.id)
 
-      state.should eq state2
+      setting.should eq setting2
     end
   end
 

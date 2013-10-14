@@ -6,7 +6,7 @@ describe Capability do
 
     #Relations
     it { should belong_to(:device) }
-    it { should have_many(:states) }
+    it { should have_many(:settings) }
 
     #Presence
     it { should validate_presence_of(:name) }
