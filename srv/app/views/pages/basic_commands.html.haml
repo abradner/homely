@@ -6,7 +6,6 @@
 =link_to "Green", :green_pages
 =link_to "Blue", :blue_pages
 =link_to "White", :white_pages
-=link_to "Query lights", :query_pages
 
 %form{ :action => "/pages/colour", :method => "post"}
     %label{:for => "colour"} Enter a colour [0-9][0-9][0-9]:
@@ -14,17 +13,22 @@
     %input{:type => "submit", :value => "Change LED", :class => "button"}
 
 %h2 Settings
-=link_to "Off", :off_pages
-
--#%h2 Current state
--#-@state.each do |state| unless nil?
--#    =state
--#    <br/>
-
-%h2 Broken
--#=link_to "Query individual LED", :pages_query
 =link_to "On", :on_pages
+=link_to "Off", :off_pages
 =link_to "Darker", :darker_pages
 =link_to "Lighter", :lighter_pages
 
--#%= hidden_field_tag :colour, @colour
+
+%h2 Current state
+
+=@brightness_state
+<br/>
+=@colour_state
+<br/>
+=link_to "Ping!", :ping_pages
+=@ping_state
+<br/>
+
+%h2 Broken
+-#=link_to "Query individual LED", :pages_query
+

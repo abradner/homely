@@ -49,32 +49,46 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'cucumber-rails', require: false, git: 'https://github.com/cucumber/cucumber-rails.git'
   gem 'database_cleaner'
+  gem 'jasmine'
+  gem 'factory_girl_rails'
+  gem 'ffaker' #ffaker is faker++
 end
 
 group :test do
   gem 'simplecov', require: false
   gem 'simplecov-rcov', require: false
   gem 'ci_reporter'
+  gem 'shoulda-matchers'
 end
 
 group :development do
   gem 'quiet_assets'
 end
 
-gem 'haml'
-gem 'hybridgroup-serialport'#, git: 'https://github.com/hybridgroup/ruby-serialport.git'
 
+#SERVER SOFTWARE
+gem 'thin'
+
+
+#VIEWS AND MARKUP
+gem 'haml'
 gem 'therubyracer' # required for less
 gem 'less-rails' # Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem 'twitter-bootstrap-rails'
-
-gem 'sidekiq'
-gem 'sinatra', require: false
-gem 'slim'
-
-gem 'redis'
-
 gem 'json'
 
+
+#HARDWARE INTERFACING
+gem 'hybridgroup-serialport'#, git: 'https://github.com/hybridgroup/ruby-serialport.git'
+
+
+#BACKGROUND PROCESSING
+gem 'sidekiq'
+gem 'sinatra', require: false # required for sidekiq-web
 gem 'faye'
 gem 'foreman'
+
+#TODO Remove if nothing in Sidekiq breaks
+#gem 'slim'
+#gem 'redis'
+#gem 'redis-server'

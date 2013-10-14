@@ -42,28 +42,55 @@ void setup() {
   welcome();
 }
 
+int read_hex() {
+  int a = Serial.read();
+  int b = Serial.read();
+  if (a >= 'a') {
+    a = a - 'a' + 10;
+  } else {
+    a -= '0';
+  }
+  if (b >= 'a') {
+    b = b - 'a' + 10;
+  } else {
+    b -= '0';
+  }
+  return a * 16 + b;
+}
+
+void print_hex(int v) {
+  int a = v / 16;
+  int b = v % 16;
+  if (a < 10) {
+    Serial.write(a + '0');
+  } else {
+    Serial.write(a - 10 + 'a');
+  }
+  if (b < 10) {
+    Serial.write(b + '0');
+  } else {
+    Serial.write(b - 10 + 'a');
+  }
+}
+
 void loop() {
-  if (Serial.available() > 1) {    
+  if (Serial.available() >= 1) {    
     if (Serial.peek() == '(') {
-      if (Serial.available() <= 4) {
+      if (Serial.available() <= 7) {
         return;
       }
       Serial.read();
       int ledNo = Serial.read();
       // look for the next valid digit in the incoming serial stream:
-      int red = Serial.read(); 
+      int red = read_hex(); 
       // do it again:
-      int green = Serial.read(); 
+      int green = read_hex();
       // do it again:
-      int blue = Serial.read(); 
+      int blue = read_hex(); 
   
       Serial.read(); // ')'
     
-      red   = interpolate_colour(red);
-      green = interpolate_colour(green);
-      blue  = interpolate_colour(blue);
-   
-      ledNo = ledNo - ASCIIOFFSET;
+      ledNo = ledNo - '0';
       
       // fade the red, green, and blue legs of the LED: 
       Serial.print("Setting Colours - ");
@@ -89,10 +116,13 @@ void loop() {
       // TODO send the state
       Serial.print("(");
       Serial.print(ledNo);
-      Serial.print(interpolate_byte(red));
-      Serial.print(interpolate_byte(green));
-      Serial.print(interpolate_byte(blue));
+      print_hex(red);
+      print_hex(green);
+      print_hex(blue);
       Serial.println(")");
+    } else if (Serial.peek() == 'p') {
+      Serial.read();
+      Serial.println("p");
     } else {
       // Invalid data, gobble hoping that it was a typo
       Serial.read();
