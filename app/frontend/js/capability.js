@@ -58,7 +58,7 @@ $.Class.extend("Capability", {
             timeout: 1000 // sets timeout to 3 seconds
         })
         .fail($.proxy(function(data, textStatus, jqXHR){
-            alert(textStatus +","+ errorThrown);
+            alert(textStatus +","+ jqXHR.errorThrown);
             Android.serverError(this.deviceId, this.name);
         }, this))
         .done($.proxy(function(){
