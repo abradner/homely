@@ -11,15 +11,10 @@
     <div class="row-fluid">
       <div class="span12">
         <div class="row-fluid">
-          <div class="span2 offset5">
+          <div class="span10 offset1">
             <center>
-                <button type="button" class="btn btn-inverse homely-btn changeableSetting light power homely-off" id="kitchenLight_Power" data-capability-type="Light" data-device-id = "1" data-capability-name="kitchenLight" data-setting-type="Power" data-toggle="button"></button>
-                <br/>
-                <input type="range" class="changeableSetting" name="slider" id="kitchenLight_Brightness" data-capability-type="Light" data-device-id = "1" data-capability-name="kitchenLight" data-setting-type="Brightness" value="20" min="0" max="9" data-theme="c" >
-                <input type="range" class="changeableSetting" name="slider" id="kitchenLight_Colour" data-capability-type="Light" data-device-id = "1" data-capability-name="kitchenLight" data-setting-type="Colour" value="20" min="0" max="999" data-theme="c" >
-                <br/><br/><br/>
-                <button type="button" class="btn btn-inverse homely-btn changeableSetting light power homely-off" id="livingRoomLight_Power" data-capability-type="Light" data-device-id = "1" data-capability-name="livingRoomLight" data-setting-type="Power" data-toggle="button"></button>
-
+            <div class="row-fluid" id="devices">
+            </div>
             </center>
           </div>
         </div>
@@ -28,11 +23,20 @@
 
     <script src="js/faye-browser.js"></script>
     <script src="js/jquery.js"></script>
+    <script src="js/jquery-class.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <!-- Capability Types -->
-    <script src="js/light.js"></script>
+    <script src="js/capability.js"></script>
+    <!-- Setting Types -->
+    <script src="js/setting.js"></script>
+    <script src="js/colour-setting.js"></script>
+    <script src="js/power-setting.js"></script>
     <!-- Dictionary of devices/capabilities -->
     <script src="js/devices.js"></script>
+    <script src="js/generateDevices.js"></script>
+    <!-- Android mocker -->
+    <script src="js/mockAndroid.js"></script>
+    <!-- Main script file -->
     <script src="js/script.js"></script>
   </body>
 </html>

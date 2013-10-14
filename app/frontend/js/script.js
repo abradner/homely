@@ -3,25 +3,29 @@ var onMobile = false;
 /* FUNCTIONS */
 var handleSettingUpdate = function (event) {
     var id = $(this).attr('id');
-    capabilityType = $(this).data('capability-type');
-    capabilityName = $(this).data('capability-name');
-    deviceID = $(this).data('device-id');
-    settingType = $(this).data('setting-type');
+    capabilityId = $(this).data('capability-id');
+    deviceId = $(this).data('device-id');
+    id = $(this).data('id');
+    cap = devices[deviceId][capabilityId];
+    var value = cap.settings[id].getValue();
 
-    if (settingType == 'Power') {
-        var value = eval(capabilityName).power ^= 1;
-    } else {
-        var value = $('#'+id).val();
-    }
     // Pass in a callback function to updateServer - if it's successful, we'll update our values
-    eval(capabilityName).updateToServer(eval(capabilityName).updateFromServer, settingType, value);
+    cap.updateToServer(cap.updateFromServer, id, value);
 }
+
 
 $(document).ready(function() {
 
-    if (typeof Android  != 'undefined') {
-        onMobile = true;
-    }
+    // This goes in the client.subscribe() function
+    // We get the json as a message on first connecting
+    $.getJSON('http://localhost:3000/devices.json', function(data) {
+        $.each(data, function (val) {
+            var id = data[val]["id"];
+            var capabilities = data[val]["capabilities"];
+            addDevice(id, capabilities);
+            $('#devices').append(newDeviceBox(data[val]));
+        });
+    });
 
     //var client = new Faye.Client('http://localhost:3001');
     //var subscription = client.subscribe('/connect', function(message) {
@@ -32,17 +36,22 @@ $(document).ready(function() {
         devices[deviceID][capabilityID].updateFromServer(state);*/
     //});
 
-    if (onMobile) {
+    if (window.Android) {
+        onMobile = true;
         $(document).on('touchstart',function(event) {
             event.preventDefault();
         },false);
         $(document).on('touchmove', function(event) {
             event.preventDefault();
         },false);
-        $('.changeableSetting').on('touchend', handleSettingUpdate);
+        // Necessary for dynamically loaded content - can't just attach it to the class
+        $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
     } else {
-        $('.changeableSetting').on('click change', handleSettingUpdate);
+        window.Android = new MockAndroid();
+        $('#devices').on('click change', '.changeableSetting', handleSettingUpdate);
     }
+
+
 
 });
 

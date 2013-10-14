@@ -1,6 +1,24 @@
-var kitchenLight = new Light('1', 'Light', 'kitchenLight', 'http://192.168.0.3:3000');
-var livingRoomLight = new Light('1', 'Light', 'livingRoomLight', 'http://192.168.0.3:3000');
+var devices = {};
 
-var devices = {
-  '1' : {'1' : kitchenLight, '2' : livingRoomLight}
-};
+addDevice = function (device_id, capabilities) {
+    $.each(capabilities, function(i) {
+        var cap = capabilities[i];
+        var deviceId = cap["device_id"];
+        var capId = cap["id"];
+        var capType = cap["capability_type"];
+        var capName = cap["name"];
+        var url = "http://localhost:3000";
+
+        // Add the capability into the devices hash
+        if (!(deviceId in devices)) {
+            devices[deviceId] = {};
+        }
+        devices[deviceId][capId] = new Capability(capId, deviceId, capType, capName, url);
+        // Create the setting objects for the capability, and them to its settings hash
+        $.each(cap["setting"], function (i) {
+            devices[deviceId][capId].makeSetting(cap["setting"][i]);
+        });
+
+    });
+
+}
