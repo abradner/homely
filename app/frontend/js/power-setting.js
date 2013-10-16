@@ -8,7 +8,7 @@ Setting.extend("Power",{
             var btnStatus = "success";
             var homelyStatus = "on";
         }
-        return "<button type='button' class='btn btn-"+btnStatus+" homely-btn changeableSetting homely-"+homelyStatus+"' id='"+this.cap.deviceId+"_"+this.cap.id+"_"+this.id+"' data-device-id = '" + this.cap.deviceId +"' data-capability-id='" + this.cap.id +"'data-id='"+this.id+"' data-toggle='button'></button>";
+        return "<button type='button' class='btn btn-"+btnStatus+" homely-btn changeableSetting homely-"+homelyStatus+"' id='"+this.div+"' data-device-id = '" + this.cap.deviceId +"' data-capability-id='" + this.cap.id +"'data-id='"+this.id+"' data-toggle='button'></button>";
 
     },
 
