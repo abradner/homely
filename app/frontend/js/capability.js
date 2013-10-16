@@ -30,9 +30,9 @@ $.Class.extend("Capability", {
     },
 
     stringDisplays: function () {
-        var str = "";
+        var str = '';
         $.each(this.settings, function(id, object) {
-            str = str + object.displayString() + "<br/>";
+            str = str + object.displayString() + '<br/>';
         });
         return str;
     },

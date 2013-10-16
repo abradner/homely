@@ -5,7 +5,8 @@ $.Class.extend("Setting", {
         this.id = id;
         this.type = type;
         this.value = value;
-        this.divId = "#" + this.cap.deviceId + "_" + this.cap.id + "_" + this.id;
+        this.div = this.cap.deviceId + "_" + this.cap.id + "_" + this.id;
+        this.divId = "#" + this.div;
         this.min = min;
         this.max = max;
     },
@@ -26,7 +27,7 @@ $.Class.extend("Setting", {
     },
 
     displayString: function () {
-        return "<input type='range' class='changeableSetting' name='slider' id='"+this.cap.deviceId+"_"+this.cap.id+"_"+this.id+"' data-capability-id='"+this.cap.id+"' data-device-id = '"+this.cap.deviceId+"' data-id='"+this.id+"' value='"+this.value+"' min='"+this.min+"' max='"+this.max+"'";
+        return "<input type='range' class='changeableSetting' name='slider' id='"+this.div+"' data-capability-id='"+this.cap.id+"' data-device-id = '"+this.cap.deviceId+"' data-id='"+this.id+"' value='"+this.value+"' min='"+this.min+"' max='"+this.max+"'";
     },
 
     getValue: function () {
