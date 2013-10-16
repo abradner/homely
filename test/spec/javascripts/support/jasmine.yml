@@ -11,6 +11,10 @@
 #   - dist/**/*.js
 #
 src_files:
+    - public/javascripts/js/jquery.js
+    - public/javascripts/js/jquery-class.js
+    - public/javascripts/js/raphael-min.js
+    - public/javascripts/js/setting.js
     - public/javascripts/js/**/*.js
 
 # stylesheets
@@ -20,9 +24,9 @@ src_files:
 #
 # EXAMPLE:
 #
-# stylesheets:
+stylesheets:
 #   - css/style.css
-#   - stylesheets/*.css
+    - stylesheets/css/*.css
 #
 stylesheets:
 
