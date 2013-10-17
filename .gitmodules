@@ -1,3 +1,9 @@
 [submodule "ard/submodules/ChainableLED"]
 	path = ard/submodules/ChainableLED
 	url = git@github.com:kennyboy/ChainableLED.git
+[submodule "ard/submodules/thijse-Arduino-Libraries"]
+	path = ard/submodules/thijse-Arduino-Libraries
+	url = git@github.com:thijse/Arduino-Libraries.git
+[submodule "ard/submodules/IRremote"]
+	path = ard/submodules/IRremote
+	url = git@github.com:shirriff/Arduino-IRremote.git
