@@ -25,7 +25,7 @@ const int greenPin = 5; // the pin that the LED is attached to
 const int bluePin  = 6; // the pin that the LED is attached to
 
 int iteration = 0;
-ChainableLED leds(7, 8, NUM_LEDS);//defines the pin used on arduino.
+ChainableLED leds(7, 8, NUM_LEDS, false);//defines the pin used on arduino.
 
 void setup() {
   // initialize serial communication:
@@ -42,36 +42,6 @@ void setup() {
   welcome();
 }
 
-int read_hex() {
-  int a = Serial.read();
-  int b = Serial.read();
-  if (a >= 'a') {
-    a = a - 'a' + 10;
-  } else {
-    a -= '0';
-  }
-  if (b >= 'a') {
-    b = b - 'a' + 10;
-  } else {
-    b -= '0';
-  }
-  return a * 16 + b;
-}
-
-void print_hex(int v) {
-  int a = v / 16;
-  int b = v % 16;
-  if (a < 10) {
-    Serial.write(a + '0');
-  } else {
-    Serial.write(a - 10 + 'a');
-  }
-  if (b < 10) {
-    Serial.write(b + '0');
-  } else {
-    Serial.write(b - 10 + 'a');
-  }
-}
 
 void loop() {
   if (Serial.available() >= 1) {    
@@ -130,17 +100,9 @@ void loop() {
   }
 }
 
-void welcome() {  
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds.setColorRGB(i, DARK, DARK, DARK);
-  }
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds.setColorRGB(i, DARK, 255, DARK);
-    delay(20);
-  }
-    for (int i = 0; i < NUM_LEDS; i++) {
-    leds.setColorRGB(i, DARK, DARK, DARK);
-  }
+void welcome() { 
+  
+  LED_test_pattern();
 
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
@@ -148,43 +110,3 @@ void welcome() {
     Serial.println("\nReady.");
 
 }
-
-//void thing(byte* red, byte* green, byte* blue) {
-//    int inChar;
-//
-//  // Read serial input:
-//  if (Serial.available() > 0) {
-//    inChar = Serial.read();
-//  }
-//
-//  if (isDigit(inChar)) {
-//    // convert the incoming byte to a char 
-//    // and add it to the string:
-//    inString += (char)inChar; 
-//  }
-//
-//  // if you get a comma, convert to a number,
-//  // set the appropriate color, and increment
-//  // the color counter:
-//  if (inChar == ',') {
-//    // do something different for each value of currentColor:
-//    switch (currentColor) {
-//    case 0:    // 0 = red
-//      *red = inString.toInt();
-//      // clear the string for new input:
-//      inString = ""; 
-//      break;
-//    case 1:    // 1 = green:
-//      *green = inString.toInt();
-//      // clear the string for new input:
-//      inString = ""; 
-//      break;
-//    }
-//    currentColor++;
-//  }
-//  // if you get a newline, you know you've got
-//  // the last color, i.e. blue:
-//  if (inChar == '\n') {
-//    *blue = inString.toInt();
-// 
-// }

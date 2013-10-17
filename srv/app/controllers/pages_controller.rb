@@ -7,6 +7,8 @@ class PagesController < ApplicationController
   @ping_state ="Device not there :("
   @@colour = "000000"
 
+  before_action :instantiate_device
+
   def home
   end
 
@@ -77,7 +79,10 @@ class PagesController < ApplicationController
         new_colours += s
       end
       set_colour(new_colours, true)
+    else
+      display_page error: "Bad colour!"
     end
+
   end
 
   def query
@@ -88,11 +93,11 @@ class PagesController < ApplicationController
 
   def ping
     message = "p"
-    ard_send(message)
+    @device.send!(message)
     to_receive = nil
     t1 = Time.now
     while to_receive.nil? and (Time.now - t1) < 2
-      to_receive = ard_listen
+      to_receive = @device.receive!
     end
     if to_receive.nil?
       @ping_state = "Device not there :("
@@ -106,9 +111,12 @@ class PagesController < ApplicationController
   end
 
   private
+  def instantiate_device
+    @device = Device.first
+  end
+
   def get_state(id)
 
-    ard_build
 
     state = []
 
@@ -120,42 +128,40 @@ class PagesController < ApplicationController
 
     ledIDs.each { |ledID|
       message = "?" + ledID
-      ard_send message
+      @device.send! message
 
 
       # TODO make sure this doesn't inf loop with some kind of timeout
 
       to_receive = nil
       while to_receive.nil?
-        to_receive = ard_listen
+        to_receive = @device.receive!
       end
 
       state << to_receive.chomp
     }
 
-    ard_kill
     return state
   end
 
-
   def set_colour(colour, store)
 
-    ard_build
+
+    puts @device.inspect
+
+    display_page(error: "Device '#{@device.name}' is not connected.") and return unless @device.connected?
 
     message = "(0" + colour + ")"
     printf("Message = %s\n", message)
 
-    ard_send message
+    @device.send! message
     if store
       @@colour = colour
     end
     @state = []
 
-
-    ard_kill
-
-    display_page
-    SendDataWorker.perform_async(colour)
+    display_page(notice: "success!")
+    #SendDataWorker.perform_async(colour)
 
   end
 
@@ -201,32 +207,36 @@ class PagesController < ApplicationController
     return res
   end
 
-  def display_page()
-    display_state("0")
-    render(:'pages/basic_commands')
+  def display_page(flash_hash = {})
+    display_state("0") if flash_hash[:error].blank?
+    flash.now[:error] = flash_hash[:error]
+    flash.now[:notice] = flash_hash[:notice]
+    render(action: :basic_commands)
   end
 
-  def ard_build
-    require './lib/arduino_communicator/arduino_communicator'
-    require './lib/arduino_communicator/serial_arduino_communicator'
-    require './lib/arduino_communicator/tcp_arduino_communicator'
 
-    #ard1 = TCPArduinoCommunicator.new
-    @ard2 = SerialArduinoCommunicator.new
-
-  end
-
-  def ard_listen
-    @ard2.receive!
-  end
-
-  def ard_send(message)
-    @ard2.send! message
-  end
-
-  def ard_kill
-    #ard1.close
-    @ard2.close
-  end
+  #
+  #def ard_build
+  #  require './lib/arduino_communicator/arduino_communicator'
+  #  require './lib/arduino_communicator/serial_arduino_communicator'
+  #  require './lib/arduino_communicator/tcp_arduino_communicator'
+  #
+  #  #ard1 = TCPArduinoCommunicator.new
+  #  @ard2 = SerialArduinoCommunicator.new
+  #
+  #end
+  #
+  #def ard_listen
+  #  @ard2.receive!
+  #end
+  #
+  #def ard_send(message)
+  #  @ard2.send! message
+  #end
+  #
+  #def ard_kill
+  #  #ard1.close
+  #  @ard2.close
+  #end
 
 end
