@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  require 'colour.rb'
   skip_before_filter :verify_authenticity_token, :only => :colour
 
   @state =[]
@@ -33,6 +34,7 @@ class PagesController < ApplicationController
   end
 
   def white
+    fade("ffffff", 30)
     set_colour "ffffff", true
   end
 
@@ -146,10 +148,17 @@ class PagesController < ApplicationController
 
   def set_colour(colour, store)
 
+    if do_colour_change(colour, store)
+      display_page(notice: "success!")
+    else
+      display_page(error: "Device '#{@device.name}' is not connected.")
+    end
 
-    puts @device.inspect
+  end
 
-    display_page(error: "Device '#{@device.name}' is not connected.") and return unless @device.connected?
+  def do_colour_change(colour, store)
+
+    return false unless @device.connected?
 
     message = "(0" + colour + ")"
     printf("Message = %s\n", message)
@@ -160,8 +169,33 @@ class PagesController < ApplicationController
     end
     @state = []
 
-    display_page(notice: "success!")
     #SendDataWorker.perform_async(colour)
+
+    true
+
+  end
+
+
+  def fade(colour, steps)
+
+    return false unless @device.connected?
+
+    old_colour = Colour.new @@colour
+    new_colour = Colour.new(@@colour = colour)
+
+
+    red_step = (old_colour.red - new_colour.red) / steps
+    green_step = (old_colour.green - new_colour.green) / steps
+    blue_step = (old_colour.blue - new_colour.blue) / steps
+
+    steps.times do |i|
+      old_colour.red += red_step
+      old_colour.green += green_step
+      old_colour.blue += blue_step
+      puts old_colour.to_s
+      sleep 0.1
+      do_colour_change(old_colour.to_s, false)
+    end
 
   end
 
