@@ -1,3 +1,3 @@
-[submodule "ard/libraries/ChainableLED"]
-	path = ard/libraries/ChainableLED
+[submodule "ard/submodules/ChainableLED"]
+	path = ard/submodules/ChainableLED
 	url = git@github.com:kennyboy/ChainableLED.git
