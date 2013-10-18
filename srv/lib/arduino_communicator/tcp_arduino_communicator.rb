@@ -1,17 +1,13 @@
 require 'socket'
+require 'uri/generic'
 
 class TCPArduinoCommunicator < ArduinoCommunicator
 
-  def initialize
-    super
-
-    @device = TCPSocket.open("192.168.16.50",5100)
-
-
-  end
-
-  def send!(message)
-    super
+  def connect(address)
+    TCPSocket.new
+    host = URI(address).host
+    port = URI(address).port
+    @device = TCPSocket.open(host,port)
   end
 
 end

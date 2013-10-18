@@ -1,8 +1,7 @@
 
 class SerialArduinoCommunicator < ArduinoCommunicator
 
-  def initialize
-    super
+  def connect(address)
 
     # If your aduino isn't being recognised, add it to the list below
     # - as generic as possible to find all arduinos of that model

@@ -26,8 +26,12 @@ class ArduinoCommunicator
 
   def initialize; end
 
-  def connect(port)
+  def connect(address)
+      raise "Cannot connect a stub arduino"
+  end
 
+  def connected?
+    !@device.nil?
   end
 
   def send!(message)
@@ -46,7 +50,7 @@ class ArduinoCommunicator
 
 
   def close
-    @device.close
+    @device.close unless @device.nil?
   end
 
 

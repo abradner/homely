@@ -17,4 +17,20 @@ class Device < ActiveRecord::Base
   def self.valid_interfaces
     VALID_INTERFACES
   end
+
+  def connected?
+    @@dev_list[id] && @@dev_list[id].connected?
+  end
+
+  def connection
+    @@dev_list[id]
+  end
+
+  def send!(message)
+    @@dev_list[id].send! message
+  end
+
+  def receive!
+    @@dev_list[id].receive!
+  end
 end
