@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/abradner/colour_obj.git
+  revision: 77450afd810abbd27dae0c2fe305eb6e69f81f43
+  specs:
+    colour_obj (1.0.0)
+
+GIT
   remote: https://github.com/cucumber/cucumber-rails.git
   revision: 92fc3e9242885e9616ef6051812ed075890c8c85
   specs:
@@ -262,6 +268,7 @@ PLATFORMS
 DEPENDENCIES
   ci_reporter
   coffee-rails (~> 4.0.0)
+  colour_obj!
   cucumber-rails!
   database_cleaner
   factory_girl_rails

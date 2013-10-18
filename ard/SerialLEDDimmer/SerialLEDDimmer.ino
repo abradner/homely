@@ -29,7 +29,7 @@ ChainableLED leds(7, 8, NUM_LEDS, false);//defines the pin used on arduino.
 
 void setup() {
   // initialize serial communication:
-  Serial.begin(9600);
+  Serial.begin(115200);
   // initialize the LED pin as an output:
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);

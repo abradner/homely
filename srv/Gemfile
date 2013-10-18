@@ -92,3 +92,5 @@ gem 'foreman'
 #gem 'slim'
 #gem 'redis'
 #gem 'redis-server'
+
+gem 'colour_obj', git: 'https://github.com/abradner/colour_obj.git'
