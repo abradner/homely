@@ -1,13 +1,18 @@
 devices:
+# -  name: Emulated Arduino
+#    device_type: Arduino
+#    interface: Emulated
+#    address: /dev/null
+#
  -  name: Serial Leonardo
     device_type: Arduino
     interface: Serial
+    address: /dev/tty.arduino_leonardo0
 
  -  name: TCP Diecimila
     device_type: Arduino
     interface: TCP
     address: 192.168.16.50:5100
-
 
 capabilities:
   - name: ChainableLED

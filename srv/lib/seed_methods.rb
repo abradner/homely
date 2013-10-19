@@ -2,7 +2,9 @@
 def seed_devices!
 #Devices
   Device.delete_all
-  Device.create(@config["devices"])
+  @config["devices"].each do |dev|
+    Device.create!(dev)
+  end
 end
 
 def seed_capabilities!
@@ -18,7 +20,6 @@ def seed_capabilities!
       dev = Device.find_by_name dev_name
 
       raise cap["name"] if dev.nil?
-      dev.inspect
       cap["device_id"] = dev.id
 
       cap
@@ -45,20 +46,23 @@ def seed_classes(parent_klass, child_klass)!
 
     has_many_collection.map! do |item|
       parent_name = item.delete (parent_klass_name + "_name")
-      parent = parent_klass.find_by_name parent_name
+      parent = parent_klass.where(name: parent_name).first
 
-      #raise item["name"] if dev.nil?
-      parent.inspect
+
+      if parent.nil?
+        raise ArgumentError, "Error: Could not find parent #{parent_name} for #{item["name"]}. Parent Contents:\n #{parent_klass.all.all.inspect}\n "
+      end
       item[parent_klass_name + "_id"] = parent.id
-
       item
     end
 
-  #rescue Exception => e
-  #  puts "Error - #{klass_has_many} '#{e.message}' has an invalid '#{klass_belongs_to}' (does NOT match any devices)"
-  #  exit 1
+  rescue ArgumentError => e
+  puts e.message
+    exit 1
   end
 
-  child_klass.create has_many_collection
+  has_many_collection.each do |element|
+    child_klass.create! element
+  end
 
 end
