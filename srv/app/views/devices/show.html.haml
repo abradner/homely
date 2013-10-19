@@ -1,16 +1,54 @@
-%h1 Listing Device:
-=@device.name
+-#%h1 Listing Device:
+-#=@device.name
+-#
+-#%p= @device.device_type
+-#%p= @device.interface
+-#%p= @device.address
+-#
+-#%table
+-#  %tr
+-#    %th Name
+-#    %th Type
+-#
+-#  - @device.capabilities.each do |cap|
+-#    %tr
+-#      %td= cap.name
+-#      %td= cap.capability_type
 
-%p= @device.device_type
-%p= @device.interface
-%p= @device.address
+%h1
+  Listing Capabilities for
+  =@device.name
+
+%p.small 
+  Type:
+  = @device.device_type
+%p.small
+  Interface:
+  = @device.interface
+%p.small
+  Address:
+  = @device.address
 
 %table
-   %tr
-      %th Name
-      %th Type
+  %tr
+    %th Name
+    %th Type
+    %th Power
+    %th State
+    %th Control
 
-   - @device.capabilities.each do |cap|
-      %tr
-         %td= cap.name
-         %td= cap.capability_type
+  - @capabilities.each do |cap|
+    %tr
+      %td= cap.name
+      %td= cap.capability_type
+      %td= link_to cap.power, device_capability_p9813_set_power_path(@device, cap)
+      %td= cap.state
+      %td
+        - if cap.capability_type.eql? "P9813"
+          = link_to "red", device_capability_p9813_set_colour_path(@device, cap, colour: "ff0000")
+          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, colour: "0000ff")
+          = link_to "green", device_capability_p9813_set_colour_path(@device, cap, colour: "00ff00")
+          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, colour: "0000ff")
+          = link_to "white", device_capability_p9813_set_colour_path(@device, cap, colour: "ffffff")
+          = link_to "dark", device_capability_p9813_set_colour_path(@device, cap, colour: "111111")
+%p

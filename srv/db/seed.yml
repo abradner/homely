@@ -43,26 +43,53 @@ capabilities:
 
 #todo turn this into a populate-based-on-type thing
 settings:
+
+#Serial
   - capability_name: ChainableLED 0
     name: "Power"
-    value: 0
+    value: 1
     min: 0
     max: 1
 
   - capability_name: ChainableLED 0
     name: "Colour"
-    value: 55
+    value: 3399FF
     min: 0
     max: 999
 
   - capability_name: ChainableLED 1
     name: "Power"
-    value: 0
+    value: 1
     min: 0
     max: 1
 
   - capability_name: ChainableLED 1
     name: "Colour"
-    value: 55
+    value: FF9933
+    min: 0
+    max: 999
+
+#Emulated
+  - capability_name: EmuLED 0
+    name: "Power"
+    value: 1
+    min: 0
+    max: 1
+
+  - capability_name: EmuLED 0
+    name: "Colour"
+    value: 3399FF
+    min: 0
+    max: 999
+
+  - capability_name: EmuLED 1
+    name: "Power"
+    value: 1
+    min: 0
+    max: 1
+
+  - capability_name: EmuLED 1
+    name: "Colour"
+    value: FF9933
     min: 0
     max: 999

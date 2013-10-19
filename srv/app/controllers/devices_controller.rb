@@ -25,16 +25,20 @@ class DevicesController < ApplicationController
   def show
 
     @device = Device.find(params[:id])
-    @hash = @device.attributes
-    @hash["capabilities"] = Capability.where(device_id: @device[:id])
-    @hash["capabilities"].map! do |capability|
-      cap = capability.attributes
-      cap["state"] = Setting.where(capability_id: capability[:id])
-      cap
-    end
+
     respond_to do |format|
-      format.html
+      format.html {
+        @capabilities = @device.capabilities
+      }
+
       format.json {
+        @hash = @device.attributes
+        @hash["capabilities"] = @capabilities
+        @hash["capabilities"].map! do |capability|
+          cap = capability.attributes
+          cap["state"] = Setting.where(capability_id: capability[:id])
+          cap
+        end
         render :json => @hash.to_json
       }
 

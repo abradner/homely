@@ -5,4 +5,4 @@ Feature: We have a website
 
 Scenario: Go to web page
   Given I go to the home page
-  Then I should see "Welcome to Homely"
+  Then I should see "Homely Server"

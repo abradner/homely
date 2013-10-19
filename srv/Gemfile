@@ -88,9 +88,16 @@ gem 'sinatra', require: false # required for sidekiq-web
 gem 'faye'
 gem 'foreman'
 
+# SECURITY
+#gem 'devise'
+#gem 'cancan'
+
+#HOMEBREW LIBRARIES
+gem 'colour_obj', git: 'https://github.com/abradner/colour_obj.git'
+
 #TODO Remove if nothing in Sidekiq breaks
 #gem 'slim'
 #gem 'redis'
 #gem 'redis-server'
 
-gem 'colour_obj', git: 'https://github.com/abradner/colour_obj.git'
+

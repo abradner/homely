@@ -9,6 +9,7 @@ class PagesController < ApplicationController
   @ping_state ="Device not there :("
   @@colour = "000000"
 
+  NUM_STEPS = 20
 
   before_action :instantiate_device
 
@@ -29,13 +30,13 @@ class PagesController < ApplicationController
 
   def off
     col = @@colour
-    fade("000000", @num_steps)
+    fade("000000", NUM_STEPS)
     @@colour = col
     display_page(notice: "Success!")
   end
 
   def on
-    fade(@@colour, @num_steps)
+    fade(@@colour, NUM_STEPS)
     display_page(notice: "success!")
   end
 
@@ -85,7 +86,7 @@ class PagesController < ApplicationController
         end
         new_colours += s
       end
-      fade(new_colours, @num_steps)
+      fade(new_colours, NUM_STEPS)
       display_page(notice: "success!")
     elsif colour.eql? "0"
       off
@@ -109,45 +110,46 @@ class PagesController < ApplicationController
     @device.send!(message)
     to_receive = nil
     t1 = Time.now
-    while to_receive.nil? and (Time.now - t1) < 2
-      to_receive = @device.receive!
-    end
-    if to_receive.nil?
-      @ping_state = "Device not there :("
-    elsif to_receive.chomp == "p"
-      @ping_state = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
-    else
-      @ping_state = "Bad response"
-    end
+          while to_receive.nil? and (Time.now - t1) < 2
+            to_receive = @device.receive!
+          end
+      if to_receive.nil?
+        @ping_state = "Device not there :("
+      elsif to_receive.chomp == "p"
+        @ping_state = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
+      else
+        @ping_state = "Bad response"
+      end
 
-    display_page
-  end
+      display_page
+      end
 
-  private
-  def instantiate_device
-    @device = Device.first
-    @num_steps = 20
-  end
+      private
+      def instantiate_device
+        @device = (Device.where interface: "Serial").first
+        
+        @capability = @device.capabilities.first
+      end
 
-  def get_state(id)
-
-
-    state = []
-
-    # TODO figure out how to get a list of all LEDs
-    ledIDs = ["0", "1"]
-    if not id.nil?
-      ledIDs = [id]
-    end
-
-    ledIDs.each { |ledID|
-      message = "?" + ledID
-      @device.send! message
+      def get_state(id)
 
 
-      # TODO make sure this doesn't inf loop with some kind of timeout
+        state = []
 
-      to_receive = nil
+        # TODO figure out how to get a list of all LEDs
+        ledIDs = ["0", "1"]
+        if not id.nil?
+          ledIDs = [id]
+        end
+
+        ledIDs.each { |ledID|
+          message = "?" + ledID
+          @device.send! message
+
+
+          # TODO make sure this doesn't inf loop with some kind of timeout
+
+          to_receive = nil
       while to_receive.nil?
         to_receive = @device.receive!
       end
@@ -172,10 +174,9 @@ class PagesController < ApplicationController
 
     return false unless @device.connected?
 
-    message = "(0" + colour + ")"
-    printf("Message = %s\n", message)
+    @capability.p9813_colour = colour
+    puts ("Message = '#{@capability.message}'")
 
-    @device.send! message
     if store
       @@colour = colour
     end

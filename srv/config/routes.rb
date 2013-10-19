@@ -1,7 +1,7 @@
 require 'sidekiq/web'
 
 HomelySrv::Application.routes.draw do
-root :to => "pages#home"
+  root :to => "devices#index"
 
   resource :pages do
     get 'basic_commands'
@@ -20,7 +20,8 @@ root :to => "pages#home"
 
   resources :devices do
     resources :capabilities do
-      resources :settings
+      get 'p9813_set_colour'
+      get 'p9813_set_power'
     end
   end
 
@@ -80,4 +81,6 @@ root :to => "pages#home"
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+
 end

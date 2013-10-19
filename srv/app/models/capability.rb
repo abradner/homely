@@ -25,6 +25,20 @@ class Capability < ActiveRecord::Base
 
   after_update :update_device
 
+  ###############
+  # Abstraction methods
+  ###############
+
+  def power
+    p9813_power if self.capability_type.eql? "P9813"
+
+  end
+
+  def state
+    p9813_colour if self.capability_type.eql? "P9813"
+  end
+
+
 
   ###############
   # P9813 methods
@@ -61,10 +75,20 @@ class Capability < ActiveRecord::Base
     p9813_message "000000"
     save!
   end
-  
+
   def p9813_power
     p9813_check!
     setting(POWER).value.to_i
+  end
+
+  def p9813_power_toggle
+    p9813_check!
+    power = setting(POWER).value.to_i
+    if power.eql? OFF
+      p9813_on
+    else
+      p9813_off
+    end
   end
 
   def p9813_message(msg)
@@ -79,6 +103,7 @@ class Capability < ActiveRecord::Base
   ###############
   # Utility methods
   ###############
+
 
   def update_device
     self.device.send! last_message

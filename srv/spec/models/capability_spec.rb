@@ -95,6 +95,11 @@ describe Capability do
       @cap1.p9813_colour.should eql "ffffff"
     end
 
+    it "should report colour for #state on p9813 capabilties" do
+      @cap1.p9813_colour = "ffffff"
+      @cap1.state.should eql "ffffff"
+    end
+
     it 'should be able to turn on and off' do
       expect {
         @cap1.p9813_on
@@ -116,6 +121,27 @@ describe Capability do
 
     end
 
+    it "should handle #power as an alias for #p9813_power for p9813 devices" do
+      @cap1.p9813_on
+      @cap1.power.should eql 1
+
+      @cap1.p9813_off
+      @cap1.power.should eql 0
+    end
+
+
+    it 'should be able to toggle current power state' do
+      @cap1.p9813_on
+      @cap1.p9813_power.should eql 1
+
+      @cap1.p9813_power_toggle
+      @cap1.p9813_power.should eql 0
+
+      @cap1.p9813_power_toggle
+      @cap1.p9813_power.should eql 1
+
+    end
+
     it "should know its device prefix" do
       @cap1.prefix = 1
       @cap1.prefix.should eql 1
@@ -126,6 +152,7 @@ describe Capability do
       @cap1.p9813_message("123456")
       @cap1.message.should eql "(1123456)"
     end
+
   end
 
 end
