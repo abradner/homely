@@ -62,7 +62,7 @@ end
 
 ## CLOSE ALL OPEN HANDLES
 at_exit do
-  registered_devices = Device.find(@@dev_list.keys)
+  registered_devices = Device.where id: @@dev_list.keys
   registered_devices.each do | dev|
 
     dev_name = "[#{dev.id}](#{dev.name})"
