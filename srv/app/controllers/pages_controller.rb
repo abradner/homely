@@ -87,7 +87,12 @@ class PagesController < ApplicationController
       end
       fade(new_colours, @num_steps)
       display_page(notice: "success!")
+    elsif colour.eql? "0"
+      off
+    elsif colour.eql? "1"
+      on
     else
+      
       display_page error: "Bad colour!"
     end
 
