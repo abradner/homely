@@ -40,7 +40,7 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
 
     ###### Colour command
     if command.eql? '('
-      raise InputError, "colour string was too long" unless message.length.eql? COLOUR_MESSAGE_LENGTH
+      raise ArgumentError, "colour string '#{message}' was wrong length" unless message.length.eql? COLOUR_MESSAGE_LENGTH
 
       led = parse_led(message)
 
@@ -52,7 +52,7 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
 
     ###### Query Command
     elsif command.eql? '?'
-      raise InputError, "colour string was too long" unless message.length.eql? QUERY_MESSAGE_LENGTH
+      raise ArgumentError, "command string '#{message}' was wrong length" unless message.length.eql? QUERY_MESSAGE_LENGTH
 
       led = parse_led(message)
       send_status! led
@@ -78,7 +78,7 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
 private
   def parse_led(message)
     led = message[1].to_i
-    raise InputError, "LED to query not specified" unless (message[1].eql? "0") ^ ((1..9).include? led)
+    raise ArgumentError, "LED to query not specified" unless (message[1].eql? "0") ^ ((1..9).include? led)
     led
   end
 

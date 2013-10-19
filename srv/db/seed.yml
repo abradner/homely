@@ -1,9 +1,9 @@
 devices:
-# -  name: Emulated Arduino
-#    device_type: Arduino
-#    interface: Emulated
-#    address: /dev/null
-#
+ -  name: Emulated Arduino
+    device_type: Arduino
+    interface: Emulated
+    address: /dev/null
+
  -  name: Serial Leonardo
     device_type: Arduino
     interface: Serial
@@ -15,29 +15,54 @@ devices:
     address: 192.168.16.50:5100
 
 capabilities:
-  - name: ChainableLED
+  - name: ChainableLED 0
     device_name: Serial Leonardo
     capability_type: P9813
+    prefix: 0
 
-  - name: ChainableLED2
+  - name: ChainableLED 1
+    device_name: Serial Leonardo
+    capability_type: P9813
+    prefix: 1
+
+  - name: EmuLED 0
+    device_name: Emulated Arduino
+    capability_type: P9813
+    prefix: 0
+
+  - name: EmuLED 1
+    device_name: Emulated Arduino
+    capability_type: P9813
+    prefix: 1
+
+  - name: TCPChainableLED 0
     device_name: TCP Diecimila
     capability_type: P9813
+    prefix: 0
 
+
+#todo turn this into a populate-based-on-type thing
 settings:
-  - capability_name: ChainableLED
-    type: "Power"
+  - capability_name: ChainableLED 0
+    name: "Power"
     value: 0
     min: 0
     max: 1
 
-  - capability_name: ChainableLED
-    type: "Colour"
+  - capability_name: ChainableLED 0
+    name: "Colour"
     value: 55
     min: 0
     max: 999
 
-  - capability_name: ChainableLED2
-    type: "Power"
-    value: 1
+  - capability_name: ChainableLED 1
+    name: "Power"
+    value: 0
     min: 0
     max: 1
+
+  - capability_name: ChainableLED 1
+    name: "Colour"
+    value: 55
+    min: 0
+    max: 999
