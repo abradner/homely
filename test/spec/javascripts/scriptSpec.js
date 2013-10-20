@@ -1,5 +1,5 @@
-//Capability.js
-//
+//Tests: homely/app/frontend/js/ capability.js colour-setting.js power-setting.js setting.js
+//TODO: devices.js generateDevices.js mockAndroid.js script.js
 
 var capabilityId = '1';
 var deviceId = '1';
@@ -12,15 +12,19 @@ var maxPower = 1;
 var initialColour = 0;
 var minColour = 0;
 var maxColour = 999;
-    
+var divColour = deviceId + '_' + capabilityId + '_' + settingColourId;
+var divPower = deviceId + '_' + capabilityId + '_' + settingPowerId; 
+   
 var c = new Capability(capabilityId, deviceId, 'Light', 'c', 'http://localhost:3000');
 var power = {'type':'Power', 'value':initialPower, 'id':settingPowerId, 'min':minPower, 'max':maxPower};
 var colour = {'type':'Colour', 'value':initialColour, 'id':settingColourId, 'min':minColour, 'max':maxColour};
 c.makeSetting(power);
 c.makeSetting(colour);
 
+
 //capability.js
 describe("Capability Initialisation", function() {
+    
     it("Initialises the device ID correctly", function() {
         expect(c.deviceId).toBe(deviceId);
     });
@@ -74,13 +78,13 @@ describe("Settings Initialisation", function() {
     });
 
     it("Initialises the div value correctly", function() {
-        expect(c.settings[settingColourId].div).toBe(deviceId+'_'+capabilityId+'_'+settingColourId);
-        expect(c.settings[settingPowerId].div).toBe(deviceId+'_'+capabilityId+'_'+settingPowerId);
+        expect(c.settings[settingColourId].div).toBe(divColour);
+        expect(c.settings[settingPowerId].div).toBe(divPower);
     });
 
     it("Initialises the divID correctly", function() {
-        expect(c.settings[settingColourId].divId).toBe('#'+deviceId+'_'+capabilityId+'_'+settingColourId);
-        expect(c.settings[settingPowerId].divId).toBe('#'+deviceId+'_'+capabilityId+'_'+settingPowerId);
+        expect(c.settings[settingColourId].divId).toBe('#'+ divColour);
+        expect(c.settings[settingPowerId].divId).toBe('#'+ divPower);
         
     });
 
@@ -96,7 +100,7 @@ describe("Settings Initialisation", function() {
 
 });
 
-//capability.js - TODO stringDisplays, updateToServer, updateDisplays
+//capability.js - TODO updateToServer, updateDisplays
 describe("Capability Functions", function() {
     beforeEach(function() {
         c.settings[settingPowerId].set(initialPower);
@@ -108,6 +112,11 @@ describe("Capability Functions", function() {
         expect(c.settings[settingPowerId].value).toBe(1);
     });
  
+    it("'stringDisplays' function returns correctly", function() {
+        var str = c.stringDisplays();
+        var expectedStr = "<input type='range' class='changeableSetting' name='slider' id='"+divColour+"' data-capability-id='"+capabilityId+"' data-device-id = '"+deviceId+"' data-id='"+settingColourId+"' value='"+initialColour+"' min='"+minColour+"' max='"+maxColour+"'<br/><button type='button' class='btn btn-inverse homely-btn changeableSetting homely-off' id='"+divPower+"' data-device-id = '"+deviceId+"' data-capability-id='"+capabilityId+"'data-id='"+settingPowerId+"' data-toggle='button'></button><br/>";
+        expect(str == expectedStr);
+    });
 });
 
   
@@ -146,14 +155,13 @@ describe("Settings Functions", function() {
         expect($(c.settings[settingColourId].divId)).toHaveValue('54');
     });
     
-    //WHERE FROM?
-    
     it("'getValue' function returns correct value from div", function() {
         loadFixtures('slider.html')
         c.settings[settingColourId].set(54);
         c.settings[settingColourId].updateDisplay;
         expect(c.settings[settingColourId].getValue()).toBe('54');
-    }); 
+    });
+
 
 }); 
 
@@ -163,7 +171,7 @@ describe("Power Setting Functions", function() {
         c.settings[settingPowerId].set(initialPower);
     });
     
-    it("'updateDisplay' updates power classes correctly", function() {
+    it("'updateDisplay' updates power classes correctly - turn on", function() {
         loadFixtures('button.html')
         expect($(c.settings[settingPowerId].divId)).toHaveClass('btn-inverse');
         expect($(c.settings[settingPowerId].divId)).toHaveClass('homely-off');
@@ -178,6 +186,23 @@ describe("Power Setting Functions", function() {
 
     });
 
+    it("'updateDisplay' updates power classes correctly - turn off", function() {
+        c.settings[settingPowerId].set(maxPower);
+        loadFixtures('button.html')
+        c.settings[settingPowerId].updateDisplay();
+        expect($(c.settings[settingPowerId].divId)).not.toHaveClass('btn-inverse');
+        expect($(c.settings[settingPowerId].divId)).not.toHaveClass('homely-off');
+        expect($(c.settings[settingPowerId].divId)).toHaveClass('btn-success');
+        expect($(c.settings[settingPowerId].divId)).toHaveClass('homely-on');
+        c.settings[settingPowerId].set(minPower);
+        c.settings[settingPowerId].updateDisplay();
+        expect($(c.settings[settingPowerId].divId)).toHaveClass('btn-inverse');
+        expect($(c.settings[settingPowerId].divId)).toHaveClass('homely-off');
+        expect($(c.settings[settingPowerId].divId)).not.toHaveClass('btn-success');
+        expect($(c.settings[settingPowerId].divId)).not.toHaveClass('homely-on');
+
+    });
+    
     it("'togglePower' function works correctly", function() {
         expect(c.settings[settingPowerId].value).toBe(0);
         c.settings[settingPowerId].togglePower();
@@ -190,75 +215,18 @@ describe("Power Setting Functions", function() {
         expect(c.setting[settingPowerId].getValue()).toBe(1);
     });
 });
+
+describe("Power button object", function() {
+    it("Changes the value of power when the button is clicked", function() {
+        loadFixtures('button.html');
+        expect(c.settings[settingPowerId].value).toBe(minPower);
+        $(c.settings[settingPowerId].divId).click();
+        expect(c.settings[settingPowerId].value).toBe(maxPower);
+    });
+});
+
+
 /*
-describe("Light Object Functions", function() {
-    it("Toggles power correctly", function() {
-        l.togglePower();
-        expect(l.power).toBe(1);
-        //l.togglePower();
-        //expect(l.power).toBe(0);
-    });
-
-    it ("Sets power correctly", function() {
-        l.setPower(1);
-        expect(l.power).toBe(1);
-    });
-
-    it ("Bounds power correctly", function() {
-        l.setPower(12);
-        expect(l.power).toBe(1);
-        l.setPower(-3);
-        expect(l.power).toBe(0);
-    });
-
-    it ("Sets brightness correctly", function() {
-        l.setBrightness(5);
-        expect(l.brightness).toBe(5);
-    });
-
-    it ("Bounds brightness correctly", function() {
-        l.setBrightness(12);
-        expect(l.brightness).toBe(9);
-        l.setBrightness(-3);
-        expect(l.brightness).toBe(0);
-    });
-
-    it ("Sets colour correctly", function() {
-        l.setColour(32);
-        expect(l.colour).toBe(32);
-    });
-    
-    it ("Bounds colour correctly", function() {
-        l.setColour(10001);
-        expect(l.colour).toBe(999);
-        l.setColour(-36);
-        expect(l.colour).toBe(0);
-    });
-
-});
-
-var kitchenLight = new Light('1', 'Light', 'kitchenLight', 'http://192.168.0.3:3000');
-
-describe ("Test", function() {
-        //dom = $('<button type="button" class="btn btn-inverse homely-btn changeableSetting light power homely-off" id="kitchenLight_Power" data-capability-type="Light" data-device-id = "1" data-capability-name="kitchenLight" data-setting-type="Power" data-toggle="button">');
-
-    it("Updates power display correctly", function() {
-        loadFixtures('button.html')
-        expect($("#kitchenLight_Power")).toHaveClass('btn-inverse');
-        expect($("#kitchenLight_Power")).toHaveClass('homely-off');
-        expect($("#kitchenLight_Power")).not.toHaveClass('btn-success');
-        expect($("#kitchenLight_Power")).not.toHaveClass('homely-on');
-        kitchenLight.setPower(1);
-        kitchenLight.updatePowerDisplay();
-        expect($("#kitchenLight_Power")).not.toHaveClass('btn-inverse');
-        expect($("#kitchenLight_Power")).not.toHaveClass('homely-off');
-        expect($("#kitchenLight_Power")).toHaveClass('btn-success');
-        expect($("#kitchenLight_Power")).toHaveClass('homely-on');
-        
-    });
-});
-
-*//*
 var bathroomLight = new Light('1', 'Light', 'bathroomLight', 'http://192.168.0.3:3000');
 var livingRoomLight = new Light('1', 'Light', 'livingRoomLight', 'http://192.168.0.3:3000');
 describe("Handling clicks", function() {
@@ -276,18 +244,6 @@ describe("Handling clicks", function() {
         $("#bathroomLight_Power").click();
         expect(bathroomLight.power).toBe(1);
         expect(livingRoomLight.power).toBe(0);
-    });
-
-    it("Adjusts the power classes for turning off", function() {
-        bathroomLight.setPower(0);
-        expect($('#bathroomLight_Power')).toHaveClass('btn-inverse');
-        expect($('#bathroomLight_Power')).not.toHaveClass('btn-success');
-    });
-
-    it("Adjusts the power classes for turning on", function() {
-        bathroomLight.setPower(1);
-        expect($('#bathroomLight_Power')).toHaveClass('btn-success');
-        expect($('#bathroomLight_Power')).not.toHaveClass('btn-inverse');
     });
 
 });*/
