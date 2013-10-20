@@ -13,6 +13,12 @@ require 'seed_methods.rb'
 seed_file = File.join(Rails.root, 'db', SEED_FILENAME)
 @config = YAML::load_file(seed_file)
 
+puts "Removing old data"
+Setting.delete_all
+Capability.delete_all
+Device.delete_all
+
+
 puts "Seeding Devices"
 seed_devices!()
 #seed_capabilities!()

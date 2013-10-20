@@ -23,7 +23,7 @@ class SerialArduinoCommunicator < ArduinoCommunicator
     arduino0 = arduino_list.flatten!.first.to_s
     raise "Error - No Arduinos Connected via Serial" if arduino0.empty?
 
-    baud_rate = 9600
+    baud_rate = 115200
     data_bits = 8
     stop_bits = 1
     parity = SerialPort::NONE

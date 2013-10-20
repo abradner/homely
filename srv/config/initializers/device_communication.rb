@@ -1,4 +1,5 @@
 require './lib/arduino_communicator/arduino_communicator'
+require './lib/arduino_communicator/emulated_arduino_communicator'
 require './lib/arduino_communicator/serial_arduino_communicator'
 require './lib/arduino_communicator/tcp_arduino_communicator'
 require 'yaml'
@@ -8,30 +9,6 @@ DEVICE_PROTOCOL_MAP_FILE = "device_protocol.yml"
 
 seed_file = File.join(Rails.root, 'config', DEVICE_PROTOCOL_MAP_FILE)
 proto_map = YAML::load_file(seed_file)
-
-
-def ard_build(protocol)
-
-  
-  #ard1 = TCPArduinoCommunicator.new
-  @ard2 = SerialArduinoCommunicator.new
-
-end
-
-def ard_listen
-  @ard2.receive!
-end
-
-def ard_send(message)
-  @ard2.send! message
-end
-
-def ard_kill
-  #ard1.close
-  @ard2.close
-end
-
-
 
 
 #Create initialise communication for each device
@@ -62,7 +39,7 @@ end
 
 ## CLOSE ALL OPEN HANDLES
 at_exit do
-  registered_devices = Device.find(@@dev_list.keys)
+  registered_devices = Device.where id: @@dev_list.keys
   registered_devices.each do | dev|
 
     dev_name = "[#{dev.id}](#{dev.name})"

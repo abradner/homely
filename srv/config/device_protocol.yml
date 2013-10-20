@@ -1,2 +1,3 @@
 Serial: SerialArduinoCommunicator
 TCP: TCPArduinoCommunicator
+Emulated: EmulatedArduinoCommunicator

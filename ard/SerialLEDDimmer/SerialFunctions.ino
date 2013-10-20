@@ -1,3 +1,12 @@
+void print_status(int ledNo, int red, int green, int blue) {
+      Serial.print("(");
+      Serial.print(ledNo);
+      print_hex(red);
+      print_hex(green);
+      print_hex(blue);
+      Serial.println(")");
+}
+
 int hex_to_i(byte digit) {
   if (digit >= 'a') {
     digit = digit - 'a' + 10;

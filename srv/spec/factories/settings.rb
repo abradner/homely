@@ -3,9 +3,9 @@
 FactoryGirl.define do
   factory :setting do
     association :capability
-    type "Power"
+    name "Power"
+    min 0
+    max 1
     value 1
-    #power { [true,false].sample }
-    #mode "MyString"
   end
 end

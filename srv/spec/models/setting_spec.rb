@@ -12,7 +12,7 @@ describe Setting do
 
     #Workaround
     it {
-      should_not allow_value(nil).for :type
+      should_not allow_value(nil).for :name
       should_not allow_value(nil).for :value
     }
 

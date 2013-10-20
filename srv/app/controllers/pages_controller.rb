@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  require 'colour_obj'
+
   skip_before_filter :verify_authenticity_token, :only => :colour
 
   @state =[]
@@ -6,6 +8,8 @@ class PagesController < ApplicationController
   @colour_state =""
   @ping_state ="Device not there :("
   @@colour = "000000"
+
+  NUM_STEPS = 20
 
   before_action :instantiate_device
 
@@ -25,11 +29,15 @@ class PagesController < ApplicationController
   end
 
   def off
-    set_colour "000000", false
+    col = @@colour
+    fade("000000", NUM_STEPS)
+    @@colour = col
+    display_page(notice: "Success!")
   end
 
   def on
-    set_colour @@colour, false
+    fade(@@colour, NUM_STEPS)
+    display_page(notice: "success!")
   end
 
   def white
@@ -78,8 +86,14 @@ class PagesController < ApplicationController
         end
         new_colours += s
       end
-      set_colour(new_colours, true)
+      fade(new_colours, NUM_STEPS)
+      display_page(notice: "success!")
+    elsif colour.eql? "0"
+      off
+    elsif colour.eql? "1"
+      on
     else
+      
       display_page error: "Bad colour!"
     end
 
@@ -96,44 +110,46 @@ class PagesController < ApplicationController
     @device.send!(message)
     to_receive = nil
     t1 = Time.now
-    while to_receive.nil? and (Time.now - t1) < 2
-      to_receive = @device.receive!
-    end
-    if to_receive.nil?
-      @ping_state = "Device not there :("
-    elsif to_receive.chomp == "p"
-      @ping_state = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
-    else
-      @ping_state = "Bad response"
-    end
+          while to_receive.nil? and (Time.now - t1) < 2
+            to_receive = @device.receive!
+          end
+      if to_receive.nil?
+        @ping_state = "Device not there :("
+      elsif to_receive.chomp == "p"
+        @ping_state = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
+      else
+        @ping_state = "Bad response"
+      end
 
-    display_page
-  end
+      display_page
+      end
 
-  private
-  def instantiate_device
-    @device = Device.first
-  end
+      private
+      def instantiate_device
+        @device = (Device.where interface: "Serial").first
+        
+        @capability = @device.capabilities.first
+      end
 
-  def get_state(id)
-
-
-    state = []
-
-    # TODO figure out how to get a list of all LEDs
-    ledIDs = ["0", "1"]
-    if not id.nil?
-      ledIDs = [id]
-    end
-
-    ledIDs.each { |ledID|
-      message = "?" + ledID
-      @device.send! message
+      def get_state(id)
 
 
-      # TODO make sure this doesn't inf loop with some kind of timeout
+        state = []
 
-      to_receive = nil
+        # TODO figure out how to get a list of all LEDs
+        ledIDs = ["0", "1"]
+        if not id.nil?
+          ledIDs = [id]
+        end
+
+        ledIDs.each { |ledID|
+          message = "?" + ledID
+          @device.send! message
+
+
+          # TODO make sure this doesn't inf loop with some kind of timeout
+
+          to_receive = nil
       while to_receive.nil?
         to_receive = @device.receive!
       end
@@ -146,22 +162,59 @@ class PagesController < ApplicationController
 
   def set_colour(colour, store)
 
+    if do_colour_change(colour, store)
+      display_page(notice: "success!")
+    else
+      display_page(error: "Device '#{@device.name}' is not connected.")
+    end
 
-    puts @device.inspect
+  end
 
-    display_page(error: "Device '#{@device.name}' is not connected.") and return unless @device.connected?
+  def do_colour_change(colour, store)
 
-    message = "(0" + colour + ")"
-    printf("Message = %s\n", message)
+    return false unless @device.connected?
 
-    @device.send! message
+    @capability.p9813_colour = colour
+    puts ("Message = '#{@capability.message}'")
+
     if store
       @@colour = colour
     end
     @state = []
 
-    display_page(notice: "success!")
     #SendDataWorker.perform_async(colour)
+
+    true
+
+  end
+
+
+  def fade(colour, num_steps)
+
+    return false unless @device.connected?
+
+    steps = [255,num_steps].min
+
+    old_colour = ColourObj::Colour.new @@colour
+    new_colour = ColourObj::Colour.new(colour)
+
+    @@colour = colour
+
+
+    #TODO - if the value of each step works out to be less than one it will never fade
+    # The [1,stuff].max hack will overshoot in these cases and needs to be fixed
+
+     red_step   = (new_colour.red   - old_colour.red) / steps
+     green_step = (new_colour.green - old_colour.green) / steps
+     blue_step   =(new_colour.blue - old_colour.blue) / steps
+
+
+    steps.times do |i|
+      old_colour.shift red: red_step, green: green_step, blue: blue_step
+      sleep 0.02
+
+      do_colour_change(old_colour.to_s, false)
+    end
 
   end
 
@@ -214,29 +267,5 @@ class PagesController < ApplicationController
     render(action: :basic_commands)
   end
 
-
-  #
-  #def ard_build
-  #  require './lib/arduino_communicator/arduino_communicator'
-  #  require './lib/arduino_communicator/serial_arduino_communicator'
-  #  require './lib/arduino_communicator/tcp_arduino_communicator'
-  #
-  #  #ard1 = TCPArduinoCommunicator.new
-  #  @ard2 = SerialArduinoCommunicator.new
-  #
-  #end
-  #
-  #def ard_listen
-  #  @ard2.receive!
-  #end
-  #
-  #def ard_send(message)
-  #  @ard2.send! message
-  #end
-  #
-  #def ard_kill
-  #  #ard1.close
-  #  @ard2.close
-  #end
 
 end
