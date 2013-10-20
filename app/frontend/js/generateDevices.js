@@ -1,14 +1,10 @@
-var newDeviceBox = function(data) {
-    var id = data["id"];
-    var name = data["name"];
-    var deviceType = data["device_type"];
+var newDeviceBox = function(device) {
     var box = "<div class='container-fluid device'>\
-                <h1>" + name + ", " + deviceType + "</h1>\
+                <h1>" + device.name + ", " + device.type + "</h1>\
                 <!-- Start Device Accordion !-->\
-                <div class='accordion span6' id='device'" + id + ">";
+                <div class='accordion span6' id='device'" + device.id + ">";
 
-    var capabilities = devices[id];
-    $.each(capabilities, function (key, value) {
+    $.each(device.capabilities, function (key, value) {
         box = box + newCapabilitiesBox(key, value);
     });
 

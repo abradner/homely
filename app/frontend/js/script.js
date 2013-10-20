@@ -1,4 +1,5 @@
 var onMobile = false;
+var serverUrl = 'http://localhost:3000';
 
 /* FUNCTIONS */
 var handleSettingUpdate = function (event) {
@@ -6,27 +7,27 @@ var handleSettingUpdate = function (event) {
     capabilityId = $(this).data('capability-id');
     deviceId = $(this).data('device-id');
     id = $(this).data('id');
-    cap = devices[deviceId][capabilityId];
+    cap = devices[deviceId].capabilities[capabilityId];
     var value = cap.settings[id].getValue();
-    // Pass in a callback function to updateServer - if it's successful, we'll update our values
-    cap.updateToServer(cap.updateFromServer, id, value);
+    cap.settings[id].updateToServer(id, value);
 }
 
+var dataStore;
 
 $(document).ready(function() {
 
     // This goes in the client.subscribe() function
     // We get the json as a message on first connecting
-    $.getJSON('http://localhost:3000/devices.json', function(data) {
+    $.getJSON(serverUrl+'/devices.json', function(data) {
+        dataStore = data;
         $.each(data, function (val) {
-            var id = data[val]["id"];
-            var capabilities = data[val]["capabilities"];
-            addDevice(id, capabilities);
-            $('#devices').append(newDeviceBox(data[val]));
+            addDevice(data[val], serverUrl);
+            var dataId = data[val]["id"];
+            $('#devices').append(newDeviceBox(devices[dataId]));
         });
     });
 
-    var client = new Faye.Client('http://localhost:3000/faye');
+    var client = new Faye.Client(serverUrl+'/faye');
     var subscription = client.subscribe('/connect', function(message) {
         alert(message);
         /*var deviceID = message["device_id"];

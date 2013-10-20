@@ -1,15 +1,14 @@
 $.Class.extend("Capability", {
     // constructor function
-    init : function(id, deviceId, type, name, url){
+    init : function(id, deviceId, type, name){
         this.id = id;
         this.deviceId = deviceId;
         this.type = type;
         this.name = name;
-        this.server = url;
         this.settings = {};
     },
 
-    makeSetting: function(settingInfo) {
+    makeSetting: function(settingInfo, serverUrl) {
         var type = settingInfo['name'];
         var id = settingInfo['id'];
         var value = settingInfo['value'];
@@ -18,13 +17,13 @@ $.Class.extend("Capability", {
         var setting;
         switch (type) {
             case 'Power':
-                setting = new Power(this, id, type, value, min, max);
+                setting = new Power(this.deviceId, this, id, type, value, min, max, serverUrl);
                 break;
             case 'Colour':
-                setting = new Colour(this, id, type, value, min, max);
+                setting = new Colour(this.deviceId, this, id, type, value, min, max, serverUrl);
                 break;
             default:
-                setting = new Setting(this, id, type, value, min, max);
+                setting = new Setting(this.deviceId, this, id, type, value, min, max, serverUrl);
         }
         this.settings[settingInfo['id']] = setting;
     },
@@ -43,33 +42,4 @@ $.Class.extend("Capability", {
         });
     },
 
-
-    /* Send the new state to the server */
-    updateToServer: function (f, settingId, newValue) {
-        var success = true;
-        var url = this.server+'/pages/colour';
-        //var url = 'localhost:3000/pages/'+this.device_id+'/'+this.id+'/'+settingChanged+'/update';
-        var serverResponse = $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                'colour': newValue //'value': newValue
-            },
-            timeout: 5000 // sets timeout to 3 seconds
-        })
-        .fail($.proxy(function(data, textStatus, jqXHR){
-            alert(textStatus +","+ jqXHR.errorThrown);
-            Android.serverError(this.deviceId, this.name);
-        }, this))
-        .done($.proxy(function(){
-            f.call(this, settingId, newValue);
-            Android.serverSuccess(this.deviceId, this.name);
-        }, this));
-
-    },
-    /* Update the setting & display after we receive an update from the server */
-    updateFromServer: function (settingId, value) {
-        this.settings[settingId].set(value);
-        this.settings[settingId].updateDisplay();
-    }
 });
