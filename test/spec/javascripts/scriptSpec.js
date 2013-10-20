@@ -58,8 +58,8 @@ describe("Capability Initialisation", function() {
 //setting.js
 describe("Settings Initialisation", function() {
     it("Initialises the capability ID correctly", function() {
-        expect(c.settings[settingColourId].cap).toBe(capabilityId);
-        expect(c.settings[settingPowerId].cap).toBe(capabilityId);
+        expect(c.settings[settingColourId].cap.id).toBe(capabilityId);
+        expect(c.settings[settingPowerId].cap.id).toBe(capabilityId);
     });
 
     it("Initialises the setting ID correctly", function() {
@@ -120,7 +120,7 @@ describe("Capability Functions", function() {
 });
 
   
-//settings.js TODO displayString
+//setting.js
 describe("Settings Functions", function() {
     beforeEach(function() {
         c.settings[settingPowerId].set(initialPower);
@@ -155,6 +155,12 @@ describe("Settings Functions", function() {
         expect($(c.settings[settingColourId].divId)).toHaveValue('54');
     });
     
+    it("'displayString' returns correct html", function() {
+        var str = c.settings[settingColourId].displayString();
+        var expectedStr = "<input type='range' class='changeableSetting' name='slider' id='" + divColour + "' data-capability-id='" + capabilityId + "' data-device-id = '" + deviceId + "' data-id='" + settingColourId + "' value='" + initialColour + "' min='" + minColour + "' max='" ;
+        expect(str == expectedStr);
+    });
+    
     it("'getValue' function returns correct value from div", function() {
         loadFixtures('slider.html')
         c.settings[settingColourId].set(54);
@@ -165,10 +171,19 @@ describe("Settings Functions", function() {
 
 }); 
 
-//power-setting.js TODO displayString
+//power-setting.js
 describe("Power Setting Functions", function() {
     beforeEach(function() {
         c.settings[settingPowerId].set(initialPower);
+    });
+
+    it("'displayString' creates correct html", function() {
+        var str = c.settings[settingPowerId].displayString;
+        var expectedStr = "<button type='button' class='btn btn-inverse homely-btn changeableSetting homely-off id='"+divPower+"' data-device-id = '" + deviceId + "' data-capability-id='" + capabilityId + "'data-id='" + settingPowerId + "' data-toggle='button'></button>";
+        expect(str == expectedStr);
+        c.settings[settingPowerId].set(maxPower);
+        str = c.settings[settingPowerId].displayString;
+        expectedStr = "<button type='button' class='btn btn-success homely-btn changeableSetting homely-on id='"+divPower+"' data-device-id = '" + deviceId + "' data-capability-id='" + capabilityId + "'data-id='" + settingPowerId + "' data-toggle='button'></button>";
     });
     
     it("'updateDisplay' updates power classes correctly - turn on", function() {
