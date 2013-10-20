@@ -8,7 +8,6 @@ var handleSettingUpdate = function (event) {
     id = $(this).data('id');
     cap = devices[deviceId][capabilityId];
     var value = cap.settings[id].getValue();
-
     // Pass in a callback function to updateServer - if it's successful, we'll update our values
     cap.updateToServer(cap.updateFromServer, id, value);
 }
@@ -27,14 +26,14 @@ $(document).ready(function() {
         });
     });
 
-    //var client = new Faye.Client('http://localhost:3001');
-    //var subscription = client.subscribe('/connect', function(message) {
-    //    alert(message);
+    var client = new Faye.Client('http://localhost:3000/faye');
+    var subscription = client.subscribe('/connect', function(message) {
+        alert(message);
         /*var deviceID = message["device_id"];
         var capabilityID = message["name"];
         var state = message["state"];
         devices[deviceID][capabilityID].updateFromServer(state);*/
-    //});
+    });
 
     if (window.Android) {
         onMobile = true;
