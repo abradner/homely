@@ -10,7 +10,7 @@ $.Class.extend("Capability", {
     },
 
     makeSetting: function(settingInfo) {
-        var type = settingInfo['type'];
+        var type = settingInfo['name'];
         var id = settingInfo['id'];
         var value = settingInfo['value'];
         var min = settingInfo['min'];
@@ -55,7 +55,7 @@ $.Class.extend("Capability", {
             data: {
                 'colour': newValue //'value': newValue
             },
-            timeout: 1000 // sets timeout to 3 seconds
+            timeout: 5000 // sets timeout to 3 seconds
         })
         .fail($.proxy(function(data, textStatus, jqXHR){
             alert(textStatus +","+ jqXHR.errorThrown);
