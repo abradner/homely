@@ -17,11 +17,12 @@ class CapabilitiesController < ApplicationController
 
     load_resource
 
-    mode = params[:mode].to_s
+    puts params
+    mode = params[:value].to_s
 
-    if mode.to_s.downcase.eql? "on"
+    if mode.to_s.downcase.eql? "on" || params[:value] == 1
       @capability.p9813_on
-    elsif mode.to_s.downcase.eql? "off"
+    elsif mode.to_s.downcase.eql? "off" || params[:value] == 0
       @capability.p9813_off
 
     else
@@ -35,7 +36,7 @@ class CapabilitiesController < ApplicationController
   def p9813_set_colour
     load_resource
 
-    colour = params[:colour]
+    colour = params[:value]
     unless colour.blank?
       @capability.p9813_colour = colour
     end

@@ -44,22 +44,21 @@ $.Class.extend("Setting", {
     /* Send the new state to the server */
     updateToServer: function (f, newValue) {
         var success = true;
-
         var serverResponse = $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: this.url,
             data: {
                 // Consider changing 'value': to be this.name:
-                'value': newValue //'value': newValue
+                'value': newValue
             },
-            timeout: 60000 // sets timeout to 3 seconds
+            timeout: 600000 // sets timeout to 1 second
         })
         .fail($.proxy(function(data, textStatus, jqXHR){
             alert(textStatus +","+ jqXHR.errorThrown);
             Android.serverError(this.deviceId, this.name);
         }, this))
         .done($.proxy(function(){
-            updateFromServer.call(this, newValue);
+            this.updateFromServer.call(this, newValue);
             Android.serverSuccess(this.deviceId, this.name);
         }, this));
     },

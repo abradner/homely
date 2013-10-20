@@ -45,10 +45,10 @@
       %td= cap.state
       %td
         - if cap.capability_type.eql? "P9813"
-          = link_to "red", device_capability_p9813_set_colour_path(@device, cap, colour: "ff0000")
-          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, colour: "0000ff")
-          = link_to "green", device_capability_p9813_set_colour_path(@device, cap, colour: "00ff00")
-          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, colour: "0000ff")
-          = link_to "white", device_capability_p9813_set_colour_path(@device, cap, colour: "ffffff")
-          = link_to "dark", device_capability_p9813_set_colour_path(@device, cap, colour: "111111")
+          = link_to "red", device_capability_p9813_set_colour_path(@device, cap, value: "ff0000")
+          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, value: "0000ff")
+          = link_to "green", device_capability_p9813_set_colour_path(@device, cap, value: "00ff00")
+          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, value: "0000ff")
+          = link_to "white", device_capability_p9813_set_colour_path(@device, cap, value: "ffffff")
+          = link_to "dark", device_capability_p9813_set_colour_path(@device, cap, value: "111111")
 %p
