@@ -17,13 +17,13 @@ $.Class.extend("Capability", {
         var setting;
         switch (type) {
             case 'Power':
-                setting = new Power(this.deviceId, this, id, type, value, min, max, serverUrl);
+                setting = new Power(this.deviceId, this.id, id, type, value, min, max, serverUrl);
                 break;
             case 'Colour':
-                setting = new Colour(this.deviceId, this, id, type, value, min, max, serverUrl);
+                setting = new Colour(this.deviceId, this.id, id, type, value, min, max, serverUrl);
                 break;
             default:
-                setting = new Setting(this.deviceId, this, id, type, value, min, max, serverUrl);
+                setting = new Setting(this.deviceId, this.id, id, type, value, min, max, serverUrl);
         }
         this.settings[settingInfo['id']] = setting;
     },

@@ -8,7 +8,7 @@ var handleSettingUpdate = function (event) {
     deviceId = $(this).data('device-id');
     id = $(this).data('id');
     cap = devices[deviceId].capabilities[capabilityId];
-    var value = cap.settings[id].getValue();
+    var value = cap.settings[id].getChangedValue();
     cap.settings[id].updateToServer(id, value);
 }
 
@@ -27,14 +27,15 @@ $(document).ready(function() {
         });
     });
 
-    var client = new Faye.Client(serverUrl+'/faye');
+    /*var client = new Faye.Client(serverUrl+'/faye');
     var subscription = client.subscribe('/connect', function(message) {
         alert(message);
-        /*var deviceID = message["device_id"];
-        var capabilityID = message["name"];
-        var state = message["state"];
-        devices[deviceID][capabilityID].updateFromServer(state);*/
-    });
+        //var deviceID = message["device_id"];
+        //var capabilityID = message["name"];
+        //var settingId = message["setting"];
+        //var state = message["state"];
+        //devices[deviceID].capabilities[capabilityId].settings[settingId].updateFromServer(state);
+    });*/
 
     if (window.Android) {
         onMobile = true;

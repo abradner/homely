@@ -1,19 +1,21 @@
 $.Class.extend("Setting", {
     // constructor function
-    init: function(deviceId, cap, id, name, value, min, max, serverUrl){
-        this.cap = cap;
+    init: function(deviceId, capId, id, name, value, min, max, serverUrl){
+        this.capId = capId;
         this.deviceId = deviceId;
         this.id = id;
         this.name = name;
         this.value = value;
 
-        this.div = this.cap.deviceId + "_" + this.cap.id + "_" + this.id;
+        this.div = this.deviceId + "_" + this.capId + "_" + this.id;
         this.divId = "#" + this.div;
         this.min = min;
         this.max = max;
 
         deviceType = devices[this.deviceId].type;
-        this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.cap.id + '/' + this.cap.type.toLowerCase() + '_set_' + this.name.toLowerCase();
+        capType = devices[this.deviceId].capabilities[this.capId].type;
+
+        this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.capId + '/' + capType.toLowerCase() + '_set_' + this.name.toLowerCase();
     },
 
     sanitise: function(v) {
@@ -32,14 +34,12 @@ $.Class.extend("Setting", {
     },
 
     displayString: function () {
-        var capId = this.cap.id;
-        return "<input type='range' class='changeableSetting' name='slider' id='"+this.div+"' data-capability-id='"+this.cap.id+"' data-device-id = '"+this.deviceId+"' data-id='"+this.id+"' value='"+this.value+"' min='"+this.min+"' max='"+this.max+"'";
+        return "<input type='range' class='changeableSetting' name='slider' id='"+this.div+"' data-capability-id='"+this.capId+"' data-device-id = '"+this.deviceId+"' data-id='"+this.id+"' value='"+this.value+"' min='"+this.min+"' max='"+this.max+"'";
     },
 
-    getValue: function () {
+    getChangedValue: function () {
         return $(this.divId).val();
     },
-
 
     /* Send the new state to the server */
     updateToServer: function (f, newValue) {
@@ -62,6 +62,7 @@ $.Class.extend("Setting", {
             Android.serverSuccess(this.deviceId, this.name);
         }, this));
     },
+
     /* Update the setting & display after we receive an update from the server */
     updateFromServer: function (value) {
         this.set(value);
