@@ -2,21 +2,21 @@ var newDeviceBox = function(device) {
     var box = "<div class='container-fluid device'>\
                 <h1>" + device.name + ", " + device.type + "</h1>\
                 <!-- Start Device Accordion !-->\
-                <div class='accordion span6' id='device'" + device.id + ">";
+                <div class='accordion span6 offset3' id='device'" + device.id + ">";
 
     $.each(device.capabilities, function (key, value) {
         box = box + newCapabilitiesBox(key, value);
     });
 
     box = box + "</div>\
-                <!-- End Accordion Device 1 -->\
+                <!-- End Device Accordion -->\
             </div>";
     return box;
 }
 
 var newCapabilitiesBox = function(id, cap) {
     var box = "\
-    <!-- New Device Accordion -->\
+    <!-- New Capability Accordion -->\
         <div class='accordion-group'>\
             <div class='accordion-heading'>\
             <a class='accordion-toggle' data-toggle='collapse' data-parent='#device'"+id+"\ href='#capability"+id+"'>\
@@ -29,7 +29,7 @@ var newCapabilitiesBox = function(id, cap) {
                 <div class='accordion-inner'>\
                     <!-- Start Capability Box -->\
                     <div class='modal-body'>\
-                        <div class='span10 center'>";
+                        <div class='span10 offset1 center'>";
 
     box = box + newStates(cap);
 
@@ -39,7 +39,7 @@ var newCapabilitiesBox = function(id, cap) {
                 </div>\
             </div>\
         </div>\
-        <!-- End of one Capability Accordion -->";
+        <!-- End Capability Accordion -->";
 
     return box;
 }
