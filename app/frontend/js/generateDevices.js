@@ -1,14 +1,22 @@
 var newDeviceBox = function(device) {
     var box = "<div class='container-fluid device'>\
-                <h1>" + device.name + ", " + device.type + "</h1>\
                 <!-- Start Device Accordion !-->\
-                <div class='accordion span6 offset3' id='device'" + device.id + ">";
+                <div class='accordion-heading'>\
+                    <a class='accordion-toggle' data-toggle='collapse' data-parent='#devices'\ href='#device"+device.id+"'>\
+                        <strong><span>"+device.name+"</span></strong>\
+                        -\
+                        <em><span>"+device.type+"</span></em>\
+                    </a>\
+                </div>\
+                <div id='device"+device.id+"' class='accordion-body collapse'>\
+                    <div class='accordion-inner' span10 offset1' id='device'" + device.id + ">";
 
     $.each(device.capabilities, function (key, value) {
         box = box + newCapabilitiesBox(key, value);
     });
 
-    box = box + "</div>\
+    box = box + "   </div>\
+                </div>\
                 <!-- End Device Accordion -->\
             </div>";
     return box;
@@ -19,23 +27,19 @@ var newCapabilitiesBox = function(id, cap) {
     <!-- New Capability Accordion -->\
         <div class='accordion-group'>\
             <div class='accordion-heading'>\
-            <a class='accordion-toggle' data-toggle='collapse' data-parent='#device'"+id+"\ href='#capability"+id+"'>\
+            <a class='accordion-toggle' data-toggle='collapse' data-parent='#device"+id+"'\ href='#capability"+cap.id+"'>\
             <strong><span>"+cap.name+"</span></strong>\
                     -\
                     <em><span>"+cap.type+"</span></em>\
                 </a>\
             </div>\
-            <div id='capability"+id+"' class='accordion-body collapse'>\
-                <div class='accordion-inner'>\
-                    <!-- Start Capability Box -->\
-                    <div class='modal-body'>\
-                        <div class='span10 offset1 center'>";
+            <div id='capability"+cap.id+"' class='accordion-body collapse'>\
+                <div class='accordion-inner span10 offset1 center'>\
+                    <!-- Start Capability Box -->";
 
     box = box + newStates(cap);
 
-    box = box + "</div>\
-                    </div>\
-                    <!-- End Capability Box -->\
+    box = box + "   <!-- End Capability Box -->\
                 </div>\
             </div>\
         </div>\
