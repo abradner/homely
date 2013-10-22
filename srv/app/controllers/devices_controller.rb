@@ -12,7 +12,6 @@ class DevicesController < ApplicationController
       device
     end
 
-    puts hash
     respond_to do |format|
       format.html
       format.json {
