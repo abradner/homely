@@ -29,6 +29,12 @@ class CapabilitiesController < ApplicationController
       @capability.p9813_power_toggle
     end
 
+    hash = { "device"     => @capability.device.id,
+             "capability" => @capability.id,
+             "setting"    => @capability.settings.where(name: 'Power').first.id,
+             "value"      => @capability.settings.where(name: 'Power').first.value }
+    BroadcastWorker.perform_async(hash.to_json);
+
     render "devices/show"
   end
 
@@ -40,6 +46,13 @@ class CapabilitiesController < ApplicationController
     unless colour.blank?
       @capability.p9813_colour = colour
     end
+
+    hash = { "device"     => @capability.device.id,
+             "capability" => @capability.id,
+             "setting"    => @capability.settings.where(name: 'Colour').first.id,
+             "value"      => colour}
+    BroadcastWorker.perform_async(hash.to_json)
+
     render "devices/show"
 
   end

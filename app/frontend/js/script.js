@@ -1,5 +1,5 @@
 var onMobile = false;
-var serverUrl = 'http://localhost:3000';
+var serverUrl = 'http://192.168.0.3:3000';
 
 /* FUNCTIONS */
 var handleSettingUpdate = function (event) {
@@ -19,7 +19,6 @@ $(document).ready(function() {
     // This goes in the client.subscribe() function
     // We get the json as a message on first connecting
     $.getJSON(serverUrl+'/devices.json', function(data) {
-        dataStore = data;
         $.each(data, function (val) {
             addDevice(data[val], serverUrl);
             var dataId = data[val]["id"];
@@ -27,24 +26,18 @@ $(document).ready(function() {
         });
     });
 
-    /*var client = new Faye.Client(serverUrl+'/faye');
+    var client = new Faye.Client('http://192.168.0.3:9292/faye');
     var subscription = client.subscribe('/connect', function(message) {
-        alert(message);
-        //var deviceID = message["device_id"];
-        //var capabilityID = message["name"];
-        //var settingId = message["setting"];
-        //var state = message["state"];
-        //devices[deviceID].capabilities[capabilityId].settings[settingId].updateFromServer(state);
-    });*/
+        message = $.parseJSON(message);
+        var deviceId = message["device"];
+        var capabilityId = message["capability"];
+        var settingId = message["setting"];
+        var value = message["value"]
+        devices[deviceId].capabilities[capabilityId].settings[settingId].updateFromServer(value);
+    });
 
     if (window.Android) {
         onMobile = true;
-        $(document).on('touchstart',function(event) {
-            event.preventDefault();
-        },false);
-        $(document).on('touchmove', function(event) {
-            event.preventDefault();
-        },false);
         // Necessary for dynamically loaded content - can't just attach it to the class
         $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
     } else {

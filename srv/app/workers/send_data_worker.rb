@@ -8,8 +8,8 @@ class SendDataWorker
 
     puts "Changed arduino to #{colour}"
     data = "check new message"
-    message = {:channel => 'connect', :data => data}
-    uri = URI.parse("http://localhost:3000/faye")
+    message = {:channel => '/connect', :data => data}
+    uri = URI.parse("http://localhost:9292/faye")
     Net::HTTP.post_form(uri, :message => message.to_json)
   end
 
