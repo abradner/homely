@@ -48,7 +48,7 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
 
       @colours[led].set_colour colour # will raise excepton if the colour is malformatted
 
-      send_status! led
+      #send_status! led
 
     ###### Query Command
     elsif command.eql? '?'

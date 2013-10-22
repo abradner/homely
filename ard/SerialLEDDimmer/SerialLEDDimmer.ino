@@ -65,7 +65,7 @@ void loop() {
       // fade the red, green, and blue legs of the LED: 
       leds.setColorRGB(ledNo, red, green, blue);
 
-      print_status(ledNo,red,green,blue);
+      //print_status(ledNo,red,green,blue);
     
     } else if (Serial.peek() == '?') {
       if (Serial.available() <= 1) {
@@ -98,6 +98,6 @@ void welcome() {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
     LED_test_pattern();
-    Serial.println("\nReady.");
+    //Serial.println("\nReady.");
 
 }

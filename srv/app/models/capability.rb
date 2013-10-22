@@ -96,6 +96,25 @@ class Capability < ActiveRecord::Base
     self.message = "(#{prefix}#{msg})"
   end
 
+  def p9813_ping
+    p9813_check!
+    self.device.send! "p"
+    to_receive = nil
+    message=""
+    t1 = Time.now
+    while to_receive.nil? and (Time.now - t1) < 2
+      to_receive = self.device.receive!
+    end
+    if to_receive.nil?
+      message = "Device not there :("
+    elsif to_receive.chomp == "p"
+      message = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
+    else
+      message = "Bad response"
+    end
+    print (message + " = " + to_receive)
+  end
+
 
   private
 
@@ -112,7 +131,7 @@ class Capability < ActiveRecord::Base
   def setting(name)
     self.settings.where(name: name).first
   end
-  
+
   def power_change(state)
 
     power = setting POWER
