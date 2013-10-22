@@ -30,4 +30,17 @@ public class HomelyActivityTest extends ActivityInstrumentationTestCase2<HomelyA
 	public void testTestingWorks() throws Exception {
 		assertNull(null);
 	}
+
+	public void testSetAndGet() throws Exception {
+		HomelyJSI jsi = new HomelyJSI(new HomelyActivity());
+		jsi.setServerUrl("localhost");
+		assertEquals(jsi.getServerUrl(), "localhost");
+		assertEquals(jsi.getServerUrl(), "localhost");
+
+		jsi.setServerUrl("http://192.168.1.1");
+		assertEquals(jsi.getServerUrl(), "http://192.168.1.1");
+
+		jsi.setServerUrl("http://192.168.1.2:3000");
+		assertEquals(jsi.getServerUrl(), "http://192.168.1.2:3000");
+	}
 }
