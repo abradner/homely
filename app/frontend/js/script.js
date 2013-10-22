@@ -16,6 +16,9 @@ var dataStore;
 
 $(document).ready(function() {
 
+    $('#appsettings').append(newServerURLField())
+    serverUrl = getServerUrl()
+
     // This goes in the client.subscribe() function
     // We get the json as a message on first connecting
     $.getJSON(serverUrl+'/devices.json', function(data) {
