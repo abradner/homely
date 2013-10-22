@@ -9,6 +9,7 @@ class Capability < ActiveRecord::Base
   POWER = "Power"
   COLOUR = "Colour"
   PREFIX = "Prefix"
+  STATUS = "Status"
   
   belongs_to :device
   has_many :settings
@@ -36,6 +37,10 @@ class Capability < ActiveRecord::Base
 
   def state
     p9813_colour if self.capability_type.eql? "P9813"
+  end
+
+  def status
+    p9813_status if self.capability_type.eql? "P9813"
   end
 
 
@@ -113,7 +118,17 @@ class Capability < ActiveRecord::Base
       message = "Bad response"
     end
     print (message + " = " + to_receive)
+    stat = setting STATUS
+    stat.value = message
+    stat.save!
   end
+
+
+  def p9813_status
+    p9813_check!
+    setting(STATUS).value
+  end
+
 
 
   private
@@ -129,7 +144,11 @@ class Capability < ActiveRecord::Base
   end
 
   def setting(name)
-    self.settings.where(name: name).first
+    rec = self.settings.where(name: name).first
+    if rec.nil?
+      rec = Setting.create(capability_id: self.id, name: name, value: "", min: 0, max: 0)
+    end
+    rec
   end
 
   def power_change(state)

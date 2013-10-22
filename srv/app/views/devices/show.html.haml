@@ -29,6 +29,7 @@
   Address:
   = @device.address
 
+
 %table
   %tr
     %th Name
@@ -36,6 +37,7 @@
     %th Power
     %th State
     %th Control
+    %th Ping
     %th Status
 
   - @capabilities.each do |cap|
@@ -49,8 +51,8 @@
           = link_to "red", device_capability_p9813_set_colour_path(@device, cap, value: "ff0000")
           = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, value: "0000ff")
           = link_to "green", device_capability_p9813_set_colour_path(@device, cap, value: "00ff00")
-          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, value: "0000ff")
           = link_to "white", device_capability_p9813_set_colour_path(@device, cap, value: "ffffff")
           = link_to "dark", device_capability_p9813_set_colour_path(@device, cap, value: "111111")
       %td= link_to "ping", device_capability_p9813_ping_path(@device, cap)
+      %td= cap.status
 %p
