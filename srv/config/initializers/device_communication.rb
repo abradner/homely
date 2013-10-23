@@ -15,26 +15,32 @@ proto_map = YAML::load_file(seed_file)
 
 @@dev_list = {}
 
+
 registered_devices = Device.all
 
+begin
 
-registered_devices.each do |dev|
-  interface = proto_map[dev.interface]
+  registered_devices.each do |dev|
+    interface = proto_map[dev.interface]
 
-  #Check to make sure its a valid interface
-  raise "Cannot map interface '#{dev.interface}' to any protocol" if interface.blank?
+    #Check to make sure its a valid interface
+    raise "Cannot map interface '#{dev.interface}' to any protocol" if interface.blank?
 
-  connection = Kernel.const_get(interface).new
-  @@dev_list[dev.id] = connection
+    connection = Kernel.const_get(interface).new
+    @@dev_list[dev.id] = connection
 
-  #TODO: This should be safe because we only init once and from then on we check for nil then run methods
-  # That said... I'm not sure.
-  Thread.new do
-    puts "Device [#{dev.id}](#{dev.name}) Connecting..."
-    @@dev_list[dev.id].connect(dev.address)
-    puts "Device [#{dev.id}](#{dev.name}) Connected."
+    #TODO: This should be safe because we only init once and from then on we check for nil then run methods
+    # That said... I'm not sure.
+    Thread.new do
+      puts "Device [#{dev.id}](#{dev.name}) Connecting..."
+      @@dev_list[dev.id].connect(dev.address)
+      puts "Device [#{dev.id}](#{dev.name}) Connected."
+    end
+
   end
 
+rescue
+  puts "Warning: Table Devices did not exist. this should only happen if you're currently building the database"
 end
 
 ## CLOSE ALL OPEN HANDLES
