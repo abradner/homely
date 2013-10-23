@@ -1,5 +1,6 @@
 var onMobile = false;
-var serverUrl = 'http://192.168.0.3:3000';
+var server = 'http://localhost';
+var serverUrl = server + ':3000';
 
 /* FUNCTIONS */
 var handleSettingUpdate = function (event) {
@@ -29,7 +30,7 @@ $(document).ready(function() {
         });
     });
 
-    var client = new Faye.Client('http://192.168.0.3:9292/faye');
+    var client = new Faye.Client(server+':9292/faye');
     var subscription = client.subscribe('/connect', function(message) {
         message = $.parseJSON(message);
         var deviceId = message["device"];
