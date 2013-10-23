@@ -1,6 +1,7 @@
+// Dictionary for storing deviceIds/devices
 var devices = {};
 
-
+/* Creates a new device from the JSON, complete with capabilities and settings */
 addDevice = function (device, serverUrl) {
     var deviceId = device["id"];
     if (!(deviceId in devices)) {

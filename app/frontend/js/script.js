@@ -1,8 +1,7 @@
+/* General Script File*/
 var onMobile = false;
-var server = 'http://localhost';
-var serverUrl = server + ':3000';
 
-/* FUNCTIONS */
+// Callback for when settings are changed. Updates the server and the display appropriately.
 var handleSettingUpdate = function (event) {
     var id = $(this).attr('id');
     capabilityId = $(this).data('capability-id');
@@ -13,24 +12,37 @@ var handleSettingUpdate = function (event) {
     cap.settings[id].updateToServer(id, value);
 }
 
-var dataStore;
-
 $(document).ready(function() {
 
-    $('#appsettings').append(newServerURLField())
-    serverUrl = getServerUrl()
+    // If Android exists then we're on the mobile app, in which case we use touch
+    if (window.Android) {
+        onMobile = true;
+        // Necessary for dynamically loaded content - can't just attach it to the class
+        $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
+    // If it doesn't then we set up a mock android (to remove errors if its called)
+    } else {
+        window.Android = new MockAndroid();
+        $('#devices').on('click change', '.changeableSetting', handleSettingUpdate);
+    }
 
-    // This goes in the client.subscribe() function
-    // We get the json as a message on first connecting
+    // Server URl
+    $('#appsettings').append(newServerURLField())
+    var server = Android.getServerUrl();
+
+    var serverUrl = 'http://'+ server + ':3000';
+    var fayeUrl = 'http://'+ server + ':9292/faye';
+
+    // JSON object describing the devices we have access to
     $.getJSON(serverUrl+'/devices.json', function(data) {
+        // We create new device objects (incl. caps and settings), store and display them.
         $.each(data, function (val) {
             addDevice(data[val], serverUrl);
             var dataId = data[val]["id"];
-            $('#devices').append(newDeviceBox(devices[dataId]));
+            $('#devices').append(devices[dataId].stringDisplay());//newDeviceBox(devices[dataId]));
         });
     });
 
-    var client = new Faye.Client(server+':9292/faye');
+    var client = new Faye.Client(fayeUrl);
     var subscription = client.subscribe('/connect', function(message) {
         message = $.parseJSON(message);
         var deviceId = message["device"];
@@ -39,16 +51,6 @@ $(document).ready(function() {
         var value = message["value"]
         devices[deviceId].capabilities[capabilityId].settings[settingId].updateFromServer(value);
     });
-
-    if (window.Android) {
-        onMobile = true;
-        // Necessary for dynamically loaded content - can't just attach it to the class
-        $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
-    } else {
-        window.Android = new MockAndroid();
-        $('#devices').on('click change', '.changeableSetting', handleSettingUpdate);
-    }
-
 
 
 });
