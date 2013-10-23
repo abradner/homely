@@ -45,7 +45,11 @@
       %td= cap.name
       %td= cap.capability_type
       %td= link_to cap.power, device_capability_p9813_set_power_path(@device, cap)
-      %td= cap.state
+      - if cap.capability_type.eql? "P9813"
+        %td{bgcolor: "##{cap.state}"}= cap.state
+      - else
+        %td= cap.state
+
       %td
         - if cap.capability_type.eql? "P9813"
           = link_to "red", device_capability_p9813_set_colour_path(@device, cap, value: "ff0000")
