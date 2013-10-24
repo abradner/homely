@@ -3,8 +3,13 @@ require 'socket'
 
 class TCPArduinoCommunicator < ArduinoCommunicator
 
+  @address = nil
+  @rescued = false
+
+
   def connect(address)
 
+    @address = address
 
     host,port = address.split(':')
 
@@ -17,6 +22,23 @@ class TCPArduinoCommunicator < ArduinoCommunicator
     end
 
     @device = sock
+  end
+
+  def send!(message)
+    begin
+      super(message)
+    rescue SystemCallError
+      @rescued = true
+      self.connect @address
+      if @rescued
+        puts "Failed to reconnect to device!"
+        raise
+      else
+        retry
+      end
+
+      @rescued = false
+    end
   end
 
 end
