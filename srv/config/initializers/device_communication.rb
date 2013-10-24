@@ -31,8 +31,16 @@ registered_devices.each do |dev|
   # That said... I'm not sure.
   Thread.new do
     puts "Device [#{dev.id}](#{dev.name}) Connecting..."
+    begin
+
     @@dev_list[dev.id].connect(dev.address)
     puts "Device [#{dev.id}](#{dev.name}) Connected."
+
+    rescue Exception => e
+      puts "Connection to [#{dev.id}](#{dev.name}) raised exception:"
+      puts e.message
+    end
+
   end
 
 end
