@@ -52,11 +52,14 @@
 
       %td
         - if cap.capability_type.eql? "P9813"
-          = link_to "red", device_capability_p9813_set_colour_path(@device, cap, value: "ff0000")
-          = link_to "blue", device_capability_p9813_set_colour_path(@device, cap, value: "0000ff")
-          = link_to "green", device_capability_p9813_set_colour_path(@device, cap, value: "00ff00")
-          = link_to "white", device_capability_p9813_set_colour_path(@device, cap, value: "ffffff")
-          = link_to "dark", device_capability_p9813_set_colour_path(@device, cap, value: "111111")
+          - STOCK_COLOURS.each do |col|
+            = link_to "■", device_capability_p9813_set_colour_path(@device, cap, value: col), style: "color: ##{col}; background: ##{background_colour(col)}"
+          -# TODO This stuff HAS to go
+          %form{ :action => "/devices/#{@device.id}/capabilities/#{cap.id}/p9813_set_colour", :method => "get"}
+            .input-append
+              %input.input-mini{:type => "text", :name => "value", :class => "text", placeholder: "RRGGBB", maxlength: 6}
+              %button{:type => "submit", :class => "btn"}Set
+
       %td= link_to "ping", device_capability_p9813_ping_path(@device, cap)
       %td= cap.status
 %p
