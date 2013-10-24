@@ -19,6 +19,7 @@ $.Class.extend("Setting", {
         deviceType = devices[this.deviceId].type;
         capType = devices[this.deviceId].capabilities[this.capId].type;
         this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.capId + '/' + capType.toLowerCase() + '_set_' + this.name.toLowerCase();
+        this.cw;
     },
 
     /* Sanitise the input to prevent errors */

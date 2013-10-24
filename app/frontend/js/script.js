@@ -39,6 +39,32 @@ $(document).ready(function() {
             addDevice(data[val], serverUrl);
             var dataId = data[val]["id"];
             $('#devices').append(devices[dataId].stringDisplay());//newDeviceBox(devices[dataId]));
+            //For each device we find its settings and if they are a colour setting, create the colourwheel 
+            $.each(devices[dataId].capabilities, function (cap) {
+                var capabilityId = devices[dataId].capabilities[cap]["id"];
+                $.each(devices[dataId].capabilities[capabilityId].settings, function(set) {
+                    var settingId = devices[dataId].capabilities[capabilityId].settings[set].id;
+                    if (devices[dataId].capabilities[capabilityId].settings[settingId].name == "Colour") {
+                        var div = devices[dataId].capabilities[capabilityId].settings[settingId].divId; 
+                        var cw = Raphael.colorwheel($(div)[0], 75);
+                        cw.input($(div + "_input")[0]);
+                        devices[dataId].capabilities[capabilityId].settings[settingId].cw = cw;
+                        // On change update the server
+                        cw.onchange(function(colour) 
+                            {
+                                var div = cw.parent();
+                                var id = div.attr('id');
+                                var capabilityId = div.data('capability-id');
+                                var deviceId = div.data('device-id');
+                                id = div.data('id');
+                                var cap = devices[deviceId].capabilities[capabilityId];
+                                var value = cap.settings[id].getChangedValue();
+                                cap.settings[id].updateToServer(id, value);
+                                
+                            });
+                    }
+                });
+            });
         });
     });
 
@@ -51,7 +77,7 @@ $(document).ready(function() {
         var value = message["value"]
         devices[deviceId].capabilities[capabilityId].settings[settingId].updateFromServer(value);
     });
-
+    
 
 });
 

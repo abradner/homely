@@ -64,8 +64,13 @@ Raphael.colorwheel = function(target, color_wheel_size, no_segments){
       input: input,
       onchange: onchange,
       ondrag : ondrag,
-      color : public_set_color
+      color : public_set_color,
+      parent : get_parent
     };
+  }
+
+  function get_parent() {
+    return parent;
   }
 
   // Sets a textfield for user input of hex color values
