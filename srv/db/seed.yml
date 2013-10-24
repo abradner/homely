@@ -12,7 +12,7 @@ devices:
  -  name: TCP Diecimila
     device_type: Arduino
     interface: TCP
-    address: 192.168.16.50:5100
+    address: 192.168.16.50:4100
 
 capabilities:
   - name: ChainableLED 0
@@ -39,6 +39,11 @@ capabilities:
     device_name: TCP Diecimila
     capability_type: P9813
     prefix: 0
+
+  - name: TCPChainableLED 1
+    device_name: TCP Diecimila
+    capability_type: P9813
+    prefix: 1
 
 
 #todo turn this into a populate-based-on-type thing
@@ -89,6 +94,31 @@ settings:
     max: 1
 
   - capability_name: EmuLED 1
+    name: "Colour"
+    value: FF9933
+    min: 0
+    max: 999
+
+#TCP
+  - capability_name: TCPChainableLED 0
+    name: "Power"
+    value: 1
+    min: 0
+    max: 1
+
+  - capability_name: TCPChainableLED 0
+    name: "Colour"
+    value: 3399FF
+    min: 0
+    max: 999
+
+  - capability_name: TCPChainableLED 1
+    name: "Power"
+    value: 1
+    min: 0
+    max: 1
+
+  - capability_name: TCPChainableLED 1
     name: "Colour"
     value: FF9933
     min: 0
