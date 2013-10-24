@@ -34,13 +34,13 @@ registered_devices.each do |dev|
     begin
 
     @@dev_list[dev.id].connect(dev.address)
+    puts "Device [#{dev.id}](#{dev.name}) Connected."
 
     rescue Exception => e
       puts "Connection to [#{dev.id}](#{dev.name}) raised exception:"
       puts e.message
     end
 
-    puts "Device [#{dev.id}](#{dev.name}) Connected."
   end
 
 end
