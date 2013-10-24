@@ -24,11 +24,4 @@ public class HomelyJSI {
         Toast.makeText(mainActivity.getApplicationContext(), successMessage, Toast.LENGTH_LONG).show();
     }
 
-    public String getServerUrl() {
-        return serverUrl;
-    }
-
-    public void setServerUrl(String url) {
-        serverUrl = url;
-    }
 }
