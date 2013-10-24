@@ -19,7 +19,6 @@ $.Class.extend("Setting", {
         deviceType = devices[this.deviceId].type;
         capType = devices[this.deviceId].capabilities[this.capId].type;
         this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.capId + '/' + capType.toLowerCase() + '_set_' + this.name.toLowerCase();
-        this.cw;
     },
 
     /* Sanitise the input to prevent errors */
@@ -46,7 +45,7 @@ $.Class.extend("Setting", {
     },
 
     /* Send the new state to the server */
-    updateToServer: function (f, newValue) {
+    updateToServer: function (newValue) {
         var success = true;
         var serverResponse = $.ajax({
             type: 'GET',
@@ -58,7 +57,7 @@ $.Class.extend("Setting", {
             timeout: 600000 // sets timeout to 1 second
         })
         .fail($.proxy(function(data, textStatus, jqXHR){
-            alert(textStatus +","+ jqXHR.errorThrown);
+            alert(textStatus +":"+ jqXHR.errorThrown);
             Android.serverError(this.deviceId, this.name);
         }, this))
         .done($.proxy(function(){

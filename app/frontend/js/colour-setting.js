@@ -2,11 +2,23 @@ Setting.extend("Colour",{
 
     init: function(deviceId, capId, id, name, value, min, max, serverUrl){
         this._super(deviceId, capId, id, name, value, min, max, serverUrl);
+
+        this.cw = Raphael.colorwheel($(this.divId)[0], 75);
+        this.cw.input($(this.divId + "_input")[0]);
+
+        // TODO: Fix the context
+        var self = this;
+        // On change update the server
+        this.cw.onchange(function(colour) {
+            var value = self.getChangedValue();
+            value = value.replace('#', '');
+            alert(value);
+            self.updateToServer(value);
+        });
     },
 
-    /* Colour is a colour wheel (with text input), not a slider. */
-    displayString: function() {
-        return "<div class='changeableSetting colour-wheel' name='colour-wheel' id='" + this.div + "' data-capability-id='" + this.capId + "' data-device-id='" + this.deviceId + "' data-id='" + this.id + "'></div><div><input type='text' class='input-mini colour-input' id='"+this.div+"_input' value='#"+ this.value +"'></div>" ;
+    sanitise: function(v) {
+        return v.replace('#', ''); //TODO fix this to be better
     },
 
     /* Update the colour wheel to display the new colour */
