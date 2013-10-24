@@ -40,6 +40,11 @@ $.Class.extend("Setting", {
         $(this.divId).val(this.value);
     },
 
+    /* Default setting is a slider. The data- stores information that we need to get out of a div on change*/
+    displayString: function () {
+        return "<input type='range' class='changeableSetting' name='slider' id='"+this.div+"' data-capability-id='"+this.capId+"' data-device-id = '"+this.deviceId+"' data-id='"+this.id+"' value='"+this.value+"' min='"+this.min+"' max='"+this.max+"'";
+    },
+
     /* Get the user-updated value. Sliders have inbuilt data sores. */
     getChangedValue: function () {
         return $(this.divId).val();

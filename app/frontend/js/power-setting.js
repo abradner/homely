@@ -1,22 +1,18 @@
 /* Power is a specific type of setting; it has additional functions and some slight modifications */
 Setting.extend("Power",{
 
-    init: function(deviceId, capId, id, name, value, min, max, serverUrl){
-        this._super(deviceId, capId, id, name, value, min, max, serverUrl);
-
-        this.setDisplay();
-    },
-
-    /* Sets the initial class state of the power button - the template doesn't handle this */
-    setDisplay: function () {
+    /* Power is a button, not a slider */
+    displayString: function () {
+        // Class toggles depending on the value
         if (this.value == 0) {
-            var btnStatus = "btn-inverse";
-            var homelyStatus = "homely-off";
+            var btnStatus = "inverse";
+            var homelyStatus = "off";
         } else {
-            var btnStatus = "btn-success";
-            var homelyStatus = "homely-on";
+            var btnStatus = "success";
+            var homelyStatus = "on";
         }
-        $(this.divId).addClass(btnStatus + " " + homelyStatus);
+        return "<button type='button' class='btn btn-"+btnStatus+" homely-btn changeableSetting homely-"+homelyStatus+"' id='"+this.div+"' data-device-id = '" + this.deviceId +"' data-capability-id='" + this.capId +"'data-id='"+this.id+"' data-toggle='button'></button>";
+
     },
 
     /* Buttons have no implicit value, so the toggle is done based on our stored value */
