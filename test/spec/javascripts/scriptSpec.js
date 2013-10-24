@@ -1,5 +1,5 @@
 //Tests: homely/app/frontend/js/ capability.js colour-setting.js power-setting.js setting.js
-//TODO: devices.js generateDevices.js mockAndroid.js script.js
+//TODO: devices.js mockAndroid.js script.js
 
 var capabilityId = '1';
 var deviceId = '1';
@@ -19,7 +19,7 @@ var d = new Device(deviceId, "Arduino", "Emulated Arduino");
 devices[deviceId] = d;
 var c = new Capability(capabilityId, deviceId, 'Light', 'c');
 d.capabilities[capabilityId] = c;
-
+var serverUrl = 'http://localhost:3000';
 var power = {'name':'Power', 'value':initialPower, 'id':settingPowerId, 'min':minPower, 'max':maxPower};
 var colour = {'name':'Colour', 'value':initialColour, 'id':settingColourId, 'min':minColour, 'max':maxColour};
 c.makeSetting(power, serverUrl);
@@ -112,11 +112,6 @@ describe("Capability Functions", function() {
         c.settings[settingColourId].set(initialColour);
     });
 
-    it("'stringDisplays' function returns correctly", function() {
-        var str = c.stringDisplays();
-        var expectedStr = "<input type='range' class='changeableSetting' name='slider' id='"+divColour+"' data-capability-id='"+capabilityId+"' data-device-id = '"+deviceId+"' data-id='"+settingColourId+"' value='"+initialColour+"' min='"+minColour+"' max='"+maxColour+"'<br/><button type='button' class='btn btn-inverse homely-btn changeableSetting homely-off' id='"+divPower+"' data-device-id = '"+deviceId+"' data-capability-id='"+capabilityId+"'data-id='"+settingPowerId+"' data-toggle='button'></button><br/>";
-        expect(str == expectedStr);
-    });
 });
 
 
@@ -155,11 +150,6 @@ describe("Settings Functions", function() {
         expect($(c.settings[settingColourId].divId)).toHaveValue('54');
     });
 
-    it("'displayString' returns correct html", function() {
-        var str = c.settings[settingColourId].displayString();
-        var expectedStr = "<input type='range' class='changeableSetting' name='slider' id='" + divColour + "' data-capability-id='" + capabilityId + "' data-device-id = '" + deviceId + "' data-id='" + settingColourId + "' value='" + initialColour + "' min='" + minColour + "' max='" ;
-        expect(str == expectedStr);
-    });
 
     it("'getValue' function returns correct value from div", function() {
         loadFixtures('slider.html')
@@ -180,15 +170,6 @@ describe("Settings Functions", function() {
 describe("Power Setting Functions", function() {
     beforeEach(function() {
         c.settings[settingPowerId].set(initialPower);
-    });
-
-    it("'displayString' creates correct html", function() {
-        var str = c.settings[settingPowerId].displayString;
-        var expectedStr = "<button type='button' class='btn btn-inverse homely-btn changeableSetting homely-off id='"+divPower+"' data-device-id = '" + deviceId + "' data-capability-id='" + capabilityId + "'data-id='" + settingPowerId + "' data-toggle='button'></button>";
-        expect(str == expectedStr);
-        c.settings[settingPowerId].set(maxPower);
-        str = c.settings[settingPowerId].displayString;
-        expectedStr = "<button type='button' class='btn btn-success homely-btn changeableSetting homely-on id='"+divPower+"' data-device-id = '" + deviceId + "' data-capability-id='" + capabilityId + "'data-id='" + settingPowerId + "' data-toggle='button'></button>";
     });
 
     it("'updateDisplay' updates power classes correctly - turn on", function() {
