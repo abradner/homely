@@ -101,34 +101,6 @@ class Capability < ActiveRecord::Base
     self.message = "(#{prefix}#{msg})"
   end
 
-  def p9813_ping
-    p9813_check!
-    self.device.send! "p"
-    to_receive = nil
-    message=""
-    t1 = Time.now
-    while to_receive.nil? and (Time.now - t1) < 2
-      to_receive = self.device.receive!
-    end
-    if to_receive.nil?
-      message = "Device not there :("
-    elsif to_receive.chomp == "p"
-      message = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
-    else
-      message = "Bad response"
-    end
-    print (message + " = " + to_receive)
-    stat = setting STATUS
-    stat.value = message
-    stat.save!
-  end
-
-
-  def p9813_status
-    p9813_check!
-    setting(STATUS).value
-  end
-
 
 
   private

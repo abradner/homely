@@ -37,8 +37,6 @@
     %th Power
     %th State
     %th Control
-    %th Ping
-    %th Status
 
   - @capabilities.each do |cap|
     %tr
@@ -60,6 +58,4 @@
               %input.input-mini{:type => "text", :name => "value", :class => "text", placeholder: "RRGGBB", maxlength: 6}
               %button{:type => "submit", :class => "btn"}Set
 
-      %td= link_to "ping", device_capability_p9813_ping_path(@device, cap)
-      %td= cap.status
 %p

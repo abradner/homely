@@ -57,11 +57,6 @@ class CapabilitiesController < ApplicationController
 
   end
 
-  def p9813_ping
-    load_resource
-    @capability.p9813_ping
-    render "devices/show"
-  end
 
   private
   def load_resource
