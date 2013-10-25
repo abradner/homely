@@ -43,6 +43,10 @@ describe Device do
 
     end
 
+    after :each do
+      @dev.close
+    end
+
     it "should know if a configured device is connected" do
       @dev.connected?.should eql true
       @dev2.connected?.should eql false
@@ -70,8 +74,8 @@ describe Device do
       @dev.close
 
       @dev.connected?.should eql false
-
       @dev.connect
+
       @dev.send! "listen" # make sure the emulator is listening
 
       @dev.connected?.should eql true

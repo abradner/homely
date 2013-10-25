@@ -3,6 +3,7 @@
 FactoryGirl.define do
   factory :device do
     sequence(:name) { |n| Faker::Product.brand + ' ' + n.to_s }
+    sequence(:id) { |n| n}
     device_type { Device.valid_types.sample }
     interface "Emulated"
     sequence :address

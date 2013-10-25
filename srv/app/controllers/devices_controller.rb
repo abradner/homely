@@ -50,6 +50,7 @@ class DevicesController < ApplicationController
     else
       @ping_sta = "Failed"
     end
+    @ping_id = params[:device_id]
     @devices = Device.all
     render "devices/index"
   end

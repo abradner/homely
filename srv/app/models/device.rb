@@ -18,8 +18,18 @@ class Device < ActiveRecord::Base
     VALID_INTERFACES
   end
 
+  def connect
+    connection = nil
+    if interface == "Emulated"
+      connection = EmulatedArduinoCommunicator.new
+    end
+    #TODO: ADD MORE LATER
+    connection.connect(address)
+    @@dev_list[id] = connection
+  end
+
   def connected?
-    @@dev_list[id] && @@dev_list[id].connected?
+    !@@dev_list[id].nil? && @@dev_list[id].connected?
   end
 
   def connection
@@ -34,6 +44,10 @@ class Device < ActiveRecord::Base
     @@dev_list[id].receive!
   end
 
+  def close
+    @@dev_list[id].close unless @@dev_list[id].nil?
+  end
+
   def ping?
     if perform_ping?
       true
@@ -41,11 +55,12 @@ class Device < ActiveRecord::Base
       @@dev_list[id].close
       false
     end
+  rescue Exception => e
+    false
   end
 
   private
   def perform_ping?
-
     send! "p"
     to_receive = nil
     message=""
@@ -60,11 +75,11 @@ class Device < ActiveRecord::Base
     else
       message = "Bad response"
     end
-    print (message + " = " + to_receive)
+    #print (message + " = " + to_receive)
     !to_receive.nil? && to_receive.chomp == "p"
 
   rescue Exception => e
-    print "Raised " + e.message
+    #print "Raised " + e.message
     false
   end
 

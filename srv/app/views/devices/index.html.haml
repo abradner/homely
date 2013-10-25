@@ -6,8 +6,9 @@
       %th Type
       %th Interface
       %th Address
-      %th Ping
       %th Status
+      %th Ping
+      %th Ping Status
       -#%th Created At
       -#%th Updated At
 
@@ -17,7 +18,11 @@
          %td= dev.device_type
          %td= dev.interface
          %td= dev.address
-         %td= link_to "Ping", device_ping_path(dev)
          %td= dev.connected?
+         %td= link_to "Ping", device_ping_path(dev)
+         - if dev.id.to_s == @ping_id
+            %td= @ping_sta
+         - else
+            %td
          -#%td= dev.created_at
          -#%td= dev.updated_at

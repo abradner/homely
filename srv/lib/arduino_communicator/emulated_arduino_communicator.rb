@@ -8,6 +8,7 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
   QUERY_MESSAGE_LENGTH = 2
   RECV_LENGTH = 20
 
+
   def initialize
     @colours = []
     NUM_LEDS.times do |i|
@@ -15,7 +16,6 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
     end
 
     @arduino_buffer = nil
-
     super
   end
 
@@ -24,13 +24,20 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
     @device, @arduino_buffer = UNIXSocket.pair
 
 
+    @listening = true
   end
 
   def send!(message)
     super
-
-    fulfill_request(@arduino_buffer.recv(RECV_LENGTH))
-
+    if message == "ignore"
+      @listening = false
+    end
+    if message == "listen"
+      @listening = true
+    end
+    if @listening
+      fulfill_request(@arduino_buffer.recv(RECV_LENGTH))
+    end
   end
 
   def fulfill_request(message)
@@ -59,20 +66,25 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
 
     ###### Ping Command
     elsif command.eql? 'p'
-      puts "Arduino Says: p"
       @arduino_buffer.write 'p'
     end
 
   end
 
   def receive!()
-    @device.recv(RECV_LENGTH)
+
+    str = @device.recv_nonblock(RECV_LENGTH)
+    if str == ""
+      str = nil
+    end
+    str
   end
 
 
   def close
     super
-    @arduino_buffer.close
+    @arduino_buffer.close unless @arduino_buffer.nil?
+    @arduino_buffer = nil
   end
 
 private
