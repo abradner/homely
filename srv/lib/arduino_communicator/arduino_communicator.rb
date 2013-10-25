@@ -51,6 +51,7 @@ class ArduinoCommunicator
 
   def close
     @device.close unless @device.nil?
+    @device = nil
   end
 
 

@@ -47,6 +47,8 @@ class DevicesController < ApplicationController
     @device = Device.find(params[:device_id])
     if @device.ping?
       @ping_sta = "Success"
+    else
+      @ping_sta = "Failed"
     end
     @devices = Device.all
     render "devices/index"

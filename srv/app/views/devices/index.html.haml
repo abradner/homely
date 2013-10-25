@@ -18,6 +18,6 @@
          %td= dev.interface
          %td= dev.address
          %td= link_to "Ping", device_ping_path(dev)
-         %td= @ping_sta
+         %td= dev.connected?
          -#%td= dev.created_at
          -#%td= dev.updated_at

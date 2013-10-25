@@ -35,6 +35,16 @@ class Device < ActiveRecord::Base
   end
 
   def ping?
+    if perform_ping?
+      true
+    else
+      @@dev_list[id].close
+      false
+    end
+  end
+
+  private
+  def perform_ping?
 
     send! "p"
     to_receive = nil
