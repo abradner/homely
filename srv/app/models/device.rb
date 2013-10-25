@@ -33,4 +33,29 @@ class Device < ActiveRecord::Base
   def receive!
     @@dev_list[id].receive!
   end
+
+  def ping?
+
+    send! "p"
+    to_receive = nil
+    message=""
+    t1 = Time.now
+    while to_receive.nil? and (Time.now - t1) < 2
+      to_receive = receive!
+    end
+    if to_receive.nil?
+      message = "Device not there :("
+    elsif to_receive.chomp == "p"
+      message = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
+    else
+      message = "Bad response"
+    end
+    print (message + " = " + to_receive)
+    !to_receive.nil? && to_receive.chomp == "p"
+
+  rescue Exception => e
+    print "Raised " + e.message
+    false
+  end
+
 end

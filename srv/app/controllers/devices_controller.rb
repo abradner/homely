@@ -24,7 +24,6 @@ class DevicesController < ApplicationController
   def show
 
     @device = Device.find(params[:id])
-
     respond_to do |format|
       format.html {
         @capabilities = @device.capabilities
@@ -42,6 +41,15 @@ class DevicesController < ApplicationController
       }
 
     end
+  end
+
+  def ping
+    @device = Device.find(params[:device_id])
+    if @device.ping?
+      @ping_sta = "Success"
+    end
+    @devices = Device.all
+    render "devices/index"
   end
 
 
