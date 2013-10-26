@@ -14,6 +14,14 @@
     background-color: #dceaf4;
 }
 
+.colour-wheel {
+    margin: 10px;
+}
+
+.colour-input {
+    box-shadow:none !important;
+}
+
 .homely-btn {
     width: 60px;
     height:60px;
