@@ -1,31 +1,32 @@
 %h1 Listing Devices
 
 %table
-   %tr
-      %th Name
-      %th Type
-      %th Interface
-      %th Address
-      %th Connected
-      %th Ping
-      %th Ping Status
-      -#%th Created At
-      -#%th Updated At
+  %tr
+    %th Name
+    %th Type
+    %th Interface
+    %th Address
+    %th Connected
+    %th Ping
+    %th Ping Status
+    -#%th Created At
+    -#%th Updated At
 
-   - @devices.each do |dev|
-      %tr
-         %td= link_to dev.name, device_path(dev)
-         %td= dev.device_type
-         %td= dev.interface
-         %td= dev.address
-         - if dev.connected?
-            %td Yes
-         - else
-            %td No
-         %td= link_to "Ping", device_ping_path(dev)
-         - if dev.id.to_s == @ping_id
-            %td= @ping_sta
-         - else
-            %td
-         -#%td= dev.created_at
-         -#%td= dev.updated_at
+  - @devices.each do |dev|
+    %tr
+      %td= link_to dev.name, device_path(dev)
+      %td= dev.device_type
+      %td= dev.interface
+      %td= dev.address
+      - if dev.connected?
+        %td Yes
+        %td= link_to "Ping", device_ping_path(dev)
+      - else
+        %td No
+        %td= link_to "Connect", device_connect_path(dev)
+      - if dev.id.to_s.eql? @ping_id
+        %td= @ping_sta
+      - else
+        %td
+      -#%td= dev.created_at
+      -#%td= dev.updated_at

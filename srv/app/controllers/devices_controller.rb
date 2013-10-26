@@ -55,5 +55,19 @@ class DevicesController < ApplicationController
     render "devices/index"
   end
 
+  def connect
+    @devices = Device.all
+    @device = @devices.find(params[:device_id])
+    if @device.connected?
+      flash.now[:notice] = "Already connected."
+    end
+
+    @device.connect
+
+    unless @device.connected?
+      flash.now[:error] = "Could not reconnect. Currently only Emulated devices can reconnect"
+    end
+    render "devices/index"
+  end
 
 end

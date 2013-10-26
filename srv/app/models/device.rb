@@ -19,13 +19,14 @@ class Device < ActiveRecord::Base
   end
 
   def connect
-    connection = nil
+
+    #TODO: ADD MORE LATER
+    #TODO: edit flash[:notice] for DevicesController#connect
     if interface == "Emulated"
       connection = EmulatedArduinoCommunicator.new
+      connection.connect(address)
+      @@dev_list[id] = connection
     end
-    #TODO: ADD MORE LATER
-    connection.connect(address)
-    @@dev_list[id] = connection
   end
 
   def connected?
