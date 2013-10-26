@@ -7,4 +7,10 @@ class User < ActiveRecord::Base
          # (none)
          # Modules we will use in the future
          # :confirmable, :omniauthable
+
+
+  # TODO replace with real code when defining roles
+  def admin?
+    true
+  end
 end
