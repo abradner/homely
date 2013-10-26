@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 HomelySrv::Application.routes.draw do
+  devise_for :users
   root :to => "devices#index"
 
   resource :pages do

@@ -1,4 +1,6 @@
 class DevicesController < ApplicationController
+  before_filter :authenticate_user!
+
   def index
     @devices = Device.all
     hash = @devices.to_a.map(&:serializable_hash)
