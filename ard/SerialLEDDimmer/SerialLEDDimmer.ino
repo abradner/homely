@@ -94,10 +94,14 @@ void loop() {
 
 void welcome() { 
   
+  byte counter = 0;
+  
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    // wait for serial port to connect. Needed for Leonardo only
+    counter = waiting_pattern(counter);
   }
-    LED_test_pattern();
-    //Serial.println("\nReady.");
+  
+  LED_test_pattern();
+  //Serial.println("\nReady.");
 
 }

@@ -19,6 +19,8 @@ HomelySrv::Application.routes.draw do
   end
 
   resources :devices do
+    get 'ping'
+    get 'connect'
     resources :capabilities do
       get 'p9813_set_colour'
       get 'p9813_set_power'

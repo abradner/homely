@@ -18,8 +18,19 @@ class Device < ActiveRecord::Base
     VALID_INTERFACES
   end
 
+  def connect
+
+    #TODO: ADD MORE LATER
+    #TODO: edit flash[:notice] for DevicesController#connect
+    if interface == "Emulated"
+      connection = EmulatedArduinoCommunicator.new
+      connection.connect(address)
+      @@dev_list[id] = connection
+    end
+  end
+
   def connected?
-    @@dev_list[id] && @@dev_list[id].connected?
+    !@@dev_list[id].nil? && @@dev_list[id].connected?
   end
 
   def connection
@@ -33,4 +44,44 @@ class Device < ActiveRecord::Base
   def receive!
     @@dev_list[id].receive!
   end
+
+  def close
+    @@dev_list[id].close unless @@dev_list[id].nil?
+  end
+
+  def ping?
+    if perform_ping?
+      true
+    else
+      @@dev_list[id].close
+      false
+    end
+  rescue Exception => e
+    false
+  end
+
+  private
+  def perform_ping?
+    send! "p"
+    to_receive = nil
+    message=""
+    t1 = Time.now
+    while to_receive.nil? and (Time.now - t1) < 2
+      to_receive = receive!
+    end
+    if to_receive.nil?
+      message = "Device not there :("
+    elsif to_receive.chomp == "p"
+      message = "Responded in " + (Time.now - t1).to_s + " seconds hurrah! :D"
+    else
+      message = "Bad response"
+    end
+    #print (message + " = " + to_receive)
+    !to_receive.nil? && to_receive.chomp == "p"
+
+  rescue Exception => e
+    #print "Raised " + e.message
+    false
+  end
+
 end

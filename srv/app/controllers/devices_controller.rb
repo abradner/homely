@@ -24,7 +24,6 @@ class DevicesController < ApplicationController
   def show
 
     @device = Device.find(params[:id])
-
     respond_to do |format|
       format.html {
         @capabilities = @device.capabilities
@@ -44,5 +43,31 @@ class DevicesController < ApplicationController
     end
   end
 
+  def ping
+    @device = Device.find(params[:device_id])
+    if @device.ping?
+      @ping_sta = "Success"
+    else
+      @ping_sta = "Failed"
+    end
+    @ping_id = params[:device_id]
+    @devices = Device.all
+    render "devices/index"
+  end
+
+  def connect
+    @devices = Device.all
+    @device = @devices.find(params[:device_id])
+    if @device.connected?
+      flash.now[:notice] = "Already connected."
+    end
+
+    @device.connect
+
+    unless @device.connected?
+      flash.now[:error] = "Could not reconnect. Currently only Emulated devices can reconnect"
+    end
+    render "devices/index"
+  end
 
 end

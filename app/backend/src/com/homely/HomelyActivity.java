@@ -22,7 +22,7 @@ public class HomelyActivity extends Activity {
 
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		jsi = new HomelyJSI(this);
-		jsi.setServerUrl(settings.getString("serverUrl", "http://localhost:3000"));
+		//jsi.setServerUrl(settings.getString("serverUrl", "http://localhost:3000"));
 
 		webView.addJavascriptInterface(jsi, "Android");
 		webView.requestFocus();
@@ -41,10 +41,10 @@ public class HomelyActivity extends Activity {
 	private void syncPreferences() {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("serverUrl", jsi.getServerUrl());
+		//editor.putString("serverUrl", jsi.getServerUrl());
 
 		// Commit the edits!
-		editor.commit();
+		//editor.commit();
 	}
 
 	@Override

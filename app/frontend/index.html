@@ -8,24 +8,80 @@
     <link href="css/homely.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <div class="row-fluid">
-      <div class="span12">
+
+    <script id="appTemplate" type="text/x-handlebars-template">
         <div class="row-fluid">
-          <div class="span10 offset1 center">
-            <center>
-              <div class="row-fluid" id="appsettings">
+          <div class="span12">
+            <div class="row-fluid">
+              <div class="span10 offset1 center">
+                  <center>
+                  <div class="row-fluid" id="devices">
+                    {{#each .}}
+                    <!-- Start Device Accordion !-->
+                    <div class='container-fluid device'>
+                        <div class='accordion-heading'>
+                            <a class='accordion-toggle' data-toggle='collapse' data-parent='#devices' href='#device{{id}}'>
+                                <strong><span>{{name}}</span></strong>-<em><span>{{device_type}}</span></em>
+                            </a>
+                        </div>
+                        <div id='device{{id}}' class='accordion-body collapse'>
+                            <div class='accordion-inner span10 offset1' id='device{{id}}'>
+                                {{#each capabilities}}
+                                <!-- New Capability Accordion -->
+                                <div class='accordion-group'>
+                                    <div class='accordion-heading'>
+                                    <a class='accordion-toggle' data-toggle='collapse' data-parent='#device{{device_id}}' href='#capability{{id}}'>
+<strong><span>{{name}}</span></strong>-<em><span>{{capability_type}}</span></em>
+                                    </a>
+                                    </div>
+                                    <div id='capability{{id}}' class='accordion-body collapse'>
+                                        <div class='accordion-inner span10 offset1 center'>
+                                            {{#each setting}}
+                                            <!-- Start Setting Box -->
+                                                {{#isPower name}}
+                                                <!-- Power Button -->
+<button type='button' class='btn homely-btn changeableSetting' id='{{../../device_id}}_{{../capability_id}}_{{../id}}' data-device-id= '{{../../device_id}}' data-capability-id='{{../capability_id}}'data-id='{{../id}}' data-toggle='button'></button>
+                                                {{else}}
+                                                    {{#isColour ../name}}
+                                                <!-- Colour Wheel -->
+<div class='colour-wheel' name='colour-wheel' id='{{../../../device_id}}_{{../../capability_id}}_{{../../id}}' data-capability-id='{{../../capability_id}}' data-device-id='{{../../../device_id}}' data-id='{{../../id}}'></div>
+<div><input type='text' class='input-mini colour-input' id='{{../../../device_id}}_{{../../capability_id}}_{{../../id}}_input' value='{{../../value}}'></div>
+                                                    {{else}}
+                                                    <!-- Slider Bar -->
+<input type='range' class='changeableSetting' id='{{../../../device_id}}_{{../../capability_id}}_{{../../id}}' data-capability-id='{{../../capability_id}}' data-device-id='{{../../../device_id}}' data-id='{{../../id}}' value='{{../../value}}' min='{{../../min}}' max='{{../../max}}'>
+                                                    {{/isColour}}
+                                                {{/isPower}}
+                                            <!-- End setting Box -->
+                                            <br/>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Capability Accordion -->
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Device Accordion -->
+                    {{/each}}
+                  </div>
+                </center>
               </div>
-              <div class="row-fluid" id="devices">
-              </div>
-            </center>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+    </script>
 
-    <script src="js/faye-browser.js"></script>
     <script src="js/jquery.js"></script>
+    <!-- Color Wheel -->
+    <script src="js/raphael-min.js"></script>
+    <script src="js/colorwheel.js"></script>
+    <!-- Nice JS: Templating & Classes-->
+    <script src="js/handlebar.js"></script>
     <script src="js/jquery-class.js"></script>
+    <!-- Notifications -->
+    <script src="js/faye-browser.js"></script>
+    <!-- Bootstrap -->
     <script src="js/bootstrap.min.js"></script>
     <!-- Dictionary of devices/capabilities -->
     <script src="js/device.js"></script>

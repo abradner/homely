@@ -7,8 +7,8 @@ require 'yaml'
 
 DEVICE_PROTOCOL_MAP_FILE = "device_protocol.yml"
 
-seed_file = File.join(Rails.root, 'config', DEVICE_PROTOCOL_MAP_FILE)
-proto_map = YAML::load_file(seed_file)
+protocol_file = File.join(Rails.root, 'config', DEVICE_PROTOCOL_MAP_FILE)
+proto_map = YAML::load_file(protocol_file)
 
 
 #Create initialise communication for each device
