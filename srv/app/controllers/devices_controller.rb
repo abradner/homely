@@ -1,8 +1,9 @@
 class DevicesController < ApplicationController
   before_filter :authenticate_user!
+  load_and_authorize_resource
 
   def index
-    @devices = Device.all
+    #@devices = Device.all
     hash = @devices.to_a.map(&:serializable_hash)
     hash.map! do |device|
       device["capabilities"] = Capability.where(device_id: device["id"])
@@ -25,7 +26,7 @@ class DevicesController < ApplicationController
 
   def show
 
-    @device = Device.find(params[:id])
+    #@device = Device.find(params[:id])
     respond_to do |format|
       format.html {
         @capabilities = @device.capabilities
