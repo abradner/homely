@@ -12,7 +12,9 @@ import android.view.KeyEvent;
 import android.content.Intent;
 
 public class HomelyActivity extends Activity {
+	private static final int AUTHENTICATOR_REQUEST = 1;
 	public static final String PREFS_NAME = "PrefsFile";
+	private static final String FRONTEND_URI = "file:///android_asset/frontend/index.html";
 	private HomelyJSI jsi;
 
 	private WebView webView;
@@ -39,19 +41,32 @@ public class HomelyActivity extends Activity {
 			}
 		});
 
-		webView.loadUrl("file:///android_asset/frontend/index.html");
+		webView.loadUrl(FRONTEND_URI);
 	}
 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			Intent intent = new Intent(this, AuthenticatorActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, AUTHENTICATOR_REQUEST);
 
 			//Toast.makeText(getApplicationContext(), "Menu button pressed!", Toast.LENGTH_LONG).show();
 			// ........
 			return true;
 		}
 		return super.onKeyUp(keyCode, event);
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == AUTHENTICATOR_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				// Login successful. Refresh stuff
+				Toast.makeText(getApplicationContext(), "Authentication success?!", Toast.LENGTH_LONG).show();
+				webView.loadUrl(FRONTEND_URI);
+			} else {
+				// This should never happen
+				Toast.makeText(getApplicationContext(), "Authentication failed!", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 
 	private void syncPreferences() {
