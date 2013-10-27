@@ -1,0 +1,5 @@
+redis:   redis-server /usr/local/etc/redis.conf
+sidekiq: bundle exec sidekiq -C ./config/sidekiq.yml
+rails:   rails s
+faye:    rackup faye.ru -s thin -E production
+
