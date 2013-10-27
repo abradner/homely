@@ -25,6 +25,10 @@ public class HomelyJSI {
         Toast.makeText(mainActivity.getApplicationContext(), successMessage, Toast.LENGTH_LONG).show();
     }
 
+    public void storeDevices (String data) {
+        // @TODO store this locally on the phone
+    }
+
     public String getServerUrl() {
         return mainActivity.getSharedPreferences(PREFS_NAME, 0).getString("serverUrl", "localhost");
     }

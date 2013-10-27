@@ -2,21 +2,21 @@
 $.Class.extend("Setting", {
 
     /* Constructor function */
-    init: function(deviceId, capId, id, name, value, min, max, serverUrl){
-        this.capId = capId;
-        this.deviceId = deviceId;
-        this.id = id;
-        this.name = name;
-        this.value = value;
-        this.min = min;
-        this.max = max;
+    init: function(data, serverUrl){
+        this.capId = data["capability_id"];
+        this.deviceId = data["device_id"];
+        this.roomId = data["room_id"];
+        this.id = data["id"];
+        this.name = data["name"];
+        this.value = data["value"];
+        this.min = data["min"];
+        this.max = data["max"];
 
         // Div ID for display updates
         this.div = this.deviceId + "_" + this.capId + "_" + this.id;
         this.divId = "#" + this.div;
 
         // URL for updating to the server
-        deviceType = devices[this.deviceId].type;
         capType = devices[this.deviceId].capabilities[this.capId].type;
         this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.capId + '/' + capType.toLowerCase() + '_set_' + this.name.toLowerCase();
     },

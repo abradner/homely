@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Homely - {{name}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/homely.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+
+    <script id="appTemplate" type="text/x-handlebars-template">
+        <div class="row-fluid">
+          <div class="span12">
+              <center>
+              <div class="row-fluid" id="capabilities">
+                <ul class="thumbnails">
+                {{#each .}}
+                <!-- Start Capabilities Grid!-->
+                  <li class="span4">
+                    <div class="thumbnail">
+                      <a href="/rooms/{{room_id}}/capabilities/{{id}}/settings><img src="images/{{capability_type}}.png" alt="" /></a>
+                      <h3>{{name}} - {{capability_type}}</h3>
+                    </div>
+                  </li>
+                <!-- End Capabilities Grid -->
+                {{/each}}
+                </ul>
+              </div>
+            </center>
+          </div>
+        </div>
+    </script>
+
+    <script src="js/jquery.js"></script>
+    <!-- URL parameter parsing -->
+    <script src="js/purl.js"></script>
+    <!-- Color Wheel -->
+    <script src="js/raphael-min.js"></script>
+    <script src="js/colorwheel.js"></script>
+    <!-- Nice JS: Templating & Classes-->
+    <script src="js/handlebar.js"></script>
+    <script src="js/jquery-class.js"></script>
+    <!-- Notifications -->
+    <script src="js/faye-browser.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Dictionary of devices/capabilities -->
+    <script src="js/device.js"></script>
+    <script src="js/devices.js"></script>
+    <!-- Capability Types -->
+    <script src="js/capability.js"></script>
+    <!-- Setting Types -->
+    <script src="js/setting.js"></script>
+    <script src="js/colour-setting.js"></script>
+    <script src="js/power-setting.js"></script>
+    <!-- Android wrapper for on internet -->
+    <script src="js/mockAndroid.js"></script>
+    <!-- Main script file -->
+    <script src="js/serverURL.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

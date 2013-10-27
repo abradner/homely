@@ -12,8 +12,6 @@
     <script id="appTemplate" type="text/x-handlebars-template">
         <div class="row-fluid">
           <div class="span12">
-            <div class="row-fluid">
-              <div class="span10 offset1 center">
                   <center>
                   <div class="row-fluid" id="devices">
                     {{#each .}}
@@ -66,13 +64,13 @@
                     {{/each}}
                   </div>
                 </center>
-              </div>
-            </div>
           </div>
         </div>
     </script>
 
     <script src="js/jquery.js"></script>
+    <!-- URL parameter parsing -->
+    <script src="js/purl.js"></script>
     <!-- Color Wheel -->
     <script src="js/raphael-min.js"></script>
     <script src="js/colorwheel.js"></script>

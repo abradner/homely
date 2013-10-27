@@ -1,8 +1,8 @@
 /* Power is a specific type of setting; it has additional functions and some slight modifications */
 Setting.extend("Power",{
 
-    init: function(deviceId, capId, id, name, value, min, max, serverUrl){
-        this._super(deviceId, capId, id, name, value, min, max, serverUrl);
+    init: function(data, serverUrl){
+        this._super(data, serverUrl);
 
         this.setDisplay();
     },
