@@ -10,14 +10,16 @@ $(document).ready(function() {
     } else {
         window.Android = new MockAndroid();
     }
-    
+
     uuid = Math.floor((Math.random()*1000000000000000000000)+1);
 
     var server = Android.getServerUrl();
     var serverUrl = 'http://'+ server + ':3000';
     var fayeUrl = 'http://'+ server + ':9292/faye';
 
+    // Displays the data from the server
     initialiseData(serverUrl);
+    // Connects to the server for updates
     startFaye(fayeUrl);
 });
 
@@ -35,19 +37,35 @@ var handleSettingUpdate = function (event) {
 /* Adding content to the page with server JSON and a template
 Also creates the device objects for our use*/
 var initialiseData = function(serverUrl) {
-    //Get the Template and compile it
-    var source   = $("#appTemplate").html();
-    var template = Handlebars.compile(source);
-    // JSON object describing the devices we have access to
+
+    // Determine the objects we need to display
+    // TODO: s/device/room/g
+    var params = $.url($(location).attr('href')).param();
+    var jsonUrl = serverUrl+'/devices';
+    if ('roomId' in params) {
+        jsonUrl += '/'+params['roomId']+'/capabilities';
+        if ('capId' in params) {
+            jsonUrl += '/capId/settings';
+        }
+    }
+    jsonUrl += '.json';
+
+    // JSON object describing just the objects we are going to display
     $.getJSON(serverUrl+'/devices.json?auth_token='+Android.getToken(), function(data) {
-        var html    = template(data);
+        //Get the Template and compile it
+        var source   = $("#appTemplate").html();
+        var template = Handlebars.compile(source);
         //Replace the body section with the new code.
+        var html = template(data);
         document.body.innerHTML = html;
-        // Make devices for each one - updates the page to correct values
+    });
+
+    // JSON object describing the devices we have access to
+    // TODO: Remove this except for when necessary, or move to backend
+    $.getJSON(serverUrl+'/devices.json', function(data) {
         $.each(data, function (val) {
-            addDevice(data[val], serverUrl);
-            var deviceId = data[val]["id"];
-            devices[deviceId].updateDisplays();
+            //addDevice(data[val], serverUrl);
+            addSetting(data[val], serverUrl);
         });
         // Enable callbacks for devices - must be done here because classes don't exist on page load
         if (onMobile) {
