@@ -88,7 +88,7 @@ public class AuthenticatorActivity extends Activity {
 		String email = mEmail.getText().toString();
 		String password = mPassword.getText().toString();
 		// TODO replace with something more spinning wheel progress bar-y 
-		Toast.makeText(getApplicationContext(), "Handling login attempt with " + server + " " + email + " " + password, Toast.LENGTH_LONG).show();
+		//Toast.makeText(getApplicationContext(), "Handling login attempt with " + server + " " + email + " " + password, Toast.LENGTH_LONG).show();
 
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
