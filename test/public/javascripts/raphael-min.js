@@ -1,1 +1,1 @@
-/home/charissa/homely/app/frontend/js/raphael-min.js
+../../../app/frontend/js/raphael-min.js

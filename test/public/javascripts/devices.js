@@ -1,1 +1,1 @@
-/home/charissa/homely/app/frontend/js/devices.js
+../../../app/frontend/js/devices.js

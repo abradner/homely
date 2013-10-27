@@ -1,1 +1,1 @@
-/home/charissa/homely/app/frontend/js/power-setting.js
+../../../app/frontend/js/power-setting.js

@@ -1,1 +1,1 @@
-/home/charissa/homely/app/frontend/js/mockAndroid.js
+../../../app/frontend/js/mockAndroid.js

@@ -1,1 +1,1 @@
-/home/charissa/homely/app/frontend/js/jquery.js
+../../../app/frontend/js/jquery.js

@@ -1,1 +1,1 @@
-/home/charissa/homely/app/frontend/js/setting.js
+../../../app/frontend/js/setting.js

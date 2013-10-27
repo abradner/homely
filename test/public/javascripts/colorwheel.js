@@ -1,1 +1,1 @@
-/home/charissa/homely/app/frontend/js/colorwheel.js
+../../../app/frontend/js/colorwheel.js
