@@ -62,7 +62,7 @@ $.Class.extend("Setting", {
         }, this))
         .done($.proxy(function(){
             this.updateFromServer.call(this, newValue);
-            Android.serverSuccess(this.deviceId, this.name);
+            //Android.serverSuccess(this.deviceId, this.name);
         }, this));
     },
 
