@@ -10,6 +10,9 @@ $.Class.extend("MockAndroid", {
 
     getServerUrl: function() {
         return 'localhost';
-    }
+    },
 
+    getToken: function() {
+        return '';
+    }
 });
