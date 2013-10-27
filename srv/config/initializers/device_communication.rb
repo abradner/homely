@@ -33,8 +33,8 @@ registered_devices.each do |dev|
     puts "Device [#{dev.id}](#{dev.name}) Connecting..."
     begin
 
-    @@dev_list[dev.id].connect(dev.address)
-    puts "Device [#{dev.id}](#{dev.name}) Connected."
+      @@dev_list[dev.id].connect(dev.address)
+      puts "Device [#{dev.id}](#{dev.name}) Connected."
 
     rescue Exception => e
       puts "Connection to [#{dev.id}](#{dev.name}) raised exception:"
@@ -47,28 +47,30 @@ end
 
 ## CLOSE ALL OPEN HANDLES
 at_exit do
-  registered_devices = Device.where id: @@dev_list.keys
-  registered_devices.each do | dev|
+  suppress_warnings do #TODO remove when not using globals
+    registered_devices = Device.where id: @@dev_list.keys
+    registered_devices.each do |dev|
 
-    dev_name = "[#{dev.id}](#{dev.name})"
-    conn = @@dev_list.delete dev.id
+      dev_name = "[#{dev.id}](#{dev.name})"
+      conn = @@dev_list.delete dev.id
 
-    if conn.blank?
-      puts "Warning: #{dev_name} was not open!"
-    else
-      puts "#{dev_name} Closing..."
+      if conn.blank?
+        puts "Warning: #{dev_name} was not open!"
+      else
+        puts "#{dev_name} Closing..."
+        conn.close
+        puts "#{dev_name} Closed."
+      end
+    end
+
+
+    @@dev_list.each do |id, conn|
+      puts "Warning: Deleted device [#{id}] still open, closing now."
+      puts "[#{id}] Closing..."
       conn.close
-      puts "#{dev_name} Closed."
+      puts "[#{id}] Closed."
     end
   end
-
-  @@dev_list.each do |id, conn|
-    puts "Warning: Deleted device [#{id}] still open, closing now."
-    puts "[#{id}] Closing..."
-    conn.close
-    puts "[#{id}] Closed."
-  end
-
 end
 
 
