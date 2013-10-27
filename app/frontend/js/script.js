@@ -13,7 +13,7 @@ $(document).ready(function() {
     
     uuid = Math.floor((Math.random()*1000000000000000000000)+1);
 
-    var server = '192.168.0.3';
+    var server = Android.getServerUrl();
     var serverUrl = 'http://'+ server + ':3000';
     var fayeUrl = 'http://'+ server + ':9292/faye';
 
@@ -39,7 +39,7 @@ var initialiseData = function(serverUrl) {
     var source   = $("#appTemplate").html();
     var template = Handlebars.compile(source);
     // JSON object describing the devices we have access to
-    $.getJSON(serverUrl+'/devices.json', function(data) {
+    $.getJSON(serverUrl+'/devices.json?auth_token='+Android.getToken(), function(data) {
         var html    = template(data);
         //Replace the body section with the new code.
         document.body.innerHTML = html;
