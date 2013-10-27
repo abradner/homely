@@ -26,7 +26,7 @@ var handleSettingUpdate = function (event) {
     id = $(this).data('id');
     cap = devices[deviceId].capabilities[capabilityId];
     var value = cap.settings[id].getChangedValue();
-    cap.settings[id].updateToServer(id, value);
+    cap.settings[id].updateToServer(value);
 }
 
 /* Adding content to the page with server JSON and a template
