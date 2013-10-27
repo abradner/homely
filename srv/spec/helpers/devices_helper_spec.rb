@@ -11,5 +11,15 @@ require 'spec_helper'
 #   end
 # end
 describe DevicesHelper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:white) {'ffffff'}
+  let(:mid_grey)   {'808080'}
+  let(:black)   {'000000'}
+
+
+
+  it 'should calculate whether something is bright enough to require a black background' do
+    expect(helper.background_colour(white)).to eql black
+    expect(helper.background_colour(mid_grey)).to eql white
+    expect(helper.background_colour(black)).to eql white
+  end
 end
