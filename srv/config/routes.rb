@@ -4,6 +4,8 @@ HomelySrv::Application.routes.draw do
   devise_for :users
   root :to => "devices#index"
 
+  resources :tokens,:only => [:create, :destroy]
+
   resource :pages do
     get 'basic_commands'
     get 'red'
