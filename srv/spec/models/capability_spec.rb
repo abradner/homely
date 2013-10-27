@@ -39,8 +39,10 @@ describe Capability do
 
       connection = EmulatedArduinoCommunicator.new
       connection.connect(@dev.address)
-      @@dev_list[@dev.id] = connection
 
+      suppress_warnings do
+        @@dev_list[@dev.id] = connection
+      end
 
       @cap1 = create :capability, device: @dev, capability_type: "P9813"
 
@@ -50,8 +52,10 @@ describe Capability do
 
     after :each do
 
-      conn = @@dev_list.delete @dev.id
-      conn.close
+      suppress_warnings do
+        conn = @@dev_list.delete @dev.id
+        conn.close
+      end
     end
 
     it "should only be able to do P9813 tasks if the device is  P9813" do
