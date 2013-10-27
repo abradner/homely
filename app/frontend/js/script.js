@@ -10,7 +10,7 @@ $(document).ready(function() {
         window.Android = new MockAndroid();
     }
 
-    var server = '192.168.1.101';
+    var server = 'localhost';
     var serverUrl = 'http://'+ server + ':3000';
     var fayeUrl = 'http://'+ server + ':9292/faye';
 

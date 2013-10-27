@@ -1,3 +1,4 @@
+/* Extends the setting class for colour changing */
 Setting.extend("Colour",{
 
     init: function(deviceId, capId, id, name, value, min, max, serverUrl){
@@ -12,11 +13,11 @@ Setting.extend("Colour",{
         this.cw.onchange(function(colour) {
             var value = self.getChangedValue();
             value = value.replace('#', '');
-            alert(value);
             self.updateToServer(value);
         });
     },
 
+    /* Removes the '#' on any colour code */
     sanitise: function(v) {
         return v.replace('#', ''); //TODO fix this to be better
     },
