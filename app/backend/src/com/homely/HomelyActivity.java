@@ -7,6 +7,10 @@ import android.webkit.WebViewClient;
 import android.webkit.WebChromeClient;
 import android.content.SharedPreferences;
 
+import android.widget.Toast;
+import android.view.KeyEvent;
+import android.content.Intent;
+
 public class HomelyActivity extends Activity {
 	public static final String PREFS_NAME = "PrefsFile";
 	private HomelyJSI jsi;
@@ -36,6 +40,18 @@ public class HomelyActivity extends Activity {
 		});
 
 		webView.loadUrl("file:///android_asset/frontend/index.html");
+	}
+
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			Intent intent = new Intent(this, AuthenticatorActivity.class);
+			startActivity(intent);
+
+			//Toast.makeText(getApplicationContext(), "Menu button pressed!", Toast.LENGTH_LONG).show();
+			// ........
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 
 	private void syncPreferences() {
