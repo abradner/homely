@@ -3,6 +3,7 @@ package com.homely;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.EditText;
 import android.view.View;
 import android.content.SharedPreferences;
 import android.widget.Toast;
@@ -29,9 +30,9 @@ public class AuthenticatorActivity extends Activity {
 
 	public static final String PREFS_NAME = HomelyActivity.PREFS_NAME;
 
-	private TextView mServer;
-	private TextView mEmail;
-	private TextView mPassword;
+	private EditText mServer;
+	private EditText mEmail;
+	private EditText mPassword;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,14 +40,17 @@ public class AuthenticatorActivity extends Activity {
 		setContentView(R.layout.auth);
 
 
-		mServer = (TextView) findViewById(R.id.server);
-		mEmail = (TextView) findViewById(R.id.email);
-		mPassword = (TextView) findViewById(R.id.password);
+		mServer = (EditText) findViewById(R.id.server);
+		mEmail = (EditText) findViewById(R.id.email);
+		mPassword = (EditText) findViewById(R.id.password);
+
+		mServer.setText(getSharedPreferences(PREFS_NAME, 0).getString("serverUrl", "localhost"), TextView.BufferType.EDITABLE);
 
 		findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				if (handleLoginAttempt()) {
+					setResult(RESULT_OK);
 					finish();
 				} else {
 					// Login attempt failed
@@ -97,7 +101,10 @@ public class AuthenticatorActivity extends Activity {
 				String responseString = out.toString();
 
 				// responseString is hopefully a json string with token in it
-				getSharedPreferences(PREFS_NAME, 0).edit().putString("token", getTokenFromJSON(responseString));
+				SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
+				editor.putString("token", getTokenFromJSON(responseString));
+				editor.putString("serverUrl", server);
+				editor.commit();
 				return true;
 			} else{
 				//Closes the connection.
