@@ -2,5 +2,10 @@
 
 FactoryGirl.define do
   factory :user do
+    sequence(:email) { |n| Faker::Internet.email }
+    password "Pass.123"
+    password_confirmation { "Pass.123" }
+    #device_type { Device.valid_types.sample }
+    role "admin"
   end
 end
