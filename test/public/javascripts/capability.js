@@ -1,0 +1,1 @@
+/home/charissa/homely/app/frontend/js/capability.js

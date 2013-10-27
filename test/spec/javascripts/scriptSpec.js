@@ -9,7 +9,7 @@ var initialPower = 0;
 var initialColour = 0;
 var minPower = 0;
 var maxPower = 1;
-var initialColour = 0;
+var initialColour = "FFFFFF";
 var minColour = 0;
 var maxColour = 999;
 var divColour = deviceId + '_' + capabilityId + '_' + settingColourId;
@@ -23,11 +23,15 @@ var serverUrl = 'http://localhost:3000';
 var power = {'name':'Power', 'value':initialPower, 'id':settingPowerId, 'min':minPower, 'max':maxPower};
 var colour = {'name':'Colour', 'value':initialColour, 'id':settingColourId, 'min':minColour, 'max':maxColour};
 c.makeSetting(power, serverUrl);
-c.makeSetting(colour, serverUrl);
 
 
 //capability.js
-describe("Capability Initialisation", function() {
+describe("Capability Initialisation:", function() {
+    
+    /*beforeEach(function() {
+        loadFixtures("colourwheel.html");
+        c.makeSetting(colour, serverUrl);
+    });*/
 
     it("Initialises the device ID correctly", function() {
         expect(c.deviceId).toBe(deviceId);
@@ -49,17 +53,24 @@ describe("Capability Initialisation", function() {
         expect(c.settings[settingPowerId].value).toBe(initialPower);
     });
 
-    it("Initialises the colour to 0", function() {
+    it("Initialises the colour to FFFFFF", function() {
+        loadFixtures("colourwheel.html");
+        c.makeSetting(colour, serverUrl);
         expect(c.settings[settingColourId].value).toBe(initialColour);
     });
 
 });
 
 //setting.js
-describe("Settings Initialisation", function() {
+describe("Settings Initialisation:", function() {
     it("Initialises the capability ID correctly", function() {
         expect(c.settings[settingColourId].capId).toBe(capabilityId);
         expect(c.settings[settingPowerId].capId).toBe(capabilityId);
+    });
+
+    it("Initialises the device ID correctly", function() {
+        expect(c.settings[settingColourId].deviceId).toBe(deviceId);
+        expect(c.settings[settingPowerId].deviceId).toBe(deviceId);
     });
 
     it("Initialises the setting ID correctly", function() {
@@ -105,8 +116,17 @@ describe("Settings Initialisation", function() {
 
 });
 
+//colour-setting.js 
+describe("Colour setting initalisation:", function() {
+    it("Displays the colour wheel", function() {
+        loadFixtures("colourwheel.html");
+        c.makeSetting(colour, serverUrl);
+        expect($("#" + divColour)).not.toBeEmpty();
+    });
+});
+
 //capability.js - TODO updateToServer, updateDisplays
-describe("Capability Functions", function() {
+describe("Capability Functions:", function() {
     beforeEach(function() {
         c.settings[settingPowerId].set(initialPower);
         c.settings[settingColourId].set(initialColour);
@@ -116,30 +136,28 @@ describe("Capability Functions", function() {
 
 
 //setting.js
-describe("Settings Functions", function() {
+describe("Settings Functions:", function() {
     beforeEach(function() {
+        loadFixtures("colourwheel.html");
+        c.makeSetting(colour, serverUrl);
         c.settings[settingPowerId].set(initialPower);
         c.settings[settingColourId].set(initialColour);
     });
-
+    
     it("'sanitise' function applies settings correctly", function() {
         c.settings[settingPowerId].set(5);
         expect(c.settings[settingPowerId].value).toBe(maxPower);
         c.settings[settingPowerId].set(-2);
         expect(c.settings[settingPowerId].value).toBe(minPower);
-        c.settings[settingColourId].set(1111);
-        expect(c.settings[settingColourId].value).toBe(maxColour);
-        c.settings[settingColourId].set(-50);
-        expect(c.settings[settingColourId].value).toBe(minColour);
     });
-
+    
     it("'set' function sets values correctly", function() {
         expect(c.settings[settingPowerId].value).toBe(initialPower);
         c.settings[settingPowerId].set(maxPower);
         expect(c.settings[settingPowerId].value).toBe(maxPower);
         expect(c.settings[settingColourId].value).toBe(initialColour);
-        c.settings[settingColourId].set(111);
-        expect(c.settings[settingColourId].value).toBe(111);
+        c.settings[settingColourId].set("#ABABAB");
+        expect(c.settings[settingColourId].value).toBe("ABABAB");
     });
 
     it("'updateDisplay' updates display correctly", function() {
@@ -166,8 +184,32 @@ describe("Settings Functions", function() {
 
 });
 
+//colour-setting.js
+describe("Colour Setting Functions:", function() {
+   
+    it("'sanitise' function adjusts values correctly", function() {
+        c.settings[settingColourId].set("#000000");
+        expect(c.settings[settingColourId].value).toBe("000000");
+        c.settings[settingColourId].set("#ABABAB");
+        expect(c.settings[settingColourId].value).toBe("ABABAB");
+        c.settings[settingColourId].set("#FFFFFF");
+        expect(c.settings[settingColourId].value).toBe("FFFFFF");
+        c.settings[settingColourId].set("AAAAAA");
+        expect(c.settings[settingColourId].value).toBe("AAAAAA");
+        c.settings[settingColourId].set(-5);
+        expect(c.settings[settingColourId].value).toBe("000");
+        c.settings[settingColourId].set(54);
+        expect(c.settings[settingColourId].value).toBe("000");
+        c.settings[settingColourId].set("GGGGGG");
+        expect(c.settings[settingColourId].value).toBe("000");
+        c.settings[settingColourId].set("AAAAiA");
+        expect(c.settings[settingColourId].value).toBe("000");
+    });
+});
+
+        
 //power-setting.js
-describe("Power Setting Functions", function() {
+describe("Power Setting Functions:", function() {
     beforeEach(function() {
         c.settings[settingPowerId].set(initialPower);
     });
@@ -218,7 +260,7 @@ describe("Power Setting Functions", function() {
     });
 });
 
-describe("Power button object", function() {
+describe("Power button object:", function() {
     it("Changes the value of power when the button is clicked", function() {
         loadFixtures('button.html');
         expect(c.settings[settingPowerId].value).toBe(minPower);

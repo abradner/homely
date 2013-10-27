@@ -52,16 +52,17 @@ $.Class.extend("Setting", {
             url: this.url,
             data: {
                 // Consider changing 'value': to be this.name:
-                'value': newValue
+                'value': newValue,
+                'id': uuid
             },
-            timeout: 600000 // sets timeout to 1 second
+            timeout: 600000, // sets timeout to 1 second
         })
         .fail($.proxy(function(data, textStatus, jqXHR){
             alert(textStatus +":"+ jqXHR.errorThrown);
             Android.serverError(this.deviceId, this.name);
         }, this))
         .done($.proxy(function(){
-            this.updateFromServer.call(this, newValue);
+            //this.updateFromServer.call(this, newValue);
             //Android.serverSuccess(this.deviceId, this.name);
         }, this));
     },

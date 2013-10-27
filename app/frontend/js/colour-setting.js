@@ -19,6 +19,10 @@ Setting.extend("Colour",{
 
     /* Removes the '#' on any colour code */
     sanitise: function(v) {
+        var valid_hex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(v);
+        if (!valid_hex) {
+            v = "000";
+        }
         return v.replace('#', ''); //TODO fix this to be better
     },
 
@@ -32,6 +36,28 @@ Setting.extend("Colour",{
     getChangedValue: function() {
         var colour = this.cw.color();
         return colour.hex;
-    }
+    },
 
+    /* Override updateToServer so display is not updated on done */
+    updateToServer: function (newValue) {
+        var success = true;
+        var serverRespons = $.ajax({
+            type: 'GET',
+            url: this.url,
+            data: {
+                'value': newValue,
+                'id': uuid
+            },
+            timeout: 600000, // sets timeout to 1 second
+        })
+        .fail($.proxy(function(data, textStatus, jqXHR) {
+            //get rid of alert
+            alert(textStatus + ":"+ jqXHR.errorThrown);
+            Android.serverError(this.deviceId, this.name);
+            this.updateDisplay();
+        }, this))
+        .done($.proxy(function(){
+            this.set(newValue);
+        }, this));
+    }
 });

@@ -17,8 +17,8 @@ $(document).ready(function() {
     var serverUrl = 'http://'+ server + ':3000';
     var fayeUrl = 'http://'+ server + ':9292/faye';
 
-    initialiseData(serverUrl);
-    startFaye(fayeUrl);
+    //initialiseData(serverUrl);
+    //startFaye(fayeUrl);
 });
 
 /* Callback for when settings are changed. Updates the server and the display appropriately. */
@@ -34,7 +34,7 @@ var handleSettingUpdate = function (event) {
 
 /* Adding content to the page with server JSON and a template
 Also creates the device objects for our use*/
-var initialiseData = function(serverUrl) {
+/*var initialiseData = function(serverUrl) {
     //Get the Template and compile it
     var source   = $("#appTemplate").html();
     var template = Handlebars.compile(source);
@@ -57,10 +57,10 @@ var initialiseData = function(serverUrl) {
         }
     });
 
-}
+}*/
 
 /* Receives broadcasts from the server each time it updates */
-var startFaye = function(fayeUrl) {
+/*var startFaye = function(fayeUrl) {
     var client = new Faye.Client(fayeUrl);
     var subscription = client.subscribe('/connect', function(message) {
         message = $.parseJSON(message);
@@ -73,14 +73,14 @@ var startFaye = function(fayeUrl) {
             devices[deviceId].capabilities[capabilityId].settings[settingId].updateFromServer(value);
         }
     });
-}
+}*/
 
 /* A set of templating helpers for printing out the correct setting type */
-Handlebars.registerHelper("isPower", function(settingName, options) {
+/*Handlebars.registerHelper("isPower", function(settingName, options) {
     var fnTrue=options.fn, fnFalse=options.inverse;
     return settingName == 'Power' ? fnTrue() : fnFalse();
 });
 Handlebars.registerHelper("isColour", function(settingName, options) {
     var fnTrue=options.fn, fnFalse=options.inverse;
     return settingName == 'Colour' ? fnTrue() : fnFalse();
-});
+});*/

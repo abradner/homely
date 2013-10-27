@@ -11,11 +11,12 @@
 #   - dist/**/*.js
 #
 src_files:
-    - public/javascripts/js/jquery.js
-    - public/javascripts/js/jquery-class.js
-    - public/javascripts/js/raphael-min.js
-    - public/javascripts/js/setting.js
-    - public/javascripts/js/**/*.js
+    - public/javascripts/jquery.js
+    - public/javascripts/jquery-class.js
+    - public/javascripts/raphael-min.js
+    - public/javascripts/colorwheel.js
+    - public/javascripts/setting.js
+    - public/javascripts/**/*.js
 
 # stylesheets
 #
