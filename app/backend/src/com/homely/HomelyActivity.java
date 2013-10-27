@@ -23,12 +23,11 @@ public class HomelyActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		jsi = new HomelyJSI(this);
-		//jsi.setServerUrl(settings.getString("serverUrl", "http://localhost:3000"));
 
 		webView.addJavascriptInterface(jsi, "Android");
 		webView.requestFocus();
@@ -49,8 +48,6 @@ public class HomelyActivity extends Activity {
 			Intent intent = new Intent(this, AuthenticatorActivity.class);
 			startActivityForResult(intent, AUTHENTICATOR_REQUEST);
 
-			//Toast.makeText(getApplicationContext(), "Menu button pressed!", Toast.LENGTH_LONG).show();
-			// ........
 			return true;
 		}
 		return super.onKeyUp(keyCode, event);
@@ -60,33 +57,9 @@ public class HomelyActivity extends Activity {
 		if (requestCode == AUTHENTICATOR_REQUEST) {
 			if (resultCode == RESULT_OK) {
 				// Login successful. Refresh stuff
-				Toast.makeText(getApplicationContext(), "Authentication success?!", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Authentication success!", Toast.LENGTH_LONG).show();
 				webView.loadUrl(FRONTEND_URI);
-			} else {
-				// This should never happen
-				Toast.makeText(getApplicationContext(), "Authentication failed!", Toast.LENGTH_LONG).show();
 			}
 		}
-	}
-
-	private void syncPreferences() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		SharedPreferences.Editor editor = settings.edit();
-		//editor.putString("serverUrl", jsi.getServerUrl());
-
-		// Commit the edits!
-		//editor.commit();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		syncPreferences();
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		syncPreferences();
 	}
 }

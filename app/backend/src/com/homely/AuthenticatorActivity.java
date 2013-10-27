@@ -45,6 +45,8 @@ public class AuthenticatorActivity extends Activity {
 		mPassword = (EditText) findViewById(R.id.password);
 
 		mServer.setText(getSharedPreferences(PREFS_NAME, 0).getString("serverUrl", "localhost"), TextView.BufferType.EDITABLE);
+		mEmail.setText(getSharedPreferences(PREFS_NAME, 0).getString("email", ""), TextView.BufferType.EDITABLE);
+		mPassword.setText(getSharedPreferences(PREFS_NAME, 0).getString("password", ""), TextView.BufferType.EDITABLE);
 
 		findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -76,7 +78,6 @@ public class AuthenticatorActivity extends Activity {
 	private String getTokenFromJSON(String s) throws JSONException {
 		JSONObject jObject = new JSONObject(s);
 
-		// TODO don't hardcode this?
 		return jObject.getString("token");
 	}
 
@@ -104,6 +105,8 @@ public class AuthenticatorActivity extends Activity {
 				SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
 				editor.putString("token", getTokenFromJSON(responseString));
 				editor.putString("serverUrl", server);
+				editor.putString("email", email);
+				editor.putString("password", password);
 				editor.commit();
 				return true;
 			} else{

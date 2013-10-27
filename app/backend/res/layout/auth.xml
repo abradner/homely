@@ -6,6 +6,12 @@
 	android:orientation="vertical">
 
 	<!-- TODO add labels so that the text fields aren't just empty and confusing -->
+	<TextView
+		android:id="@+id/server_label"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:text="Server address"
+		/>
 	<EditText
 		android:id="@+id/server"
 		android:layout_height="wrap_content"
@@ -13,6 +19,12 @@
 		android:inputType="textUri"
 		/>
 
+	<TextView
+		android:id="@+id/email_label"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:text="Email address"
+		/>
 	<EditText
 		android:id="@+id/email"
 		android:layout_height="wrap_content"
@@ -20,6 +32,12 @@
 		android:inputType="textEmailAddress"
 		/>
 
+	<TextView
+		android:id="@+id/password_label"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:text="Password"
+		/>
 	<EditText
 		android:id="@+id/password"
 		android:layout_height="wrap_content"
