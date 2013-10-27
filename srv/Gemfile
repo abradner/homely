@@ -59,10 +59,13 @@ group :test do
   gem 'simplecov-rcov', require: false
   gem 'ci_reporter'
   gem 'shoulda-matchers'
+  gem 'capybara'
+  gem 'selenium-webdriver'
 end
 
 group :development do
   gem 'quiet_assets'
+  gem 'better_errors'
 end
 
 

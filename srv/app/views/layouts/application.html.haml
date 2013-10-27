@@ -36,20 +36,20 @@
             %span.icon-bar
           %a.brand{href: root_path} Homely Server
           .container-fluid.nav-collapse
-            %ul.nav
-              %li= link_to "Devices", :devices
-              %li= link_to "Basic Commands", :basic_commands_pages
+            %ul.nav.pull-right
+              = render partial: 'layouts/navigation'
           / /.nav-collapse
     .container-fluid
       .row-fluid
-        .span3
-          .well.sidebar-nav
-            %ul.nav.nav-list
-              %li.nav-header Sidebar
-              %li= link_to "Devices", :devices
-              %li= link_to "Basic Commands", :basic_commands_pages
-          / /.well
-        / /span
+        -if user_signed_in?
+          .span3
+            .well.sidebar-nav
+              %ul.nav.nav-list
+                %li.nav-header Sidebar
+                %li= link_to "Devices", :devices
+                %li= link_to "Basic Commands", :basic_commands_pages
+            / /.well
+          / /span
         .span9
           = bootstrap_flash
           = yield

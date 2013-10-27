@@ -31,7 +31,16 @@ describe Device do
       dev2 = Device.find(dev.id)
 
       dev.should eq dev2
+
     end
+
+    it "should support multiple instances of a factory" do
+      dev = create :device
+      dev2 = create :device
+      dev.destroy!
+      dev2.destroy!
+    end
+
   end
 
   describe "connectivity" do
