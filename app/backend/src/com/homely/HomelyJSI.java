@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.widget.Toast;
 
 public class HomelyJSI {
+    public static final String PREFS_NAME = HomelyActivity.PREFS_NAME;
     HomelyActivity mainActivity;
     String serverUrl;
 
@@ -24,4 +25,11 @@ public class HomelyJSI {
         Toast.makeText(mainActivity.getApplicationContext(), successMessage, Toast.LENGTH_LONG).show();
     }
 
+    public String getServerURL() {
+        return mainActivity.getSharedPreferences(PREFS_NAME, 0).getString("serverUrl", "localhost");
+    }
+
+    public String getToken() {
+        return mainActivity.getSharedPreferences(PREFS_NAME, 0).getString("token", "");
+    }
 }
