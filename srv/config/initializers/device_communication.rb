@@ -17,33 +17,37 @@ proto_map = YAML::load_file(protocol_file)
 
 registered_devices = Device.all
 
+begin
+  registered_devices.each do |dev|
+    interface = proto_map[dev.interface]
 
-registered_devices.each do |dev|
-  interface = proto_map[dev.interface]
+    #Check to make sure its a valid interface
+    raise "Cannot map interface '#{dev.interface}' to any protocol" if interface.blank?
 
-  #Check to make sure its a valid interface
-  raise "Cannot map interface '#{dev.interface}' to any protocol" if interface.blank?
+    connection = Kernel.const_get(interface).new
+    @@dev_list[dev.id] = connection
 
-  connection = Kernel.const_get(interface).new
-  @@dev_list[dev.id] = connection
+    #TODO: This should be safe because we only init once and from then on we check for nil then run methods
+    # That said... I'm not sure.
+    Thread.new do
+      puts "Device [#{dev.id}](#{dev.name}) Connecting..."
+      begin
 
-  #TODO: This should be safe because we only init once and from then on we check for nil then run methods
-  # That said... I'm not sure.
-  Thread.new do
-    puts "Device [#{dev.id}](#{dev.name}) Connecting..."
-    begin
+        @@dev_list[dev.id].connect(dev.address)
+        puts "Device [#{dev.id}](#{dev.name}) Connected."
 
-      @@dev_list[dev.id].connect(dev.address)
-      puts "Device [#{dev.id}](#{dev.name}) Connected."
+      rescue Exception => e
+        puts "Connection to [#{dev.id}](#{dev.name}) raised exception:"
+        puts e.message
+      end
 
-    rescue Exception => e
-      puts "Connection to [#{dev.id}](#{dev.name}) raised exception:"
-      puts e.message
     end
 
   end
-
+rescue ActiveRecord::StatementInvalid
+  puts "DB issues, not loading any devices"
 end
+
 
 ## CLOSE ALL OPEN HANDLES
 at_exit do
