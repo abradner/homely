@@ -9,5 +9,3 @@
 # Ignore random shite
 pickle-email-*.html
 
-# Ignore srv Procfile
-/srv/Procfile
