@@ -19,7 +19,7 @@ class CapabilitiesController < ApplicationController
 
     puts params
     mode = params[:value].to_s
-    uuid = params[:uuid].to_s
+    uuid = params[:id]
 
     if mode.to_s.downcase.eql? "on" || params[:value] == 1
       @capability.p9813_on
@@ -30,7 +30,7 @@ class CapabilitiesController < ApplicationController
       @capability.p9813_power_toggle
     end
 
-    hash = { "id"       => uuid,
+    hash = { "id"         => uuid,
              "device"     => @capability.device.id,
              "capability" => @capability.id,
              "setting"    => @capability.settings.where(name: 'Power').first.id,
@@ -45,12 +45,14 @@ class CapabilitiesController < ApplicationController
     load_resource
 
     colour = params[:value]
-    uuid = params[:uuid]
+    uuid = params[:id]
+
     unless colour.blank?
       @capability.p9813_colour = colour
     end
 
-    hash = { "id"       => uuid,
+
+    hash = { "id"         => uuid,
              "device"     => @capability.device.id,
              "capability" => @capability.id,
              "setting"    => @capability.settings.where(name: 'Colour').first.id,
