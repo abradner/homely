@@ -4,7 +4,7 @@ module DevicesHelper
     GREEN_FACTOR = 0.114
 
     BRIGHTNESS_THRESHHOLD = 192
-    WHITE = "FFFFFF"
+    WHITE = "ffffff"
     BLACK = "000000"
   def background_colour(fg)
     r,g,b = [fg[0,2], fg[2,2], fg[4,2]].map{|col| col.to_i(16)}
