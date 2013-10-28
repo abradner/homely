@@ -6,6 +6,6 @@ FactoryGirl.define do
     password "Pass.123"
     password_confirmation { "Pass.123" }
     #device_type { Device.valid_types.sample }
-    role "admin"
+    role "user"
   end
 end

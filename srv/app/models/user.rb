@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
   validates_inclusion_of :role, in: VALID_ROLES
 
+  before_validation :set_default_role
 
   # TODO replace with real code when defining roles
   def admin?
@@ -36,4 +37,11 @@ class User < ActiveRecord::Base
   def self.valid_roles
     VALID_ROLES
   end
+
+  private
+
+  def set_default_role
+    self.role ||= "user"
+  end
+
 end

@@ -1,9 +1,9 @@
 class DevicesController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
+  skip_authorize_resource only: [:new,:create,:update,:destroy] #Manually handle updates
 
   def index
-    #@devices = Device.all
     hash = @devices.to_a.map(&:serializable_hash)
     hash.map! do |device|
       device["capabilities"] = Capability.where(device_id: device["id"])
@@ -25,8 +25,6 @@ class DevicesController < ApplicationController
   end
 
   def show
-
-    #@device = Device.find(params[:id])
     respond_to do |format|
       format.html {
         @capabilities = @device.capabilities
@@ -44,6 +42,18 @@ class DevicesController < ApplicationController
       }
 
     end
+  end
+
+  def new;  end
+  def create
+    @device = Device.new(params[:device])
+
+    if @device.save
+      redirect_to(@device, :notice => 'Device was successfully created.')
+    else
+      render :action => "new"
+    end
+
   end
 
   def ping
@@ -73,4 +83,9 @@ class DevicesController < ApplicationController
     render "devices/index"
   end
 
+  private
+
+  def device_params
+    params.require(:device).permit(:name, :device_type, :interface, :address)
+  end
 end

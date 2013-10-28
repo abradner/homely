@@ -1,0 +1,26 @@
+%h1 Create New Device
+= form_for @device do |f|
+  %fieldset
+    = render "shared/error_messages", target: @device
+    .clearfix
+      = f.label :name, "Device name"
+      .input
+        = f.text_field :name, placeholder: "My Device"
+        = required
+    .clearfix
+      = f.label :device_type
+      .input
+        = f.select :device_type, str_arr_to_options_for_select(Device.valid_types)
+        = required
+    .clearfix
+      = f.label :interface
+      .input
+        = f.select :interface, str_arr_to_options_for_select(Device.valid_interfaces, "Emulated")
+        = required
+    .clearfix
+      = f.label :address
+      .input
+        = f.text_field :address, placeholder: "/dev/ttyArduino0"
+        = required
+    =f.submit
+
