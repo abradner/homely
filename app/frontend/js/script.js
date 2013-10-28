@@ -35,7 +35,7 @@ Also creates the device objects for our use*/
 var initialiseData = function(serverUrl) {
 
     // Update the JSON object describing the devices we have access to; if not online it'll skip
-    $.getJSON(serverUrl+'/rooms.json', function(data) {
+    $.getJSON(serverUrl+'/rooms.json?auth_token='+Android.getToken(), function(data) {
         Android.storeData(data);
     });
 
@@ -49,15 +49,6 @@ var initialiseData = function(serverUrl) {
         data = filterData(data, params['roomId']);
     }
 
-    // JSON object describing just the objects we are going to display
-    $.getJSON(serverUrl+'/devices.json?auth_token='+Android.getToken(), function(data) {
-        //Get the Template and compile it
-        var source   = $("#appTemplate").html();
-        var template = Handlebars.compile(source);
-        //Replace the body section with the new code.
-        var html = template(data);
-        document.body.innerHTML = html;
-    });
     // Update the page display - initially blank values
     displayTemplate(data);
 

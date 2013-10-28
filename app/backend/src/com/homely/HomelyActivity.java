@@ -28,7 +28,6 @@ public class HomelyActivity extends Activity {
 
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		jsi = new HomelyJSI(this);
-		//jsi.setServerUrl(settings.getString("serverUrl", "http://localhost:3000"));
 
 		webView.addJavascriptInterface(jsi, "Android");
 		webView.requestFocus();
