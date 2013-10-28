@@ -60,9 +60,6 @@ $.Class.extend("Setting", {
         .fail($.proxy(function(data, textStatus, jqXHR){
             alert(textStatus +":"+ jqXHR.errorThrown);
             Android.serverError(this.deviceId, this.name);
-        }, this))
-        .done($.proxy(function(){
-            Android.serverSuccess(this.deviceId, this.name);
         }, this));
     },
 
