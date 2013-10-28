@@ -2,7 +2,7 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.device {
+.box {
     border: solid #000;
     border-width: 1px;
     -webkit-border-radius: 3px;
@@ -23,16 +23,16 @@
 }
 
 .homely-btn {
-    width: 60px;
-    height:60px;
-    -moz-border-radius: 35px;
-    border-radius: 35px;
-    -webkit-border-radius:35px;
+    width: 200px;
+    height:200px;
+    -moz-border-radius: 116px;
+    border-radius: 116px;
+    -webkit-border-radius: 116px;
 }
 
 .homely-on {
     background-image:url('../img/lightbulb.png');
-    background-size: 35px 53px;
+    background-size: 116px 177px;
     background-repeat: no-repeat;
     background-position:center;
 }
@@ -47,7 +47,7 @@
 
 .homely-off {
     background-image:url('../img/lightbulb_off.png');
-    background-size: 35px 53px;
+    background-size: 116px 177px;
     background-repeat: no-repeat;
     background-position:center;
 }
