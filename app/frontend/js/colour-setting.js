@@ -1,8 +1,9 @@
 /* Extends the setting class for colour changing */
 Setting.extend("Colour",{
 
-    init: function(data, serverUrl, roomId, deviceId){
-        this._super(data, serverUrl, roomId, deviceId);
+    init: function(data, serverUrl, roomId, deviceId, capType){
+        this._super(data, serverUrl, roomId, deviceId, capType);
+
         this.cw = Raphael.colorwheel($(this.divId)[0], 200);
         this.cw.input($(this.divId + "_input")[0]);
 
@@ -22,7 +23,7 @@ Setting.extend("Colour",{
         if (!valid_hex) {
             v = "000";
         }
-        return v.replace('#', ''); //TODO fix this to be better
+        return v.replace('#', '')
     },
 
     /* Update the colour wheel to display the new colour */

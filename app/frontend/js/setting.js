@@ -2,7 +2,7 @@
 $.Class.extend("Setting", {
 
     /* Constructor function */
-    init: function(data, serverUrl, roomId, deviceId){
+    init: function(data, serverUrl, roomId, deviceId, capType){
         this.id = data["id"];
         this.name = data["name"];
         this.value = data["value"];
@@ -14,10 +14,9 @@ $.Class.extend("Setting", {
         // Div ID for display updates
         this.div = this.id;
         this.divId = "#" + this.div;
+
         // URL for updating to the server
-        capType = "P9813";
         this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.capId + '/' + capType.toLowerCase() + '_set_' + this.name.toLowerCase();
-        alert(this.url);
     },
 
     /* Sanitise the input to prevent errors */

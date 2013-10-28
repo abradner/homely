@@ -55,13 +55,14 @@ var initialiseData = function(serverUrl) {
 
         var roomId = data["room_id"];
         var deviceId = data["device_id"];
+        var capType = data["capability_type"];
         data = data["settings"];
 
         // If we're on the settings page we make them (and set them to the right values)
         if ('capId' in params) {
             // Make setting objects
             $.each(data, function (val) {
-                addSetting(data[val], serverUrl, roomId, deviceId);
+                addSetting(data[val], serverUrl, roomId, deviceId, capType);
             });
 
             // Enable callbacks for devices - must be done here because classes don't exist until after template display
