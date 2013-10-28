@@ -13,11 +13,11 @@ $.Class.extend("Setting", {
         this.max = data["max"];
 
         // Div ID for display updates
-        this.div = this.deviceId + "_" + this.capId + "_" + this.id;
+        this.div = this.id;
         this.divId = "#" + this.div;
 
         // URL for updating to the server
-        capType = devices[this.deviceId].capabilities[this.capId].type;
+        capType = "P9813";
         this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.capId + '/' + capType.toLowerCase() + '_set_' + this.name.toLowerCase();
     },
 
