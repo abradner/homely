@@ -53,8 +53,8 @@ $.Class.extend("Setting", {
             data: {
                 // Consider changing 'value': to be this.name:
                 'value': newValue,
-                'id': uuid
-		'auth_token': Android.getToken()
+                'id': uuid,
+		        'auth_token': Android.getToken()
             },
             timeout: 600000, // sets timeout to 1 second
         })

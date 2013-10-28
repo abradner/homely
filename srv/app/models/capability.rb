@@ -12,6 +12,7 @@ class Capability < ActiveRecord::Base
   STATUS = "Status"
   
   belongs_to :device
+  belongs_to :room
   has_many :settings
 
   validates_uniqueness_of :name, scope: :device_id
