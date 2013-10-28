@@ -43,6 +43,16 @@ public class HomelyActivity extends Activity {
 		webView.loadUrl(FRONTEND_URI);
 	}
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			Intent intent = new Intent(this, AuthenticatorActivity.class);
