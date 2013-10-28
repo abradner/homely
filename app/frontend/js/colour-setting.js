@@ -4,7 +4,7 @@ Setting.extend("Colour",{
     init: function(data, serverUrl){
         this._super(data, serverUrl);
 
-        this.cw = Raphael.colorwheel($(this.divId)[0], 75);
+        this.cw = Raphael.colorwheel($(this.divId)[0], 200);
         this.cw.input($(this.divId + "_input")[0]);
 
         // TODO: Fix the context
