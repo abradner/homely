@@ -1,6 +1,6 @@
 %h1 Listing Devices
-
-%table
+.button=link_to "Create New Device", new_device_path
+%table#devices_table
   %tr
     %th Name
     %th Type
@@ -9,6 +9,8 @@
     %th Connected
     %th Ping
     %th Ping Status
+    -if can? :manage, @device
+      %th Manage
     -#%th Created At
     -#%th Updated At
 
@@ -28,5 +30,9 @@
         %td= @ping_sta
       - else
         %td
+      -if can? :manage, @device
+        %td
+          = link_to "Edit", edit_device_path(dev)
+          = link_to "Delete", device_path(dev), method: :delete
       -#%td= dev.created_at
       -#%td= dev.updated_at

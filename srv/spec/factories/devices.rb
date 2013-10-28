@@ -6,6 +6,6 @@ FactoryGirl.define do
     sequence(:id) { |n| n}
     device_type { Device.valid_types.sample }
     interface "Emulated"
-    sequence :address
+    sequence(:address) { |n| "/dev/tty.device.#{n}"}
   end
 end

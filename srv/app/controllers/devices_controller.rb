@@ -56,6 +56,25 @@ class DevicesController < ApplicationController
 
   end
 
+  def edit;  end
+  def update
+    if @device.update_attributes(params[:device])
+      redirect_to(@device, :notice => 'Device was successfully updated.')
+    else
+      render :action => "edit"
+    end
+
+  end
+
+  def destroy
+    if @device.destroy
+      redirect_to(devices_path, :notice => 'Device was successfully deleted.')
+    else
+      redirect_to(devices_path, :notice => 'Error! Could not delete device! This is a bug.')
+    end
+
+  end
+
   def ping
     @device = Device.find(params[:device_id])
     if @device.ping?
