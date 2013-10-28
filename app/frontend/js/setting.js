@@ -2,23 +2,22 @@
 $.Class.extend("Setting", {
 
     /* Constructor function */
-    init: function(data, serverUrl){
-        this.capId = data["capability_id"];
-        this.deviceId = data["device_id"];
-        this.roomId = data["room_id"];
+    init: function(data, serverUrl, roomId, deviceId){
         this.id = data["id"];
         this.name = data["name"];
         this.value = data["value"];
         this.min = data["min"];
         this.max = data["max"];
-
+        this.capId = data["capability_id"];
+        this.deviceId = deviceId;
+        this.roomId = roomId;
         // Div ID for display updates
         this.div = this.id;
         this.divId = "#" + this.div;
-
         // URL for updating to the server
         capType = "P9813";
         this.url = serverUrl + '/devices/' + this.deviceId + '/capabilities/' + this.capId + '/' + capType.toLowerCase() + '_set_' + this.name.toLowerCase();
+        alert(this.url);
     },
 
     /* Sanitise the input to prevent errors */
@@ -64,7 +63,7 @@ $.Class.extend("Setting", {
         }, this))
         .done($.proxy(function(){
             //this.updateFromServer.call(this, newValue);
-            //Android.serverSuccess(this.deviceId, this.name);
+            Android.serverSuccess(this.deviceId, this.name);
         }, this));
     },
 

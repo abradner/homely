@@ -1,9 +1,8 @@
 /* Extends the setting class for colour changing */
 Setting.extend("Colour",{
 
-    init: function(data, serverUrl){
-        this._super(data, serverUrl);
-
+    init: function(data, serverUrl, roomId, deviceId){
+        this._super(data, serverUrl, roomId, deviceId);
         this.cw = Raphael.colorwheel($(this.divId)[0], 200);
         this.cw.input($(this.divId + "_input")[0]);
 
@@ -12,7 +11,7 @@ Setting.extend("Colour",{
         // On change update the server
         this.cw.onchange(function(colour) {
             var value = self.getChangedValue();
-            value = this.sanitise(value);
+            value = self.sanitise(value);
             self.updateToServer(value);
         });
     },

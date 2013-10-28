@@ -83,7 +83,7 @@ Raphael.colorwheel = function(target, color_wheel_size, no_segments){
       if(this.value.match(/^#([0-9A-F]){3}$|^#([0-9A-F]){6}$/img)){
         set_color(this.value);
         update_color(true);
-		run_onchange_event();
+                run_onchange_event();
       }
     });
     set_color(target.value);

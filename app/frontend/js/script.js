@@ -51,19 +51,24 @@ var initialiseData = function(serverUrl) {
         }
         // Update the page display - initially blank values
         displayTemplate(data);
+
+        var roomId = data["room_id"];
+        var deviceId = data["device_id"];
+        data = data["settings"];
+
         // If we're on the settings page we make them (and set them to the right values)
         if ('capId' in params) {
-            // Make setting objects
-            $.each(data, function (val) {
-                //addDevice(data[val], serverUrl);
-                addSetting(data[val], serverUrl);
-            });
-            // Enable callbacks for devices - must be done here because classes don't exist on page load
+            // Enable callbacks for devices - must be done here because classes don't exist until after template display
             if (onMobile) {
                 $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
             } else {
                 $('#devices').on('click change', '.changeableSetting', handleSettingUpdate);
             }
+
+            // Make setting objects
+            $.each(data, function (val) {
+                addSetting(data[val], serverUrl, roomId, deviceId);
+            });
         }
     });
 
@@ -105,7 +110,7 @@ var filterData = function(data, roomId, capId) {
                 cap = data[val]["capabilities"];
                 $.each(cap, function (capVal) {
                     if (cap[capVal]["id"] == capId) {
-                        retVal = cap[capVal]["settings"];
+                        retVal = cap[capVal];
                     }
                 });
             }

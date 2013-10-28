@@ -13,7 +13,9 @@
         <div class="row-fluid">
           <div class="span12"  id="settings">
               <center>
-                {{#each .}}
+                <h1>{{name}}</h1>
+                  <br/>
+                {{#each settings}}
                 <!-- Start Settings Cell -->
                   <div class="row-fluid">
                     <div class="span12 box">
@@ -24,13 +26,13 @@
                             {{#isColour ../name}}
                         <!-- Colour Wheel -->
 <div class='colour-wheel' name='colour-wheel' id='{{../../id}}' data-capability-id='{{../../capability_id}}' data-device-id='{{../../../room_id}}' ></div>
-<div><input type='text' class='input-mini colour-input' id='{{../../room_id}}_{{../../capability_id}}_{{../../id}}_input' value='{{../../value}}'></div>
+<div><input type='text' class='input-mini colour-input' id='{{../../id}}_input' value='{{../../value}}'></div>
                             {{else}}
                             <!-- Slider Bar -->
 <input type='range' class='changeableSetting' id='_{{../../id}}' data-capability-id='{{../../capability_id}}' data-device-id='{{../../room_id}}'  value='{{../../value}}' min='{{../../min}}' max='{{../../max}}'>
                             {{/isColour}}
                         {{/isPower}}
-                      <h3>{{name}} - {{capability_type}}</h3>
+                      <h3>{{name}} - {{../capability_type}}</h3>
                     </div>
                   </div>
                  <!-- End Settings Grid -->
