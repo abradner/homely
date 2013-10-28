@@ -6,6 +6,7 @@ describe Capability do
 
     #Relations
     it { should belong_to(:device) }
+    it { should belong_to(:room) }
     it { should have_many(:settings) }
 
     #Presence

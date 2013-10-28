@@ -14,29 +14,41 @@ devices:
     interface: TCP
     address: 192.168.16.50:4100
 
+rooms:
+  - name: Living Room
+
+  - name: Kitchen
+
+  - name: Bedroom
+
 capabilities:
   - name: ChainableLED 0
     device_name: Serial Leonardo
+    room_name: Living Room
     capability_type: P9813
     prefix: 0
 
   - name: ChainableLED 1
     device_name: Serial Leonardo
+    room_name: Kitchen
     capability_type: P9813
     prefix: 1
 
   - name: EmuLED 0
     device_name: Emulated Arduino
+    room_name: Living Room
     capability_type: P9813
     prefix: 0
 
   - name: EmuLED 1
     device_name: Emulated Arduino
+    room_name: Kitchen
     capability_type: P9813
     prefix: 1
 
   - name: TCPChainableLED 0
     device_name: TCP Diecimila
+    room_name: Bedroom
     capability_type: P9813
     prefix: 0
 

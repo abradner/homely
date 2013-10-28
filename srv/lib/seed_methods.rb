@@ -1,4 +1,3 @@
-
 def seed_devices!
 #Devices
   Device.delete_all
@@ -7,28 +6,51 @@ def seed_devices!
   end
 end
 
+def seed_rooms!
+#Rooms
+  Room.delete_all
+  @config["rooms"].each do |room|
+    Room.create!(room)
+  end
+end
+
+
 def seed_capabilities!
 #Capabilities
   Capability.delete_all
   capabilities = @config.delete "capabilities"
-
 
   begin
 
     capabilities.map! do |cap|
       dev_name = cap.delete "device_name"
       dev = Device.find_by_name dev_name
-
       raise cap["name"] if dev.nil?
       cap["device_id"] = dev.id
+      cap
+    end
+
+    rescue Exception => e
+      puts "Error - Capability '#{e.message}' has an invalid 'Device Name' (does NOT match any devices)"
+      exit 1
+  end
+
+  begin
+
+    capabilities.map! do |cap|
+      room_name = cap.delete "room_name"
+      room = Room.find_by_name room_name
+      raise cap["name"] if room.nil?
+      cap["room_id"] = room.id
 
       cap
     end
 
   rescue Exception => e
-    puts "Error - Capability '#{e.message}' has an invalid 'Device Name' (does NOT match any devices)"
-    exit 1
+    puts "Error - Capability '#{e.message}' has an invalid 'Room Name' (does NOT match any rooms)"
+   # exit 1
   end
+
 
   Capability.create capabilities
 

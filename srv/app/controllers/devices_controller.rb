@@ -9,7 +9,7 @@ class DevicesController < ApplicationController
       device["capabilities"] = Capability.where(device_id: device["id"])
       device["capabilities"].map! do |capability|
         cap = capability.attributes
-        cap["setting"] = Setting.where(capability_id:  capability["id"])
+        cap["settings"] = Setting.where(capability_id:  capability["id"])
         cap
       end
       device
