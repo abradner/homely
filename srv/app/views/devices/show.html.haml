@@ -19,6 +19,7 @@
   Listing Capabilities for
   =@device.name
 
+#device_info
 %p.small 
   Type:
   = @device.device_type
@@ -29,35 +30,36 @@
   Address:
   = @device.address
 
--if @capabilities.blank?
-  %p No capabilities configured.
--else
-  %table
-    %tr
-      %th Name
-      %th Type
-      %th Power
-      %th State
-      %th Control
-
-    - @capabilities.each do |cap|
+#capabilities
+  -if @capabilities.blank?
+    %p No capabilities configured.
+  -else
+    %table
       %tr
-        %td= cap.name
-        %td= cap.capability_type
-        %td= link_to cap.power, device_capability_p9813_set_power_path(@device, cap)
-        - if cap.capability_type.eql? "P9813"
-          %td{bgcolor: "##{cap.state}"}= cap.state
-        - else
-          %td= cap.state
+        %th Name
+        %th Type
+        %th Power
+        %th State
+        %th Control
 
-        %td
+      - @capabilities.each do |cap|
+        %tr
+          %td= cap.name
+          %td= cap.capability_type
+          %td= link_to cap.power, device_capability_p9813_set_power_path(@device, cap)
           - if cap.capability_type.eql? "P9813"
-            - STOCK_COLOURS.each do |col|
-              = link_to "■", device_capability_p9813_set_colour_path(@device, cap, value: col), style: "color: ##{col}; background: ##{background_colour(col)}"
-            -# TODO This stuff HAS to go
-            %form{ :action => "/devices/#{@device.id}/capabilities/#{cap.id}/p9813_set_colour", :method => "get"}
-              .input-append
-                %input.input-mini{:type => "text", :name => "value", :class => "text", placeholder: "RRGGBB", maxlength: 6}
-                %button{:type => "submit", :class => "btn"}Set
+            %td{bgcolor: "##{cap.state}"}= cap.state
+          - else
+            %td= cap.state
+
+          %td
+            - if cap.capability_type.eql? "P9813"
+              - STOCK_COLOURS.each do |col|
+                = link_to "■", device_capability_p9813_set_colour_path(@device, cap, value: col), style: "color: ##{col}; background: ##{background_colour(col)}"
+              -# TODO This stuff HAS to go
+              %form{ :action => "/devices/#{@device.id}/capabilities/#{cap.id}/p9813_set_colour", :method => "get"}
+                .input-append
+                  %input.input-mini{:type => "text", :name => "value", :class => "text", placeholder: "RRGGBB", maxlength: 6}
+                  %button{:type => "submit", :class => "btn"}Set
 
 %p
