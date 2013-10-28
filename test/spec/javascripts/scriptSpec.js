@@ -6,14 +6,13 @@ var deviceId = '1';
 var settingColourId = '1';
 var settingPowerId = '2';
 var initialPower = 0;
-var initialColour = 0;
 var minPower = 0;
 var maxPower = 1;
 var initialColour = "FFFFFF";
 var minColour = 0;
 var maxColour = 999;
-var divColour = deviceId + '_' + capabilityId + '_' + settingColourId;
-var divPower = deviceId + '_' + capabilityId + '_' + settingPowerId;
+var divColour = '1_1_1';
+var divPower = '1_1_2';
 
 var d = new Device(deviceId, "Arduino", "Emulated Arduino");
 devices[deviceId] = d;
@@ -121,15 +120,35 @@ describe("Colour setting initalisation:", function() {
     it("Displays the colour wheel", function() {
         loadFixtures("colourwheel.html");
         c.makeSetting(colour, serverUrl);
-        expect($("#" + divColour)).not.toBeEmpty();
+        expect($('#'+divColour)).toExist();
+        expect($('#'+divColour+'_input')).toExist();
+        expect($('#'+divColour)).toContain('svg');
     });
 });
 
-//capability.js - TODO updateToServer, updateDisplays
+//capability.js - TODO makeSetting, updateDisplays
 describe("Capability Functions:", function() {
     beforeEach(function() {
-        c.settings[settingPowerId].set(initialPower);
-        c.settings[settingColourId].set(initialColour);
+    });
+
+    it("'updateDisplays' function correctly updates setting displays", function() {
+        loadFixtures('powercolour.html');
+        c.makeSetting(colour, serverUrl);
+        //c.settings[settingPowerId].set(initialPower);
+        //c.settings[settingColourId].set(initialColour);
+        expect($('#'+divPower)).toHaveClass('btn-inverse');
+        expect($('#'+divPower)).toHaveClass('homely-off');
+        expect($('#'+divPower)).not.toHaveClass('btn-success');
+        expect($('#'+divPower)).not.toHaveClass('homely-on');
+        expect($('#'+divColour+'_input')).toHaveValue('#ffffff');
+        c.settings[settingPowerId].set(maxPower);
+        c.settings[settingPowerId].set('#112233');
+        c.updateDisplays();
+        expect($('#'+divPower)).not.toHaveClass('btn-inverse');
+        expect($('#'+divPower)).not.toHaveClass('homely-off');
+        expect($('#'+divPower)).toHaveClass('btn-success');
+        expect($('#'+divPower)).toHaveClass('homely-on');
+        //expect($('#'+divColour+'_input')).toHaveValue('#112233');
     });
 
 });
@@ -159,7 +178,8 @@ describe("Settings Functions:", function() {
         c.settings[settingColourId].set("#ABABAB");
         expect(c.settings[settingColourId].value).toBe("ABABAB");
     });
-
+    
+    /*
     it("'updateDisplay' updates display correctly", function() {
         loadFixtures('slider.html');
         expect($(c.settings[settingColourId].divId)).toHaveValue('0');
@@ -174,7 +194,7 @@ describe("Settings Functions:", function() {
         c.settings[settingColourId].set(54);
         c.settings[settingColourId].updateDisplay();
         expect(c.settings[settingColourId].getChangedValue()).toBe('54');
-    });
+    });*/
 
     it("'updateFromServer' function applies settings correctly", function() {
         c.settings[settingPowerId].updateFromServer(1);
