@@ -28,6 +28,7 @@ var handleSettingUpdate = function (event) {
     var id = $(this).attr('id');
     var value = settings[id].getChangedValue();
     settings[id].updateToServer(value);
+    settings[id].updateFromServer(value);
 }
 
 /* Adding content to the page with server JSON and a template
@@ -58,18 +59,19 @@ var initialiseData = function(serverUrl) {
 
         // If we're on the settings page we make them (and set them to the right values)
         if ('capId' in params) {
-            // Enable callbacks for devices - must be done here because classes don't exist until after template display
-            if (onMobile) {
-                $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
-            } else {
-                $('#devices').on('click change', '.changeableSetting', handleSettingUpdate);
-            }
-
             // Make setting objects
             $.each(data, function (val) {
                 addSetting(data[val], serverUrl, roomId, deviceId);
             });
+
+            // Enable callbacks for devices - must be done here because classes don't exist until after template display
+            if (onMobile) {
+                $('#settings').on('touchend', '.changeableSetting', handleSettingUpdate);
+            } else {
+                $('#settings').on('click change', '.changeableSetting', handleSettingUpdate);
+            }
         }
+
     });
 
 }
