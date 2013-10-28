@@ -10,7 +10,15 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    if user_signed_in?
+      flash[:alert] = exception.message
+      session[:user_return_to] = nil
+      redirect_to root_url
+    else
+      session[:user_return_to] = request.url
+      flash[:alert] = exception.message
+      redirect_to "/users/sign_in"
+    end
   end
 
   #Broken CanCan workaround

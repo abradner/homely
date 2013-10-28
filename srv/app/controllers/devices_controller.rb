@@ -1,7 +1,7 @@
 class DevicesController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
-  skip_authorize_resource only: [:new,:create,:update,:destroy] #Manually handle updates
+  #skip_authorize_resource only: [:new,:create,:update,:destroy] #Manually handle updates
 
   def index
     hash = @devices.to_a.map(&:serializable_hash)

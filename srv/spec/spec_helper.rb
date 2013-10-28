@@ -72,3 +72,9 @@ RSpec.configure do |config|
 end
 
 
+Capybara.register_driver :rack_test do |app|
+  Capybara::RackTest::Driver.new app,
+                                 redirect_limit: 15,
+                                 follow_redirects: true,
+                                 respect_data_method: true
+end
