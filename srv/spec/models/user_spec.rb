@@ -28,47 +28,88 @@ describe User do
     end
   end
 
-  describe "Roles" do
+  describe "Creation/Deletion" do
 
-    it "should know if a user is an admin" do
-      user = build(:user, role: "admin")
+    describe "Roles" do
 
-      user.admin?.should eql true
-      user.normal_user?.should eql true
+      it "should know if a user is an admin" do
+        user = build(:user, role: User.admin_role)
+
+        user.admin?.should eql true
+        user.normal_user?.should eql true
+
+      end
+
+      it "should know if a user is a normal user" do
+        user = build(:user, role: User.user_role)
+
+        user.admin?.should eql false
+        user.normal_user?.should eql true
+
+      end
+
+      it "should classify anyone not a normal / admin user as a guest" do
+        user = build(:user, role: "guest")
+
+        user.admin?.should eql false
+        user.normal_user?.should eql false
+        user.guest?.should eql true
+
+      end
+
+
+      specify "the first user to sign up should be given the role admin" do
+
+        #We need to be the first user
+        User.delete_all
+
+        user = User.new
+        user.email = Faker::Internet.email
+        user.password = "Pass.123"
+        user.password_confirmation = "Pass.123"
+        user.save!
+
+        expect(user.role).to eql User.admin_role
+
+      end
+
+      specify "subsequent signups are given the role user" do
+        create :user, role: User.admin_role
+
+        user = User.new
+        user.email = Faker::Internet.email
+        user.password = "Pass.123"
+        user.password_confirmation = "Pass.123"
+        user.save!
+
+        expect(user.role).to eql User.user_role
+      end
 
     end
 
-    it "should know if a user is a normal user" do
-      user = build(:user, role: "user")
+    specify "the last admin cannot delete their account" do
+      User.delete_all
 
-      user.admin?.should eql false
-      user.normal_user?.should eql true
+      admin1 = create :user, role: User.admin_role
+      admin2 = create :user, role: User.admin_role
+      admin3 = create :user, role: User.admin_role
 
+      # To make sure it doesn't allow deletion of the last admin when there are still users
+      user1 =  create :user, role: User.user_role
+
+      expect(admin1.destroy).to eql admin1
+      expect(admin2.destroy).to eql admin2
+      expect(admin3.destroy).to eql false # Could not delete
     end
 
-    it "should classify anyone not a normal / admin user as a guest" do
-      user = build(:user, role: "guest")
+    specify "the last admin cannot delete their account" do
+      User.delete_all
 
-      user.admin?.should eql false
-      user.normal_user?.should eql false
-      user.guest?.should eql true
+      user1 = create :user, role: User.user_role
+      user2 = create :user, role: User.user_role
 
-    end
-
-    it "should not allow normal users to do priveleged actions" do
-      pending
-    end
-  end
-
-  describe "Creation" do
-    specify "new users should be assigned the role 'user'" do
-      user = User.new
-      user.email = Faker::Internet.email
-      user.password = "Pass.123"
-      user.password_confirmation = "Pass.123"
-      user.save!
-
-      expect(user.role).to eql "user"
+      expect(user1.destroy).to eql user1
+      expect(user2.destroy).to eql user2
     end
   end
 end

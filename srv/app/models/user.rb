@@ -15,33 +15,64 @@ class User < ActiveRecord::Base
 
   VALID_ROLES = %w( admin user guest )
 
+  scope :administrators, -> { where(role: User.admin_role) }
+
   validates_presence_of :email, :encrypted_password, :role
   validates_uniqueness_of :email
   validates_inclusion_of :role, in: VALID_ROLES
 
-  before_validation :set_default_role
+  before_validation :set_initial_role
+  before_destroy :ensure_not_last_admin
 
-  # TODO replace with real code when defining roles
-  def admin?
-    self.role.eql? "admin"
+  # Methods that return the name of each role
+  def self.admin_role
+    "admin"
   end
 
-  def normal_user?
-    self.admin? || self.role.eql?("user")
+  def self.user_role
+    "user"
   end
 
-  def guest?
-    self.role.eql?("guest")
+  def self.guest_role
+    "guest"
   end
 
   def self.valid_roles
     VALID_ROLES
   end
 
+
+  # Methods to test if a user has a role
+  def admin?
+    self.role.eql? User.admin_role
+  end
+
+  def normal_user?
+    self.admin? || self.role.eql?(User.user_role)
+  end
+
+  def guest?
+    self.role.eql? User.guest_role
+  end
+
+
   private
 
-  def set_default_role
-    self.role ||= "user"
+  def ensure_not_last_admin
+    return true unless self.admin?
+
+    #If there are no other administrators except this one
+    if User.administrators.where('users.id != ?', self.id).count.eql? 0
+      false
+    end
+
+  end
+
+
+  # Set a user's role on creation. The first user is admin, after that they are users.
+  def set_initial_role
+    new_role = User.count.eql?(0) ? User.admin_role : User.user_role
+    self.role ||= new_role
   end
 
 end
