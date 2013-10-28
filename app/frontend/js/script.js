@@ -36,36 +36,37 @@ var initialiseData = function(serverUrl) {
 
     // Update the JSON object describing the devices we have access to; if not online it'll skip
     $.getJSON(serverUrl+'/rooms.json?auth_token='+Android.getToken(), function(data) {
-        Android.storeData(data);
+        Android.storeData(JSON.stringify(data));
+    })
+    // Wait til it fails or you hear back before you do the rest
+    .always(function() {
+        // JSON object describing just the objects we are going to display
+        var data = Android.getData();
+        data = $.parseJSON(data);
+        var params = $.url($(location).attr('href')).param();
+        if ('roomId' in params && 'capId' in params) {
+            data = filterData(data, params['roomId'], params['capId']);
+        } else if ('roomId' in params) {
+            data = filterData(data, params['roomId']);
+        }
+        // Update the page display - initially blank values
+        displayTemplate(data);
+        // If we're on the settings page we make them (and set them to the right values)
+        if ('capId' in params) {
+            // Make setting objects
+            $.each(data, function (val) {
+                //addDevice(data[val], serverUrl);
+                addSetting(data[val], serverUrl);
+            });
+            // Enable callbacks for devices - must be done here because classes don't exist on page load
+            if (onMobile) {
+                $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
+            } else {
+                $('#devices').on('click change', '.changeableSetting', handleSettingUpdate);
+            }
+        }
     });
 
-    // JSON object describing just the objects we are going to display
-    var data = Android.getData();
-    data = $.parseJSON(data);
-    var params = $.url($(location).attr('href')).param();
-    if ('roomId' in params && 'capId' in params) {
-        data = filterData(data, params['roomId'], params['capId']);
-    } else if ('roomId' in params) {
-        data = filterData(data, params['roomId']);
-    }
-
-    // Update the page display - initially blank values
-    displayTemplate(data);
-
-    // If we're on the settings page we make them (and set them to the right values)
-    if ('capId' in params) {
-        // Make setting objects
-        $.each(data, function (val) {
-            //addDevice(data[val], serverUrl);
-            addSetting(data[val], serverUrl);
-        });
-        // Enable callbacks for devices - must be done here because classes don't exist on page load
-        if (onMobile) {
-            $('#devices').on('touchend', '.changeableSetting', handleSettingUpdate);
-        } else {
-            $('#devices').on('click change', '.changeableSetting', handleSettingUpdate);
-        }
-    }
 }
 
 /* Display the data on screen - load values into the template */
