@@ -16,7 +16,7 @@ describe "Security" do
     end
 
     it 'should not allow me to access individual devices directly' do
-      device =  create(:device)
+      device = create(:device)
       visit device_path(device)
     end
 
@@ -26,5 +26,11 @@ describe "Security" do
 
     end
 
-end
+  end
+
+  context "privelege"
+  it "should not allow normal users to do priveleged actions" do
+    pending
+  end
+
 end
