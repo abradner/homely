@@ -19,7 +19,7 @@
                 {{/isRow}}
                 <!-- Start Rooms Cell -->
                   <div class="span6 box">
-                      <a href="room.html?roomId={{id}}"><img src="img/{{name}}.png" alt=""></a>
+                      <a href="room.html?roomId={{id}}"><img src="img/room.png" alt="" width="72px"></a>
                       <h3>{{name}}</h3>
                   </div>
                 {{#isntRow @index}}
@@ -47,15 +47,12 @@
     <script src="js/faye-browser.js"></script>
     <!-- Bootstrap -->
     <script src="js/bootstrap.min.js"></script>
-    <!-- Dictionary of devices/capabilities -->
-    <script src="js/device.js"></script>
-    <script src="js/settings.js"></script>
-    <!-- Capability Types -->
-    <script src="js/capability.js"></script>
     <!-- Setting Types -->
     <script src="js/setting.js"></script>
     <script src="js/colour-setting.js"></script>
     <script src="js/power-setting.js"></script>
+    <!-- Dictionary of settings -->
+    <script src="js/settings.js"></script>
     <!-- Android wrapper for on internet -->
     <script src="js/mockAndroid.js"></script>
     <!-- Main script file -->
