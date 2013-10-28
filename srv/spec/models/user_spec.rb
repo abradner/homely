@@ -9,11 +9,11 @@ describe User do
     #Presence
     it { should validate_presence_of(:email) }
     it { should validate_presence_of(:encrypted_password) }
-    it { should validate_presence_of(:role) }
+    #it { should validate_presence_of(:role) } #This gets handled by a before_validation hook
 
-    it { should validate_uniqueness_of(:email)}
+    it { should validate_uniqueness_of(:email) }
 
-    it { should ensure_inclusion_of(:role).in_array(User.valid_roles)}
+    it { should ensure_inclusion_of(:role).in_array(User.valid_roles) }
   end
 
   describe "Factories" do
@@ -60,4 +60,15 @@ describe User do
     end
   end
 
+  describe "Creation" do
+    specify "new users should be assigned the role 'user'" do
+      user = User.new
+      user.email = Faker::Internet.email
+      user.password = "Pass.123"
+      user.password_confirmation = "Pass.123"
+      user.save!
+
+      expect(user.role).to eql "user"
+    end
+  end
 end
