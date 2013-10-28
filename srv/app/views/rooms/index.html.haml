@@ -1,0 +1,9 @@
+%h1 Listing Rooms
+
+%table
+  %tr
+    %th Name
+
+  - @rooms.each do |room|
+    %tr
+      %td= link_to room.name, room_path(room)

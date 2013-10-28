@@ -17,14 +17,16 @@ puts "Removing old data"
 Setting.delete_all
 Capability.delete_all
 Device.delete_all
-
+Room.delete_all
 
 puts "Seeding Devices"
 seed_devices!()
-#seed_capabilities!()
+
+puts "Seeding Rooms"
+seed_rooms!()
 
 puts "Seeding Capabilities"
-seed_classes Device, Capability
+seed_capabilities!
 
-puts "Seeding States"
+puts "Seeding Settings"
 seed_classes Capability, Setting

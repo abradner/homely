@@ -1,0 +1,18 @@
+%h1
+  Listing Capabilities for
+  =@room.name
+
+%table
+  %tr
+    %th Name
+    %th Type
+    %th Power
+    %th State
+    %th Control
+
+  - @capabilities.each do |cap|
+    %tr
+      %td= cap.name
+      %td= cap.capability_type
+
+%p

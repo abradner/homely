@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20131027153241) do
     t.datetime "updated_at"
     t.string   "message"
     t.integer  "prefix"
+    t.integer  "room_id"
   end
 
   create_table "devices", force: true do |t|
@@ -32,6 +33,10 @@ ActiveRecord::Schema.define(version: 20131027153241) do
     t.datetime "updated_at"
   end
 
+  create_table "rooms", force: true do |t|
+    t.string "name"
+  end
+
   create_table "settings", force: true do |t|
     t.integer  "capability_id"
     t.string   "value"
@@ -40,6 +45,8 @@ ActiveRecord::Schema.define(version: 20131027153241) do
     t.datetime "updated_at"
     t.integer  "min"
     t.integer  "max"
+    t.integer  "room_id"
+    t.integer  "device_id"
   end
 
   create_table "users", force: true do |t|
