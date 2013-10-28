@@ -1,20 +1,19 @@
 package com.homely;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebChromeClient;
-import android.content.SharedPreferences;
-
 import android.widget.Toast;
-import android.view.KeyEvent;
-import android.content.Intent;
 
 public class HomelyActivity extends Activity {
 	private static final int AUTHENTICATOR_REQUEST = 1;
 	public static final String PREFS_NAME = "PrefsFile";
-	private static final String FRONTEND_URI = "file:///android_asset/frontend/index.html";
+	private static final String FRONTEND_URI = "file:///android_asset/frontend/overview.html";
 	private HomelyJSI jsi;
 
 	private WebView webView;
@@ -27,7 +26,9 @@ public class HomelyActivity extends Activity {
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		jsi = new HomelyJSI(this);
+		//jsi.setServerUrl(settings.getString("serverUrl", "http://localhost:3000"));
 
 		webView.addJavascriptInterface(jsi, "Android");
 		webView.requestFocus();
