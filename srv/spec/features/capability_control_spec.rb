@@ -4,8 +4,11 @@ describe "Controlling capabilities" do
 
   before :all do
     @dev = create(:device, name: 'Device')
+    @dev.capabilities.delete_all # Clear out default capabilities
     @room = create(:room, name: 'Room')
     @cap = create(:capability, device: @dev, room: @room, name: "Capability")
+
+    @cap.settings.delete_all # Clear out default settings
 
     @power = create(:setting, capability: @cap, value: 0)
     @colour = create(:setting, capability: @cap, name: "Colour", value: '111111')

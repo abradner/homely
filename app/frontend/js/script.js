@@ -125,7 +125,7 @@ var filterData = function(data, roomId, capId) {
     } else if (typeof roomId != 'undefined') {
         $.each(data, function (val) {
             if (data[val]["id"] == roomId) {
-                retVal = data[val]["capabilities"];
+                retVal = data[val];
             }
         });
     }

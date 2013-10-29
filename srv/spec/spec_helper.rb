@@ -54,6 +54,8 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
+    FactoryGirl.create :room, name: "Uncategorised" if Room.find_by_name("Uncategorised").blank?
+
   end
 
   config.before(:each) do

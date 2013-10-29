@@ -19,11 +19,13 @@ Capability.delete_all
 Device.delete_all
 Room.delete_all
 
-puts "Seeding Devices"
-seed_devices!()
-
 puts "Seeding Rooms"
 seed_rooms!()
+
+#Room.reset_column_information
+
+puts "Seeding Devices"
+seed_devices!()
 
 puts "Seeding Capabilities"
 seed_capabilities!

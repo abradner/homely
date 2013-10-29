@@ -1,14 +1,19 @@
+require 'yaml'
+
 class Device < ActiveRecord::Base
 
   VALID_TYPES = %w( Arduino )
   VALID_INTERFACES = %w( Serial TCP Emulated )
 
-  has_many :capabilities
+
+  has_many :capabilities, dependent: :destroy
 
   validates_uniqueness_of :name, :address
   validates_presence_of :name, :device_type, :interface
   validates_inclusion_of :device_type, in: VALID_TYPES
   validates_inclusion_of :interface, in: VALID_INTERFACES
+
+  after_create :add_default_capabilities
 
   def self.valid_types
     VALID_TYPES
@@ -61,6 +66,7 @@ class Device < ActiveRecord::Base
   end
 
   private
+
   def perform_ping?
     send! "p"
     to_receive = nil
@@ -84,4 +90,25 @@ class Device < ActiveRecord::Base
     false
   end
 
+  def add_default_capabilities
+
+    defaults_file = File.join(Rails.root, DEFAULTS_LOCATION, DEFAULT_CAPS_AND_SETTINGS_FILE)
+    defaults = YAML::load_file(defaults_file)
+
+    capabilities = defaults.delete "capabilities"
+
+      capabilities.map! do |cap|
+        room_name = cap.delete "room_name"
+        room = Room.find_by_name room_name
+        raise "Error - Capability '#{cap['name']}' has an invalid Room Name '#{room_name}' (does NOT match any rooms)" if room.nil?
+        cap["room_id"] = room.id
+        cap["device_id"] = self.id
+        cap
+      end
+
+      Capability.create capabilities
+
+  end
+
 end
+

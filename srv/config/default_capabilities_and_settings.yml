@@ -1,0 +1,22 @@
+capabilities:
+  - name: ChainableLED 0
+    room_name: Uncategorised
+    capability_type: P9813
+    prefix: 0
+
+  - name: ChainableLED 1
+    room_name: Uncategorised
+    capability_type: P9813
+    prefix: 1
+
+
+settings:
+  - name: "Power"
+    value: 0
+    min: 0
+    max: 1
+
+  - name: "Colour"
+    value: 3399FF
+    min: 0
+    max: 0

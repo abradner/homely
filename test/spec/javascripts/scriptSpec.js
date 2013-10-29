@@ -77,8 +77,22 @@ describe("Settings Initialisation:", function() {
     });
 
     it("Initalises the update URL correctly", function() {
-    expect(settings[settingColourId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_colour");
-    expect(settings[settingPowerId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_power");
+        expect(settings[settingColourId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_colour");
+        expect(settings[settingPowerId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_power");
+    });
+
+    it("Initalises the power display correctly", function() {
+        // The colour wheel has oddities - this is consistently 2 lower
+        loadFixtures('button.html')
+        expect($(settings[settingPowerId].divId)).toHaveClass('btn-inverse');
+        expect($(settings[settingPowerId].divId)).toHaveClass('homely-off');
+        expect($(settings[settingPowerId].divId)).not.toHaveClass('btn-success');
+        expect($(settings[settingPowerId].divId)).not.toHaveClass('homely-on');
+    });
+
+    it("Initalises the colour display correctly", function() {
+        // The colour wheel has oddities - this is consistently 2 lower
+        expect(settings[settingColourId].getChangedValue()).toBe('#ffffff');
     });
 
 });
@@ -120,59 +134,15 @@ describe("Settings Functions:", function() {
         expect(settings[settingColourId].value).toBe("ABABAB");
     });
 
-    /*
-    it("'updateDisplay' updates display correctly", function() {
-        loadFixtures('slider.html');
-        expect($(settings[settingColourId].divId)).toHaveValue('0');
-        settings[settingColourId].set(54);
-        settings[settingColourId].updateDisplay();
-        expect($(settings[settingColourId].divId)).toHaveValue('54');
-    });
-
-
-    it("'getValue' function returns correct value from div", function() {
-        loadFixtures('slider.html')
-        settings[settingColourId].set(54);
-        settings[settingColourId].updateDisplay();
-        expect(settings[settingColourId].getChangedValue()).toBe('54');
+    /*it("'updateToServer' should make an AJAX request to the correct URL", function() {
+        spyOn($,"ajax");
+        settings[settingPowerId].updateToServer(1);
+        expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://localhost:3000/devices/1/capabilities/1/p9813_set_power");
     });*/
 
     it("'updateFromServer' function applies settings correctly", function() {
         settings[settingPowerId].updateFromServer(1);
         expect(settings[settingPowerId].value).toBe(1);
-    });
-
-    it("'updateToSever' function sends correct data accross", function() {
-        var val = 1;
-        spyOn($,'ajax').andCallFake( function (params) { 
-            expect(params.type).toBe('GET');
-            expect(params.url).toBe(settings[settingPowerId].url);
-            expect(params.data['value']).toBe(val);
-            return {fail: function(){}};
-        });
-        settings[settingPowerId].updateToServer(val);
-        val = 0;
-        settings[settingPowerId].updateToServer(val);
-    });
-    
-    it ("'updateToServer' function's error function has correct behaviour", function() {
-        var wasCalled = false;
-        spyOn(Android, 'serverError').andCallFake (function (id, name) {
-            expect(id).not.toBe(undefined);
-            expect(name).not.toBe(undefined);
-            expect(id).toBe(settings[settingPowerId].deviceId);
-            expect(name).toBe(settings[settingPowerId].name);
-            wasCalled = true;
-        });
-        spyOn($,'ajax').andCallFake( function (params) { 
-            return {fail: function(fail_func){
-                expect(fail_func).not.toBe(undefined);
-                expect(typeof fail_func).toBe("function");
-                fail_func("", "Something went wrong", {errorThrown: "Like this"});
-            }};
-        });
-        settings[settingPowerId].updateToServer(0);
-        expect(wasCalled).toBe(true);
     });
 
 
@@ -198,6 +168,19 @@ describe("Colour Setting Functions:", function() {
         expect(settings[settingColourId].value).toBe("000");
         settings[settingColourId].set("AAAAiA");
         expect(settings[settingColourId].value).toBe("000");
+    });
+
+    it("'getValue' function returns correct value from div", function() {
+        settings[settingColourId].set("#FF0055");
+        settings[settingColourId].updateDisplay();
+        // The colour wheel has oddities - this is consistently 2 lower
+        expect(settings[settingColourId].getChangedValue()).toBe('#ff0053');
+    });
+
+    it("'updateFromServer' function applies settings correctly", function() {
+        settings[settingColourId].updateFromServer("#000032");
+        settings[settingColourId].updateDisplay();
+        expect(settings[settingColourId].getChangedValue()).toBe('#000032');
     });
 
     it("'updateToServer' function sends the correct data", function() {
@@ -251,6 +234,7 @@ describe("Colour Setting Functions:", function() {
         settings[settingColourId].updateToServer(newVal);
     });
 });
+
 
 
 //power-setting.js

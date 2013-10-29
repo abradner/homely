@@ -160,4 +160,38 @@ describe Capability do
 
   end
 
+  describe "Construction" do
+    it 'should automatically have default settings when I build a new capability' do
+      dev = create :device
+      room = create :room
+
+      cap = Capability.new
+
+      cap.name = "Cap blah"
+      cap.device = dev
+      cap.room = room
+      cap.prefix = 0
+      cap.capability_type = "P9813"
+
+      cap.save.should eql true
+
+      expect(cap.settings.count).to_not eql 0
+    end
+
+  end
+
+  describe "Destruction" do
+    it 'should automatically destroy any dependant capabilities on destroy' do
+      cap = create :capability
+      cap_id = cap.id
+
+      expect(Setting.where(capability_id: cap_id).count).to_not eql 0
+
+      cap.destroy
+      expect(Setting.where(capability_id: cap_id).count).to eql 0
+
+    end
+
+  end
+
 end
