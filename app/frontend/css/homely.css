@@ -1,17 +1,25 @@
-.changeableSetting {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
 .box {
     border: solid #000;
     border-width: 1px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    margin: 5px;
+    height: 100%;
 }
 
-.capability {
-    background-color: #dceaf4;
+.banner {
+    height: 48px;
+    overflow: hidden;
+}
+
+.thumbnail {
+    height: 48px;
+}
+
+/* Homely setting classes */
+.changeableSetting {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .colour-wheel {
@@ -59,4 +67,3 @@
 .homely-off:focus {
     background-position:center;
 }
-

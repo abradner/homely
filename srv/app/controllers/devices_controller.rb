@@ -97,7 +97,7 @@ class DevicesController < ApplicationController
     @device.connect
 
     unless @device.connected?
-      flash.now[:error] = "Could not reconnect. Currently only Emulated devices can reconnect"
+      flash.now[:error] = "Could not reconnect. Currently only Emulated devices can reconnect. Restart the server to connect this device"
     end
     render "devices/index"
   end

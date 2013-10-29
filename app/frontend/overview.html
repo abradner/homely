@@ -11,16 +11,21 @@
 
     <script id="appTemplate" type="text/x-handlebars-template">
         <div class="row-fluid">
+          <img src="img/homelyBanner.png"/>
           <div class="span12"  id="rooms">
               <center>
                 {{#each .}}
                 {{#isRow @index}}
                     <div class="row-fluid">
+                    <!-- Start Rooms Cell -->
+                    <div class="span5 offset1 box">
                 {{/isRow}}
-                <!-- Start Rooms Cell -->
-                  <div class="span6 box">
-                      <a href="room.html?roomId={{id}}"><img src="img/room.png" alt="" width="72px"></a>
-                      <h3>{{name}}</h3>
+                {{#isntRow @index}}
+                    <!-- Start Rooms Cell -->
+                    <div class="span5 box">
+                {{/isntRow}}
+                      <a href="room.html?roomId={{id}}"><img src="img/{{name}}.png" alt="" class="thumbnail"></a>
+                      <h4>{{name}}</h4>
                   </div>
                 {{#isntRow @index}}
                     </div>
