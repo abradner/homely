@@ -49,7 +49,6 @@ $.Class.extend("Setting", {
             type: 'GET',
             url: this.url,
             data: {
-                // Consider changing 'value': to be this.name:
                 'value': newValue,
                 'id': uuid,
 		        'auth_token': Android.getToken()
