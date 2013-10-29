@@ -77,14 +77,14 @@ class DevicesController < ApplicationController
 
   def ping
     @device = Device.find(params[:device_id])
+    ping_sta = ''
+    t1 = Time.now
     if @device.ping?
-      @ping_sta = "Success"
+      ping_sta = "Successfully pinged device \"" + @device.name + "\" in " + (Time.now - t1).to_s + ' seconds'
     else
-      @ping_sta = "Failed"
+      ping_sta = "Failed pinging device \"" + @device.name + "\""
     end
-    @ping_id = params[:device_id]
-    @devices = Device.all
-    render "devices/index"
+    redirect_to devices_path, :notice => ping_sta
   end
 
   def connect
