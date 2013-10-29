@@ -142,6 +142,39 @@ describe("Settings Functions:", function() {
         expect(settings[settingPowerId].value).toBe(1);
     });
 
+    it("'updateToSever' function sends correct data accross", function() {
+        var val = 1;
+        spyOn($,'ajax').andCallFake( function (params) { 
+            expect(params.type).toBe('GET');
+            expect(params.url).toBe(settings[settingPowerId].url);
+            expect(params.data['value']).toBe(val);
+            return {fail: function(){}};
+        });
+        settings[settingPowerId].updateToServer(val);
+        val = 0;
+        settings[settingPowerId].updateToServer(val);
+    });
+    
+    it ("'updateToServer' function's error function has correct behaviour", function() {
+        var wasCalled = false;
+        spyOn(Android, 'serverError').andCallFake (function (id, name) {
+            expect(id).not.toBe(undefined);
+            expect(name).not.toBe(undefined);
+            expect(id).toBe(settings[settingPowerId].deviceId);
+            expect(name).toBe(settings[settingPowerId].name);
+            wasCalled = true;
+        });
+        spyOn($,'ajax').andCallFake( function (params) { 
+            return {fail: function(fail_func){
+                expect(fail_func).not.toBe(undefined);
+                expect(typeof fail_func).toBe("function");
+                fail_func("", "Something went wrong", {errorThrown: "Like this"});
+            }};
+        });
+        settings[settingPowerId].updateToServer(0);
+        expect(wasCalled).toBe(true);
+    });
+
 
 });
 
@@ -165,6 +198,57 @@ describe("Colour Setting Functions:", function() {
         expect(settings[settingColourId].value).toBe("000");
         settings[settingColourId].set("AAAAiA");
         expect(settings[settingColourId].value).toBe("000");
+    });
+
+    it("'updateToServer' function sends the correct data", function() {
+        var val = 'AAAAAA';
+        spyOn($,'ajax').andCallFake( function (params) { 
+            expect(params.type).toBe('GET');
+            expect(params.url).toBe(settings[settingColourId].url);
+            expect(params.data['value']).toBe(val);
+            return {fail: function(){return {done: function(){}}}};
+        });
+        settings[settingColourId].updateToServer(val);
+        val = 'BBBBBB';
+        settings[settingColourId].updateToServer(val);
+    });
+    
+    it ("'updateToServer' function's error function has correct behaviour", function() {
+        var wasCalled = false;
+        spyOn(Android, 'serverError').andCallFake (function (id, name) {
+            expect(id).not.toBe(undefined);
+            expect(name).not.toBe(undefined);
+            expect(id).toBe(settings[settingColourId].deviceId);
+            expect(name).toBe(settings[settingColourId].name);
+            wasCalled = true;
+        });
+        spyOn($,'ajax').andCallFake( function (params) { 
+            return {fail: function(fail_func){
+                expect(fail_func).not.toBe(undefined);
+                expect(typeof fail_func).toBe("function");
+                fail_func("", "Something went wrong", {errorThrown: "Like this"});
+                return {done: function(){}};
+            }};
+        });
+        settings[settingColourId].updateToServer(0);
+        expect(wasCalled).toBe(true);
+    });
+
+    it ("'updateToServer' function's done function has correct behaviour", function() {
+        var newVal = '0F0F0F';
+        spyOn($,'ajax').andCallFake( function (params) { 
+            return {fail: function(){
+                return {done: function(done_func){
+                    expect(done_func).not.toBe(undefined);
+                    expect(typeof done_func).toBe("function");
+                    done_func();
+                    expect(settings[settingColourId].value).toBe(newVal);
+                }};
+            }};
+        });
+        settings[settingColourId].updateToServer(newVal);
+        newVal = 'B0B0B0';
+        settings[settingColourId].updateToServer(newVal);
     });
 });
 

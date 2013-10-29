@@ -51,8 +51,6 @@ Setting.extend("Colour",{
             timeout: 600000, // sets timeout to 1 second
         })
         .fail($.proxy(function(data, textStatus, jqXHR) {
-            //get rid of alert
-            alert(textStatus + ":"+ jqXHR.errorThrown);
             Android.serverError(this.deviceId, this.name);
             this.updateDisplay();
         }, this))

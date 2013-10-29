@@ -42,6 +42,7 @@ $.Class.extend("Setting", {
         return $(this.divId).val();
     },
 
+
     /* Send the new state to the server */
     updateToServer: function (newValue) {
         var success = true;
@@ -56,7 +57,6 @@ $.Class.extend("Setting", {
             timeout: 600000, // sets timeout to 1 second
         })
         .fail($.proxy(function(data, textStatus, jqXHR){
-            alert(textStatus +":"+ jqXHR.errorThrown);
             Android.serverError(this.deviceId, this.name);
         }, this));
     },
