@@ -13,7 +13,7 @@ class Capability < ActiveRecord::Base
   
   belongs_to :device
   belongs_to :room
-  has_many :settings
+  has_many :settings, dependent: :destroy
 
   validates_uniqueness_of :name, scope: :device_id
   validates_presence_of :name, :device_id, :capability_type, :prefix
@@ -26,6 +26,7 @@ class Capability < ActiveRecord::Base
   end
 
   after_update :update_device
+  after_create :add_default_settings
 
   ###############
   # Abstraction methods
@@ -111,11 +112,6 @@ class Capability < ActiveRecord::Base
   # Utility methods
   ###############
 
-
-  def update_device
-    self.device.send! last_message
-  end
-
   def setting(name)
     rec = self.settings.where(name: name).first
     if rec.nil?
@@ -139,6 +135,32 @@ class Capability < ActiveRecord::Base
 
   def p9813_check!
     raise TypeError, "Running P9813 commands on a non-P9813 capability." unless self.capability_type.eql? "P9813"
+  end
+
+
+
+  ###############
+  # Callback methods
+  ###############
+
+  def update_device
+    self.device.send! last_message
+  end
+
+  def add_default_settings
+
+    defaults_file = File.join(Rails.root, DEFAULTS_LOCATION, DEFAULT_CAPS_AND_SETTINGS_FILE)
+    defaults = YAML::load_file(defaults_file)
+
+    settings = defaults.delete "settings"
+
+    settings.map! do |setting|
+      setting["capability_id"] = self.id
+      setting
+    end
+
+    Setting.create settings
+
   end
 
 

@@ -102,4 +102,34 @@ describe Device do
 
   end
 
+  describe "Construction" do
+    it 'should automatically have default capabilities when I build a new device' do
+      dev = Device.new
+      dev.name = "Device blah"
+      dev.interface = "Emulated"
+      dev.device_type = "Arduino"
+      dev.address = "nowhere"
+      dev.save.should eql true
+
+      expect(dev.capabilities.count).to_not eql 0
+
+
+    end
+
+  end
+
+  describe "Destruction" do
+    it 'should automatically destroy any dependant capabilities on destroy' do
+      dev = create :device
+      dev_id = dev.id
+
+      expect(Capability.where(device_id: dev_id).count).to_not eql 0
+
+      dev.destroy
+      expect(Capability.where(device_id: dev_id).count).to eql 0
+
+    end
+
+  end
+
 end

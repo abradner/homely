@@ -35,6 +35,8 @@ describe "Device control" do
     it 'should show a list of my current devices' do
       dev1 = create(:device)
       dev2 = create(:device)
+      dev1.capabilities.delete_all
+      dev2.capabilities.delete_all
       visit devices_path
       expect_to_see_device(dev1)
       expect_to_see_device(dev2)

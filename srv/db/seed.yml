@@ -16,19 +16,18 @@ devices:
 
 rooms:
   - name: Living Room
-
   - name: Kitchen
-
   - name: Bedroom
+  - name: Uncategorised
 
 capabilities:
-  - name: ChainableLED 0
+  - name: SerialLED 0
     device_name: Serial Leonardo
     room_name: Living Room
     capability_type: P9813
     prefix: 0
 
-  - name: ChainableLED 1
+  - name: SerialLED 1
     device_name: Serial Leonardo
     room_name: Kitchen
     capability_type: P9813
@@ -46,13 +45,13 @@ capabilities:
     capability_type: P9813
     prefix: 1
 
-  - name: TCPChainableLED 0
+  - name: TCPSerialLED 0
     device_name: TCP Diecimila
     room_name: Bedroom
     capability_type: P9813
     prefix: 0
 
-  - name: TCPChainableLED 1
+  - name: TCPSerialLED 1
     device_name: TCP Diecimila
     room_name: Bedroom
     capability_type: P9813
@@ -63,25 +62,25 @@ capabilities:
 settings:
 
 #Serial
-  - capability_name: ChainableLED 0
+  - capability_name: SerialLED 0
     name: "Power"
     value: 1
     min: 0
     max: 1
 
-  - capability_name: ChainableLED 0
+  - capability_name: SerialLED 0
     name: "Colour"
     value: 3399FF
     min: 0
     max: 999
 
-  - capability_name: ChainableLED 1
+  - capability_name: SerialLED 1
     name: "Power"
     value: 1
     min: 0
     max: 1
 
-  - capability_name: ChainableLED 1
+  - capability_name: SerialLED 1
     name: "Colour"
     value: FF9933
     min: 0
@@ -113,25 +112,25 @@ settings:
     max: 999
 
 #TCP
-  - capability_name: TCPChainableLED 0
+  - capability_name: TCPSerialLED 0
     name: "Power"
     value: 1
     min: 0
     max: 1
 
-  - capability_name: TCPChainableLED 0
+  - capability_name: TCPSerialLED 0
     name: "Colour"
     value: 3399FF
     min: 0
     max: 999
 
-  - capability_name: TCPChainableLED 1
+  - capability_name: TCPSerialLED 1
     name: "Power"
     value: 1
     min: 0
     max: 1
 
-  - capability_name: TCPChainableLED 1
+  - capability_name: TCPSerialLED 1
     name: "Colour"
     value: FF9933
     min: 0

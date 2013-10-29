@@ -48,7 +48,7 @@ def seed_capabilities!
 
   rescue Exception => e
     puts "Error - Capability '#{e.message}' has an invalid 'Room Name' (does NOT match any rooms)"
-   # exit 1
+    exit 1
   end
 
 
