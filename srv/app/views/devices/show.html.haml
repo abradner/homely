@@ -37,14 +37,18 @@
     %table
       %tr
         %th Name
+        %th Room
         %th Type
         %th Power
         %th State
         %th Control
+        -if can? :manage, @device
+          %th Manage
 
       - @capabilities.each do |cap|
         %tr
           %td= cap.name
+          %td= cap.room.name unless cap.room.blank?
           %td= cap.capability_type
           %td= link_to cap.power, device_capability_p9813_set_power_path(@device, cap)
           - if cap.capability_type.eql? "P9813"
@@ -61,5 +65,7 @@
                 .input-append
                   %input.input-mini{:type => "text", :name => "value", :class => "text", placeholder: "RRGGBB", maxlength: 6}
                   %button{:type => "submit", :class => "btn"}Set
+          -if can? :manage, cap
+            %td= link_to "Edit", edit_device_capability_path(@device,cap)
 
 %p

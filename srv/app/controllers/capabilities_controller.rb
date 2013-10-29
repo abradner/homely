@@ -14,6 +14,24 @@ class CapabilitiesController < ApplicationController
 
   end
 
+  def edit
+    params[:capability_id] = params[:id]
+    load_resource
+    authorize! :edit, @capability
+  end
+
+  def update
+    @capability = Capability.find(params[:id])
+    authorize! :update, @capability
+
+
+    if @capability.update_attributes(params[:capability])
+      redirect_to(@capability.device, :notice => 'Capability was successfully updated.')
+    else
+      render :action => "edit"
+    end
+  end
+
   def p9813_set_power
 
     load_resource
@@ -80,6 +98,11 @@ class CapabilitiesController < ApplicationController
     rescue Redis::CannotConnectError
       flash.now[:warning] = "Could not connect to REDIS server. This update will not appear on other connected clients"
     end
+  end
+
+
+  def capability_params
+    params.require(:capability).permit(:name, :room, :room_id)
   end
 
 end

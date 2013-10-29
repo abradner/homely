@@ -1,0 +1,14 @@
+= form_for [@device, @capability] do |f|
+  %fieldset
+    = render "shared/error_messages", target: @capability
+    .clearfix
+      = f.label :name, "Capability name"
+      .input
+        = f.text_field :name, placeholder: "My Capability"
+        = required
+    .clearfix
+      = f.label :room_id, "Room"
+      .input
+        = f.select :room_id, options_from_collection_for_select(Room.all, :id, :name, @capability.room_id)
+        = required
+    =f.submit
