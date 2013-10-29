@@ -54,6 +54,7 @@ capabilities:
 
   - name: TCPChainableLED 1
     device_name: TCP Diecimila
+    room_name: Bedroom
     capability_type: P9813
     prefix: 1
 
