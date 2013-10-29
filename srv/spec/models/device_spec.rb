@@ -93,6 +93,13 @@ describe Device do
       pending
 
     end
+
+    it "should not do anything if a device is not connected and is written to" do
+      @dev.close
+      @dev.connected?.should eql false
+      @dev.send!("000000")
+    end
+
   end
 
 end

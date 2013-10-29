@@ -149,12 +149,56 @@ describe "Device control" do
   end
 
 
-  context "ping" do
-    pending "Access control needs to be implemented first"
-  end
+  context "ping and connect" do
+    before :all do
+      @static_dev = create(:device)
+    end
 
-  context "connect" do
-    pending "Access control needs to be implemented first"
+    after :all do
+      @static_dev.destroy
+    end
+
+    it 'should not allow pinging devices by regular users' do
+      "Access control needs to be implemented first"
+      @user = create_logged_in_user(role: 'user')
+      visit devices_path
+      within('#devices_table') do
+        expect(page).to_not have_content "Ping"
+        expect('td').to_not have_content "Ping"
+        expect('td').to_not have_content "Connect"
+      end
+    end
+
+    it 'should allow pinging devices by admins' do
+      "Access control needs to be implemented first"
+      @user = create_logged_in_user(role: 'admin')
+      visit devices_path
+      elevate_via_page
+      within('#devices_table') do
+        expect(page).to have_content "Ping"
+        expect(page).to have_content "Connect"
+        click_link('Connect')
+        expect(page).to have_content "Ping"
+      end
+    end
+
+    it 'should show messages indicating success or failure' do
+      "Access control needs to be implemented first"
+      @user = create_logged_in_user(role: 'admin')
+      visit devices_path
+      elevate_via_page
+      within('#devices_table') do
+        click_link('Ping')
+        expect(page).to_not have_content "/\AConnect\z/"
+      end
+      expect(page).to have_content('Success')
+      @static_dev.send!("ignore")
+      within('#devices_table') do
+        expect(page).to_not have_content "/\AConnect\z/"
+        click_link('Ping')
+      end
+      expect(page).to have_content('Fail')
+    end
   end
 
 end

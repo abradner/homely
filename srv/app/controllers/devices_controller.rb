@@ -77,14 +77,14 @@ class DevicesController < ApplicationController
 
   def ping
     @device = Device.find(params[:device_id])
+    ping_sta = ''
+    t1 = Time.now
     if @device.ping?
-      @ping_sta = "Success"
+      ping_sta = "Successfully pinged device \"" + @device.name + "\" in " + (Time.now - t1).to_s + ' seconds'
     else
-      @ping_sta = "Failed"
+      ping_sta = "Failed pinging device \"" + @device.name + "\""
     end
-    @ping_id = params[:device_id]
-    @devices = Device.all
-    render "devices/index"
+    redirect_to devices_path, :notice => ping_sta
   end
 
   def connect
@@ -97,7 +97,7 @@ class DevicesController < ApplicationController
     @device.connect
 
     unless @device.connected?
-      flash.now[:error] = "Could not reconnect. Currently only Emulated devices can reconnect"
+      flash.now[:error] = "Could not reconnect. Currently only Emulated devices can reconnect. Restart the server to connect this device"
     end
     render "devices/index"
   end

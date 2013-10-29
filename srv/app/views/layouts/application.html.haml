@@ -43,12 +43,7 @@
       .row-fluid
         -if user_signed_in?
           .span3
-            .well.sidebar-nav
-              %ul.nav.nav-list
-                %li.nav-header Sidebar
-                %li= link_to "Devices", :devices
-                %li= link_to "Basic Commands", :basic_commands_pages
-            / /.well
+            =render partial: 'layouts/side_bar'
           / /span
         .span9
           = bootstrap_flash
@@ -56,5 +51,5 @@
           = yield
       / /row
       %footer
-        %p © Company 2013
+        %p © Homely Group 2013
     / /container
