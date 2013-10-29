@@ -36,7 +36,8 @@ class CapabilitiesController < ApplicationController
              "capability" => @capability.id,
              "setting"    => @capability.settings.where(name: 'Power').first.id,
              "value"      => @capability.settings.where(name: 'Power').first.value }
-    BroadcastWorker.perform_async(hash.to_json);
+
+    broadcast hash
 
     render "devices/show"
   end
@@ -58,7 +59,8 @@ class CapabilitiesController < ApplicationController
              "capability" => @capability.id,
              "setting"    => @capability.settings.where(name: 'Colour').first.id,
              "value"      => colour}
-    BroadcastWorker.perform_async(hash.to_json)
+
+    broadcast hash
 
     render "devices/show"
 
@@ -70,6 +72,14 @@ class CapabilitiesController < ApplicationController
     @capabilities = Capability.where(device_id: params[:device_id])
     @capability = Capability.find(params[:capability_id])
     @device = @capability.device
+  end
+
+  def broadcast(hash)
+    begin
+      BroadcastWorker.perform_async(hash.to_json)
+    rescue Redis::CannotConnectError
+      flash.now[:warning] = "Could not connect to REDIS server. This update will not appear on other connected clients"
+    end
   end
 
 end
