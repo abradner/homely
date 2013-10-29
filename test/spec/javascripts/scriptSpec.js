@@ -77,8 +77,22 @@ describe("Settings Initialisation:", function() {
     });
 
     it("Initalises the update URL correctly", function() {
-    expect(settings[settingColourId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_colour");
-    expect(settings[settingPowerId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_power");
+        expect(settings[settingColourId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_colour");
+        expect(settings[settingPowerId].url).toBe(serverUrl+"/devices/1/capabilities/1/light_set_power");
+    });
+
+    it("Initalises the power display correctly", function() {
+        // The colour wheel has oddities - this is consistently 2 lower
+        loadFixtures('button.html')
+        expect($(settings[settingPowerId].divId)).toHaveClass('btn-inverse');
+        expect($(settings[settingPowerId].divId)).toHaveClass('homely-off');
+        expect($(settings[settingPowerId].divId)).not.toHaveClass('btn-success');
+        expect($(settings[settingPowerId].divId)).not.toHaveClass('homely-on');
+    });
+
+    it("Initalises the colour display correctly", function() {
+        // The colour wheel has oddities - this is consistently 2 lower
+        expect(settings[settingColourId].getChangedValue()).toBe('#ffffff');
     });
 
 });
@@ -120,21 +134,10 @@ describe("Settings Functions:", function() {
         expect(settings[settingColourId].value).toBe("ABABAB");
     });
 
-    /*
-    it("'updateDisplay' updates display correctly", function() {
-        loadFixtures('slider.html');
-        expect($(settings[settingColourId].divId)).toHaveValue('0');
-        settings[settingColourId].set(54);
-        settings[settingColourId].updateDisplay();
-        expect($(settings[settingColourId].divId)).toHaveValue('54');
-    });
-
-
-    it("'getValue' function returns correct value from div", function() {
-        loadFixtures('slider.html')
-        settings[settingColourId].set(54);
-        settings[settingColourId].updateDisplay();
-        expect(settings[settingColourId].getChangedValue()).toBe('54');
+    /*it("'updateToServer' should make an AJAX request to the correct URL", function() {
+        spyOn($,"ajax");
+        settings[settingPowerId].updateToServer(1);
+        expect($.ajax.mostRecentCall.args[0]["url"]).toEqual("http://localhost:3000/devices/1/capabilities/1/p9813_set_power");
     });*/
 
     it("'updateFromServer' function applies settings correctly", function() {
@@ -166,6 +169,20 @@ describe("Colour Setting Functions:", function() {
         settings[settingColourId].set("AAAAiA");
         expect(settings[settingColourId].value).toBe("000");
     });
+
+    it("'getValue' function returns correct value from div", function() {
+        settings[settingColourId].set("#FF0055");
+        settings[settingColourId].updateDisplay();
+        // The colour wheel has oddities - this is consistently 2 lower
+        expect(settings[settingColourId].getChangedValue()).toBe('#ff0053');
+    });
+
+    it("'updateFromServer' function applies settings correctly", function() {
+        settings[settingColourId].updateFromServer("#000032");
+        settings[settingColourId].updateDisplay();
+        expect(settings[settingColourId].getChangedValue()).toBe('#000032');
+    });
+
 });
 
 
