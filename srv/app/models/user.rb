@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
 
   VALID_ROLES = %w( admin user guest )
 
+  ELEVATION_TIMEOUT = 1.hour
+
   scope :administrators, -> { where(role: User.admin_role) }
 
   validates_presence_of :email, :encrypted_password, :role
@@ -42,6 +44,11 @@ class User < ActiveRecord::Base
   end
 
 
+  def self.elevation_timeout
+    ELEVATION_TIMEOUT
+  end
+
+
   # Methods to test if a user has a role
   def admin?
     self.role.eql? User.admin_role
@@ -55,6 +62,23 @@ class User < ActiveRecord::Base
     self.role.eql? User.guest_role
   end
 
+  # Elevated admin
+  def elevated?
+    return false if self.elevation_time.blank?
+    elevated_for = Time.now - self.elevation_time
+    return true if elevated_for < ELEVATION_TIMEOUT
+    false
+  end
+
+  def elevate
+    update_attribute(:elevation_time, Time.now)
+    save
+  end
+
+  def lower
+    update_attribute(:elevation_time, nil)
+    save
+  end
 
   private
 

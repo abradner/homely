@@ -1,29 +1,6 @@
 require 'spec_helper'
 
 describe "Device control" do
-  def create_logged_in_user(hash = {})
-    user = create(:user, hash)
-    login_via_page_as(user)
-    user
-  end
-
-  def login_via_page_as(user)
-    visit new_user_session_path
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_button 'Sign in'
-  end
-
-  def logout_via_page
-    click_link "Sign out"
-  end
-
-  #def login(user)
-  #  login_as user, scope: :user
-  #end
-
-  #let(:user) { build(:user, role: 'user') }
-  #let(:admin) { build(:user, role: 'admin') }
 
 
   context "device management" do
@@ -51,6 +28,7 @@ describe "Device control" do
     # Callbacks
     before :each do
       @user = create_logged_in_user(role: 'admin')
+      @user.elevate
     end
 
     #Tests
@@ -133,30 +111,36 @@ describe "Device control" do
     end
 
     it 'should not allow the creation of devices by regular users' do
-      pending "Access control needs to be implemented first"
+      "Access control needs to be implemented first"
       @user = create_logged_in_user(role: 'user')
       visit new_device_path
       expect(page).to_not have_content "Create New Device"
-      expect(page).to have_content "You are not authorised to create new devices"
+      expect(page).to have_content "not authorized"
     end
 
-    it 'should not show create/edit/delete device links for regular users' do
-      pending "Access control needs to be implemented first"
+    it 'should not show create/edit/delete/connect/ping device links for regular users' do
+      "Access control needs to be implemented first"
       @user = create_logged_in_user(role: 'user')
       visit devices_path
 
       expect(page).to_not have_content "Create New Device"
       within('#devices_table') do
         expect(page).to_not have_content "Edit"
+        expect(page).to_not have_content "Ping"
+        expect('td').to_not have_content "Connect"
         expect(page).to_not have_content "Delete"
       end
     end
-    it 'should show create/edit/delete device links for admin users' do
+    it 'should show create/edit/delete device links for elevated admin users' do
       @user = create_logged_in_user(role: 'admin')
+
+      elevate_via_page
+
       visit devices_path
 
       expect(page).to have_content "Create New Device"
       within('#devices_table') do
+        #expect('td').to have_content "Connect"
         expect(page).to have_content "Edit"
         expect(page).to have_content "Delete"
       end

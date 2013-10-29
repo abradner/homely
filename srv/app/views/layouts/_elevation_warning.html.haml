@@ -1,0 +1,7 @@
+- if user_signed_in? && current_user.elevated?
+  .alert.alert-error
+    %h4 You are currently in elevated mode.
+    %p
+      This mode has the ability to edit devices and users,
+      and you do not want to be in this mode for normal operation. This mode will expire in
+      =distance_of_time_in_words(Time.now - User.elevation_timeout - current_user.elevation_time)

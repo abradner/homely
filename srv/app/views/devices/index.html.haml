@@ -1,5 +1,6 @@
 %h1 Listing Devices
-.button=link_to "Create New Device", new_device_path
+-if can? :manage, @device
+  .button=link_to "Create New Device", new_device_path
 %table#devices_table
   %tr
     %th Name
@@ -7,9 +8,9 @@
     %th Interface
     %th Address
     %th Connected
-    %th Ping
-    %th Ping Status
     -if can? :manage, @device
+      %th Ping
+      %th Ping Status
       %th Manage
     -#%th Created At
     -#%th Updated At
@@ -22,15 +23,17 @@
       %td= dev.address
       - if dev.connected?
         %td Yes
-        %td= link_to "Ping", device_ping_path(dev)
       - else
         %td No
-        %td= link_to "Connect", device_connect_path(dev)
-      - if dev.id.to_s.eql? @ping_id
-        %td= @ping_sta
-      - else
-        %td
       -if can? :manage, @device
+        - if dev.connected?
+          %td= link_to "Ping", device_ping_path(dev)
+        - else
+          %td= link_to "Connect", device_connect_path(dev)
+        - if dev.id.to_s.eql? @ping_id
+          %td= @ping_sta
+        - else
+          %td
         %td
           = link_to "Edit", edit_device_path(dev)
           = link_to "Delete", device_path(dev), method: :delete

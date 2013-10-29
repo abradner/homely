@@ -38,6 +38,11 @@ HomelySrv::Application.routes.draw do
     end
   end
 
+  resource :admin, controller: :admin do
+    patch 'elevate'
+    patch 'lower'
+  end
+
   mount Sidekiq::Web, at: '/sidekiq'
 
   # The priority is based upon order of creation: first created -> highest priority.

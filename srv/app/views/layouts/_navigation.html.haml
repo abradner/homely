@@ -1,4 +1,12 @@
 - if user_signed_in?
+  %li
+    %p.navbar-text
+      Signed in as
+      =current_user.email
+  -if can? :lower, User # Is an elevated admin
+    %li= link_to 'Disable Management', lower_admin_path, method: :patch
+  -elsif can? :elevate, User
+    %li= link_to 'Enable Management'.html_safe, elevate_admin_path, method: :patch, data: {confirm: "This will enable advanced control for one hour. Are you sure?"}
   %li= link_to 'Edit account', edit_user_registration_path
   %li= link_to 'Sign out', destroy_user_session_path, :method=>'delete'
 - else

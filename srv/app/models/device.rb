@@ -38,7 +38,7 @@ class Device < ActiveRecord::Base
   end
 
   def send!(message)
-    @@dev_list[id].send! message
+    @@dev_list[id].send!(message) unless @@dev_list[id].nil?
   end
 
   def receive!
