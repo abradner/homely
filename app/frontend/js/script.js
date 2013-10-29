@@ -39,8 +39,12 @@ var initialiseData = function(serverUrl) {
     $.getJSON(serverUrl+'/rooms.json?auth_token='+Android.getToken(), function(data) {
         Android.storeData(JSON.stringify(data));
     })
-    // Wait til it fails or you hear back before you do the rest
-    .always(function() {
+    // On failure display a 'please log in' message
+    .fail(function() {
+        document.body.innerHTML = "<center><h1>You need to log in to continue</h1><h2>See settings for details</h2></center>";
+    })
+    // If it succeeds, display the new data
+    .done(function() {
         // JSON object describing just the objects we are going to display
         var data = Android.getData();
         data = $.parseJSON(data);
