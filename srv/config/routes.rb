@@ -6,21 +6,6 @@ HomelySrv::Application.routes.draw do
 
   resources :tokens,:only => [:create, :destroy]
 
-  resource :pages do
-    get 'basic_commands'
-    get 'red'
-    get 'green'
-    get 'blue'
-    get 'on'
-    get 'off'
-    get 'white'
-    get 'darker'
-    get 'lighter'
-    get 'ping'
-    resources :query, :only => [:show], to: 'pages#query'
-    post 'colour'
-  end
-
   resources :devices do
     get 'ping'
     get 'connect'
