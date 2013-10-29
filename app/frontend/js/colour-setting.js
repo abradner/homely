@@ -6,7 +6,7 @@ Setting.extend("Colour",{
 
         this.cw = Raphael.colorwheel($(this.divId)[0], 200);
         this.cw.input($(this.divId + "_input")[0]);
-
+        this.updateDisplay(this.value);
         // TODO: Fix the context
         var self = this;
         // On change update the server
