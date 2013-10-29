@@ -11,17 +11,22 @@
 
     <script id="appTemplate" type="text/x-handlebars-template">
         <div class="row-fluid">
+          <img src="img/homelyBanner.png"/>
           <div class="span12" id="capabilities">
               <center>
                 {{#each .}}
                 {{#isRow @index}}
                     <div class="row-fluid">
+                    <!-- Start Rooms Cell -->
+                    <div class="span5 offset1 box">
                 {{/isRow}}
-                <!-- Start Capabilities Cell -->
-                    <div class="span6 box">
+                {{#isntRow @index}}
+                    <!-- Start Rooms Cell -->
+                    <div class="span5 box">
+                {{/isntRow}}
                       <a href="capability.html?roomId={{room_id}}&capId={{id}}">
-                      <img src="img/{{capability_type}}.png" alt="" height="75px"></a>
-                      <h3>{{name}} - {{capability_type}}</h3>
+                      <img src="img/{{capability_type}}.png" alt="" class="thumbnail"></a>
+                      <h4>{{name}}<br/>{{capability_type}}</h4>
                     </div>
                 {{#isntRow @index}}
                     </div>

@@ -11,14 +11,16 @@
 
     <script id="appTemplate" type="text/x-handlebars-template">
         <div class="row-fluid">
+          <img src="img/homelyBanner.png"/>
           <div class="span12"  id="settings">
               <center>
                 <h1>{{name}}</h1>
-                  <br/>
+                <br/>
+                <h2>{{capability_type}}</h2>
                 {{#each settings}}
                 <!-- Start Settings Cell -->
                   <div class="row-fluid">
-                    <div class="span12 box">
+                    <div class="span10 offset1 box">
                       {{#isPower name}}
                         <!-- Power Button -->
 <button type='button' class='btn homely-btn changeableSetting' id='{{../id}}' data-device-id= '{{../room_id}}' data-capability-id='{{../capability_id}}' data-toggle='button'></button>
@@ -32,7 +34,7 @@
 <input type='range' class='changeableSetting' id='_{{../../id}}' data-capability-id='{{../../capability_id}}' data-device-id='{{../../room_id}}'  value='{{../../value}}' min='{{../../min}}' max='{{../../max}}'>
                             {{/isColour}}
                         {{/isPower}}
-                      <h3>{{name}} - {{../capability_type}}</h3>
+                      <h3>{{name}}</h3>
                     </div>
                   </div>
                  <!-- End Settings Grid -->
