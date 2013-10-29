@@ -6,6 +6,7 @@
     border-radius: 3px;
     margin: 5px;
     height: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .banner {

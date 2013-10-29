@@ -87,7 +87,7 @@ public class AuthenticatorActivity extends Activity {
 		String server = mServer.getText().toString();
 		String email = mEmail.getText().toString();
 		String password = mPassword.getText().toString();
-		// TODO replace with something more spinning wheel progress bar-y 
+		// TODO replace with something more spinning wheel progress bar-y
 		//Toast.makeText(getApplicationContext(), "Handling login attempt with " + server + " " + email + " " + password, Toast.LENGTH_LONG).show();
 
 		try {
@@ -117,7 +117,7 @@ public class AuthenticatorActivity extends Activity {
 		} catch (JSONException e) {
 			// JSON response is broken
 		} catch (Exception e) {
-			Toast.makeText(getApplicationContext(), "Connection with server " + server + "failed", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Connection with server http://" + server + ":3000 failed", Toast.LENGTH_LONG).show();
 		}
 		return false;
 	}
