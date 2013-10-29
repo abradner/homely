@@ -36,15 +36,14 @@ class ArduinoCommunicator
 
   def send!(message)
     #message = 0xFF0101FFFFAABBCC
-
-    @device.write(message)
+    @device.write(message) unless @device.nil?
 
   end
 
   def receive!()
     #message = 0xFF0101FFFFAABBCC
 
-    @device.gets
+    @device.gets unless @device.nil?
 
   end
 

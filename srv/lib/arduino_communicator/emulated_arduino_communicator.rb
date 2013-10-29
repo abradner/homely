@@ -28,15 +28,17 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
   end
 
   def send!(message)
-    super
-    if message == "ignore"
-      @listening = false
-    end
-    if message == "listen"
-      @listening = true
-    end
-    if @listening
-      fulfill_request(@arduino_buffer.recv(RECV_LENGTH))
+    if connected?
+      super
+      if message == "ignore"
+        @listening = false
+      end
+      if message == "listen"
+        @listening = true
+      end
+      if @listening
+        fulfill_request(@arduino_buffer.recv(RECV_LENGTH))
+      end
     end
   end
 
@@ -72,12 +74,15 @@ class EmulatedArduinoCommunicator < ArduinoCommunicator
   end
 
   def receive!()
-
-    str = @device.recv_nonblock(RECV_LENGTH)
-    if str == ""
-      str = nil
+    if connected?
+      str = @device.recv_nonblock(RECV_LENGTH)
+      if str.nil? || str == ""
+        str = nil
+      end
+      str
+    else
+      nil
     end
-    str
   end
 
 
